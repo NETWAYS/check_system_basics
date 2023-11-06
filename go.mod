@@ -2,8 +2,6 @@ module github.com/NETWAYS/check_system_basics
 
 go 1.21
 
-toolchain go1.21.3
-
 require (
 	github.com/NETWAYS/go-check v0.6.1
 	github.com/NETWAYS/go-icingadsl v0.1.0
