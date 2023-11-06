@@ -1,0 +1,6 @@
+check_system_basics*
+.idea
+vendor/
+coverage.html
+coverage.out
+dist/

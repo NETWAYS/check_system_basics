@@ -1,0 +1,75 @@
+run:
+  timeout: 5m
+  tests: false
+issues:
+  exclude-rules:
+    - path: 'cmd/memory.go'
+      linters:
+        - funlen
+        - gocognit
+        - gocyclo
+        - maintidx
+    - path: 'cmd/filesystem.go'
+      linters:
+        - funlen
+        - gocognit
+        - maintidx
+        - gocyclo
+    - path: 'internal/sensors/sensors.go'
+      linters:
+        - funlen
+        - gocognit
+    - path: 'internal/filesystem/filesystem.go'
+      linters:
+        - funlen
+        - gocognit
+        - gocyclo
+        - maintidx
+    - path: 'cmd/filesystem.go'
+      linters:
+        - nestif
+    - path: 'internal/netdev/netdev.go'
+      linters:
+        - deadcode
+        - golint
+        - unused
+        - nosnakecase
+        - stylecheck
+        - varcheck
+        - revive
+linters:
+   enable-all: true
+   disable:
+     - dupl
+     - cyclop
+     - depguard
+     - exhaustivestruct
+     - exhaustruct
+     - forbidigo
+     - forcetypeassert
+     - gci
+     - gochecknoglobals
+     - gochecknoinits
+     - godox
+     - godot
+     - goerr113
+     - gofumpt
+     - gomnd
+     - lll
+     - musttag
+     - nakedret
+     - nlreturn
+     - nolintlint
+     - nonamedreturns
+     - tagliatelle
+     - varnamelen
+     - wrapcheck
+linters-settings:
+   estif:
+     min-complexity: 4
+   maligned:
+     suggest-new: true
+   funlen:
+     lines: 80
+     statements: 70
+     ignore-comments: true
