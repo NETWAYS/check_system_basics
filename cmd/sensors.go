@@ -18,22 +18,23 @@ thresholds respecting the sensor type and the respective specialities`,
 	Example: `./check_system_basics sensors
 [OK] - states: ok=6
 \_ [OK] acpitz
-		\_ [OK] acpitz_temp1: Ok - 46C
+    \_ [OK] acpitz_temp1: Ok - 48C
 \_ [OK] BAT1
-		\_ [OK] BAT1_in0: Ok - 17.363V
-		\_ [OK] BAT1_curr1: Ok - 0A
+    \_ [OK] BAT1_in0: Ok - 17.544V
+    \_ [OK] BAT1_curr1: Ok - 0A
 \_ [OK] nvme
-		\_ [OK] Composite: Ok - 40C
+    \_ [OK] Composite: Ok - 37C
 \_ [OK] ACAD
 \_ [OK] coretemp
-		\_ [OK] Package id 0: Ok - 46C
-		\_ [OK] Core 0: Ok - 44C
-		\_ [OK] Core 1: Ok - 42C
-		\_ [OK] Core 2: Ok - 43C
-		\_ [OK] Core 3: Ok - 45C
+    \_ [OK] Package id 0: Ok - 48C
+    \_ [OK] Core 0: Ok - 47C
+    \_ [OK] Core 1: Ok - 46C
+    \_ [OK] Core 2: Ok - 46C
+    \_ [OK] Core 3: Ok - 45C
 \_ [OK] iwlwifi_1
-		\_ [OK] iwlwifi_1_temp1: Ok - 51C
-|acpitz_temp1=46C;;~:210 BAT1_in0=17.363V BAT1_curr1=0A Composite=40C;~:83;-5:87  'Package id 0'=46C;~:100;~:100 'Core 0'=44C;~:100;~:100 'Core 1'=42C;~:100;~:100 'Core 2'=43C;~:100;~:100 'Core 3'=45C;~:100;~:100 iwlwifi_1_temp1=51C`,
+    \_ [OK] iwlwifi_1_temp1: Ok - 47C
+|acpitz_temp1=48C;;~:210 BAT1_in0=17.544V BAT1_curr1=0A Composite=37C;~:83;-5:87  'Package id 0'=48C;~:100;~:100 'Core 0'=47C;~:100;~:100 'Core 1'=46C;~:100;~:100 'Core 2'=46C;~:100;~:100 'Core 3'=45C;~:100;~:100 iwlwifi_1_temp1=47C
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		devices, err := sensors.GetDefaultDevices()
 		if err != nil {
