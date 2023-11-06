@@ -73,7 +73,7 @@ In this case, the Plugin will return UNKNOWN.
 
 At least on RHEL systems the PSI interface can be enabled via appending "psi=1" to the kernel commandline (`/etc/default/grub`).
 
-The checks includes the three components CPU, IO and Memory by default, but individual components can be selected with the following flagS:
+The checks includes the three components CPU, IO and Memory by default, but individual components can be selected with the following flags:
 
 ```
 --include-cpu
