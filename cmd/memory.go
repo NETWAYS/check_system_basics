@@ -18,13 +18,13 @@ var memoryCmd = &cobra.Command{
 	Use:   "memory",
 	Short: "Submodule to check the current system memory and swap usage",
 	Example: `check_system_basics memory --memory-available-warning 10:20 --memory-free-critical-percentage 50:80 --memory-used-warning @10 --percentage-in-perfdata --swap-free-warning-percentage @30:31
-[WARNING] - states: warning=1 ok=1
-\_ [WARNING]
-		\_ [WARNING] Available Memory (25 GiB, 78.97%)
-		\_ [OK] Free Memory (20 GiB, 64.22%)
-		\_ [OK] Used Memory (4.3 GiB, 13.73%)
+[CRITICAL] - states: critical=1 ok=1
+\_ [CRITICAL] RAM
+    \_ [WARNING] Available Memory (23 GiB/31 GiB, 74.36%)
+    \_ [CRITICAL] Free Memory (16 GiB/31 GiB, 49.95%)
+    \_ [OK] Used Memory (6.1 GiB/31 GiB, 19.57%)
 \_ [OK] Swap Usage 0.00% (0 B / 36 GiB)
-|available_memory_percentage=78.975%;15:100;5:100 available_memory=26401148928B;10:20;;0;33429860352 free_memory=21468332032B;;;0;33429860352 free_memory_percentage=64.219%;;50:80 used_memory=4588732416B;@10;;0;33429860352 free_memory_percentage=13.726% swap_usage_percent=0%;20;85 swap_used=0B;;;0;38654701568
+|available_memory_percentage=74.36%;15:100;5:100 available_memory=24856633344B;10:20;;0;33427595264 free_memory=16696102912B;;;0;33427595264 free_memory_percentage=49.947%;;50:80 used_memory=6542696448B;@10;;0;33427595264 free_memory_percentage=19.573% swap_usage_percent=0%;20;85 swap_used=0B;;;0;38654701568
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -52,14 +52,19 @@ var memoryCmd = &cobra.Command{
 }
 
 func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.PartialResult {
-	var partialMem result.PartialResult
+	partialMem := result.PartialResult{
+		Output: "RAM",
+	}
 	_ = partialMem.SetDefaultState(check.OK)
 
 	// # Available
 	var partialMemAvailable result.PartialResult
 	_ = partialMemAvailable.SetDefaultState(check.OK)
 
-	partialMemAvailable.Output = fmt.Sprintf("Available Memory (%s, %.2f%%)", humanize.IBytes(memStats.VirtMem.Available), memStats.MemAvailablePercentage)
+	partialMemAvailable.Output = fmt.Sprintf("Available Memory (%s/%s, %.2f%%)",
+		humanize.IBytes(memStats.VirtMem.Available),
+		humanize.IBytes(memStats.VirtMem.Total),
+		memStats.MemAvailablePercentage)
 
 	// perfdata
 	pdMemAvailable := perfdata.Perfdata{
@@ -140,7 +145,10 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		Uom:   "%",
 	}
 
-	partialMemFree.Output = fmt.Sprintf("Free Memory (%s, %.2f%%)", humanize.IBytes(memStats.VirtMem.Free), MemFreePercentage)
+	partialMemFree.Output = fmt.Sprintf("Free Memory (%s/%s, %.2f%%)",
+		humanize.IBytes(memStats.VirtMem.Free),
+		humanize.IBytes(memStats.VirtMem.Total),
+		MemFreePercentage)
 
 	if config.MemFree.Warn.IsSet {
 		pdMemFree.Warn = &config.MemFree.Warn.Th
@@ -191,7 +199,10 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 	var partialMemUsed result.PartialResult
 	_ = partialMemUsed.SetDefaultState(check.OK)
 
-	partialMemUsed.Output = fmt.Sprintf("Used Memory (%s, %.2f%%)", humanize.IBytes(memStats.VirtMem.Used), memStats.VirtMem.UsedPercent)
+	partialMemUsed.Output = fmt.Sprintf("Used Memory (%s/%s, %.2f%%)",
+		humanize.IBytes(memStats.VirtMem.Used),
+		humanize.IBytes(memStats.VirtMem.Total),
+		memStats.VirtMem.UsedPercent)
 
 	pdMemUsed := perfdata.Perfdata{
 		Label: "used_memory",
