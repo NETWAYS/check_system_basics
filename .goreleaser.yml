@@ -1,0 +1,19 @@
+# See documentation at https://goreleaser.com
+before:
+  hooks:
+    - go mod download
+build:
+  skip: true
+release:
+  github:
+  draft: true
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+builds:
+  env:
+    - CGO_ENABLED=0
