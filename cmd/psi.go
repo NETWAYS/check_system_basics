@@ -227,9 +227,9 @@ func init() {
 	psiFs.Var(&config.CriticalMemoryFullAvg60, "critical-memory-full-avg60", "Critical threshold for the pressure/memory Full Avg60 value")
 	psiFs.Var(&config.CriticalMemoryFullAvg300, "critical-memory-full-avg300", "Critical threshold for the pressure/memory Full Avg300 value")
 
-	psiFs.BoolVar(&config.IncludeCPU, "include-cpu", false, "Include CPU values explicitly (by default all are included")
-	psiFs.BoolVar(&config.IncludeMemory, "include-memory", false, "Include Memory values explicitly (by default all are included")
-	psiFs.BoolVar(&config.IncludeIO, "include-io", false, "Include IO values explicitly (by default all are included")
+	psiFs.BoolVar(&config.IncludeCPU, "include-cpu", false, "Include CPU values explicitly (by default all are included)")
+	psiFs.BoolVar(&config.IncludeMemory, "include-memory", false, "Include Memory values explicitly (by default all are included)")
+	psiFs.BoolVar(&config.IncludeIO, "include-io", false, "Include IO values explicitly (by default all are included)")
 }
 
 //nolint:funlen,gocognit,gocyclo
