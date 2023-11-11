@@ -14,12 +14,12 @@ changelog:
       - '^test:'
 
 builds:
-  env:
+  - env:
     - CGO_ENABLED=0
-  goos:
-    - linux
-  goarch:
-    - arm
-    - arm64
-    - amd64
-    - riscv64
+    goos:
+      - linux
+    goarch:
+      - arm
+      - arm64
+      - amd64
+      - riscv64
