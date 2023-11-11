@@ -2,8 +2,7 @@
 before:
   hooks:
     - go mod download
-build:
-  skip: true
+
 release:
   github:
   draft: true
@@ -17,3 +16,10 @@ changelog:
 builds:
   env:
     - CGO_ENABLED=0
+  goos:
+    - linux
+  goarch:
+    - arm
+    - arm64
+    - amd64
+    - riscv64
