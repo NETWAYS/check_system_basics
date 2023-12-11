@@ -1,7 +1,7 @@
 github.com/NETWAYS/go-check v0.6.1 h1:fwya2nBWoRTUt2U6j3BCe0aUvNw+EbFYji4t1JrloC4=
 github.com/NETWAYS/go-check v0.6.1/go.mod h1:3G1p9ZCv41UcKirl+nZWne8oKVPUY5HbtyjRwGgyw6A=
-github.com/NETWAYS/go-icingadsl v0.1.0 h1:wb+sDNgRCRnbLUbTaY2nEwN7gxToTAR+8nRmkpnNSW0=
-github.com/NETWAYS/go-icingadsl v0.1.0/go.mod h1:CE74xcjOUHxYpltsooRTimANss5H2VZHFlme5138Cqw=
+github.com/NETWAYS/go-icingadsl v0.1.2 h1:F25Y7HAw9VF8GC4eJFbhXzA4TBUwA/0R/n2vbTz6qsQ=
+github.com/NETWAYS/go-icingadsl v0.1.2/go.mod h1:CE74xcjOUHxYpltsooRTimANss5H2VZHFlme5138Cqw=
 github.com/cpuguy83/go-md2man/v2 v2.0.3/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
