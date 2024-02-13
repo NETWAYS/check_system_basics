@@ -1,6 +1,7 @@
 .PHONY: test coverage lint vet build build-all
 
 TARGET_BASENAME := check_system_basics
+TARGET_386 := $(TARGET_BASENAME)_386
 TARGET_amd64 := $(TARGET_BASENAME)_amd64
 TARGET_arm64 := $(TARGET_BASENAME)_arm64
 TARGET_arm6 := $(TARGET_BASENAME)_arm6
@@ -23,7 +24,7 @@ GO_FILES = $(shell find . -iname '*.go')
 build:
 	go build
 
-build-all: $(TARGET_arm6) $(TARGET_amd64) $(TARGET_arm64) $(TARGET_riscv64)
+build-all: $(TARGET_arm6) $(TARGET_amd64) $(TARGET_386) $(TARGET_arm64) $(TARGET_riscv64)
 
 lint:
 	go fmt $(go list ./... | grep -v /vendor/)
@@ -37,6 +38,9 @@ coverage:
 
 $(TARGET_amd64): $(GO_FILES)
 	CGO_ENABLED=0 go build $(GO_LINKEROPTS) -o $(TARGET_amd64)
+
+$(TARGET_386): $(GO_FILES)
+	CGO_ENABLED=0 GOARCH=386 go build $(GO_LINKEROPTS) -o $(TARGET_386)
 
 $(TARGET_arm64): $(GO_FILES)
 	CGO_ENABLED=0 GOARCH=arm64 go build $(GO_LINKEROPTS) -o $(TARGET_arm64)
