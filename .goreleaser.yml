@@ -22,4 +22,5 @@ builds:
       - arm
       - arm64
       - amd64
+      - 386
       - riscv64
