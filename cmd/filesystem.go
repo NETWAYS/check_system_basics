@@ -1,9 +1,11 @@
 package cmd
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/NETWAYS/check_system_basics/internal/common/thresholds"
 	"github.com/NETWAYS/check_system_basics/internal/filesystem"
@@ -137,7 +139,12 @@ var diskCmd = &cobra.Command{
 		}
 
 		// Retrieve stats
-		err = filesystem.GetDiskUsage(filesystemList, &FsConfig)
+		intTimeout := time.Duration(Timeout/2) * time.Second
+		pCtx := context.Background()
+		ctx, cancel := context.WithTimeout(pCtx, intTimeout)
+		defer cancel()
+
+		err = filesystem.GetDiskUsage(ctx, filesystemList, &FsConfig)
 		if err != nil {
 			check.ExitError(err)
 		}
@@ -146,7 +153,10 @@ var diskCmd = &cobra.Command{
 		for index := range filesystemList {
 			sc := computeFsCheckResult(&filesystemList[index], &FsConfig)
 
-			sc.Output = fmt.Sprintf("%s (%.2f%% used space, %.2f%% free inodes)", sc.Output, filesystemList[index].UsageStats.UsedPercent, 100-filesystemList[index].UsageStats.InodesUsedPercent)
+			if filesystemList[index].Error == nil {
+				sc.Output = fmt.Sprintf("%s (%.2f%% used space, %.2f%% free inodes)", sc.Output, filesystemList[index].UsageStats.UsedPercent, 100-filesystemList[index].UsageStats.InodesUsedPercent)
+			} else {
+			}
 
 			overall.AddSubcheck(sc)
 		}

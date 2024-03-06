@@ -1,6 +1,7 @@
 package filesystem
 
 import (
+	"context"
 	"errors"
 	"regexp"
 	"syscall"
@@ -15,16 +16,46 @@ type FilesystemType struct {
 	Error      error
 }
 
-func GetDiskUsage(fsList []FilesystemType, _ *CheckConfig) error {
-	for index := range fsList {
-		diskUsage, err := disk.Usage(fsList[index].PartStats.Mountpoint)
+type tmpFileSystemWrapper struct {
+	usage disk.UsageStat
+	err   error
+}
 
-		if errors.Is(err, syscall.Errno(13)) {
-			fsList[index].Error = err
-			continue
+func GetDiskUsageSingle(ctx context.Context, fs *FilesystemType) {
+	resChan := make(chan tmpFileSystemWrapper, 1)
+	go func() {
+		tmp := tmpFileSystemWrapper{}
+		usageStats, err := disk.Usage(fs.PartStats.Mountpoint)
+		tmp.usage = *usageStats
+		tmp.err = err
+
+		resChan <- tmp
+	}()
+
+	select {
+	case tmp := <-resChan:
+		if tmp.err != nil {
+			if errors.Is(tmp.err, syscall.Errno(syscall.EACCES)) {
+				// Treat Permission denied differently?
+				// Not sure why this is tested for that specifically
+				fs.Error = tmp.err
+			} else {
+				fs.Error = tmp.err
+			}
+
+			return
 		}
 
-		fsList[index].UsageStats = *diskUsage
+		fs.UsageStats = tmp.usage
+	case <-ctx.Done():
+		err := errors.New("Timeout exceded for fs " + fs.PartStats.Mountpoint + ". Maybe hanging network filesystem?")
+		fs.Error = err
+	}
+}
+
+func GetDiskUsage(ctx context.Context, fsList []FilesystemType, _ *CheckConfig) error {
+	for index := range fsList {
+		GetDiskUsageSingle(ctx, &fsList[index])
 	}
 
 	return nil
