@@ -125,7 +125,7 @@ should do the trick.
 
 ### Creating the Icinga2 CheckCommand config (if necessary)
 
-The pluging can generate the `CheckCommand` configuration for Icinga2 itself. This might not be perfect in every situation but might be helpful nonetheless.
+The plugin can generate the `CheckCommand` configuration for Icinga2 itself. This might not be perfect in every situation but might be helpful nonetheless.
 
 ```
 check_system_basics --dump-icinga2-config > myConfigFile.conf
