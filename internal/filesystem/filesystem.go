@@ -40,7 +40,7 @@ func GetDiskUsageSingle(ctx context.Context, fs *FilesystemType) {
 
 		fs.UsageStats = tmp.usage
 	case <-ctx.Done():
-		err := errors.New("Timeout exceded for fs " + fs.PartStats.Mountpoint + ". Maybe hanging network filesystem?")
+		err := errors.New("Timeout exceeded for fs " + fs.PartStats.Mountpoint + ". Maybe hanging network filesystem?")
 		fs.Error = err
 	}
 }
