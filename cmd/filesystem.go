@@ -155,9 +155,7 @@ var diskCmd = &cobra.Command{
 
 			if filesystemList[index].Error == nil {
 				sc.Output = fmt.Sprintf("%s (%.2f%% used space, %.2f%% free inodes)", sc.Output, filesystemList[index].UsageStats.UsedPercent, 100-filesystemList[index].UsageStats.InodesUsedPercent)
-			} else {
 			}
-
 			overall.AddSubcheck(sc)
 		}
 

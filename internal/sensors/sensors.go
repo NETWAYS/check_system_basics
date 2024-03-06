@@ -29,6 +29,14 @@ type Device struct {
 	Sensors []Sensor
 }
 
+const (
+	inputFileSuffix         string = "_input"
+	critThresholdFileSuffix string = "_crit"
+	lowestValueFileSuffix   string = "_lowest"
+	highestValueFileSuffix  string = "_highest"
+	maxValueFileSuffix      string = "_max"
+)
+
 func (d *Device) String() string {
 	result := d.Name
 	result += ": "
@@ -263,7 +271,7 @@ func readHumiditySensor(devicePath string, index int) (Sensor, error) {
 	sensor.Perfdata.Label = label
 
 	// Look for input (the actual value)
-	value, err := readIntFromFile(basePath + "_input")
+	value, err := readIntFromFile(basePath + inputFileSuffix)
 
 	if err != nil {
 		return sensor, err
@@ -285,7 +293,7 @@ func readEnergySensor(devicePath string, index int) (Sensor, error) {
 	sensor.Perfdata.Label = label
 
 	// Look for input (the actual value)
-	value, err := readIntFromFile(basePath + "_input")
+	value, err := readIntFromFile(basePath + inputFileSuffix)
 	if err != nil {
 		return sensor, err
 	}
@@ -307,7 +315,7 @@ func readCurrSensor(devicePath string, index int) (Sensor, error) {
 	sensor.Perfdata.Label = label
 
 	// Look for input (the actual value)
-	value, err := readIntFromFile(basePath + "_input")
+	value, err := readIntFromFile(basePath + inputFileSuffix)
 	if err != nil {
 		return sensor, err
 	}
@@ -317,14 +325,14 @@ func readCurrSensor(devicePath string, index int) (Sensor, error) {
 
 	// == Min
 	// Is there a currN_lowest file? Use it for max value
-	value, err = readIntFromFile(basePath + "_lowest")
+	value, err = readIntFromFile(basePath + lowestValueFileSuffix)
 	if err == nil {
 		sensor.Perfdata.Min = float64(value) / 1000
 	}
 
 	// == Max
 	// Is there a currN_highest file? Use it for max value
-	value, err = readIntFromFile(basePath + "_highest")
+	value, err = readIntFromFile(basePath + highestValueFileSuffix)
 	if err == nil {
 		sensor.Perfdata.Max = float64(value) / 1000
 	}
@@ -343,7 +351,7 @@ func readCurrSensor(devicePath string, index int) (Sensor, error) {
 		critPresent = true
 	}
 	// Is there a currN_crit file? If yes, use that as upper critical
-	value, err = readIntFromFile(basePath + "_crit")
+	value, err = readIntFromFile(basePath + critThresholdFileSuffix)
 	if err == nil {
 		tmp.Upper = float64(value) / 1000
 		critPresent = true
@@ -391,7 +399,7 @@ func readFanSensor(devicePath string, index int) (Sensor, error) {
 	sensor.Perfdata.Label = label
 
 	// Look for input (the actual value)
-	value, err := readIntFromFile(basePath + "_input")
+	value, err := readIntFromFile(basePath + inputFileSuffix)
 	if err != nil {
 		return sensor, err
 	}
@@ -403,7 +411,7 @@ func readFanSensor(devicePath string, index int) (Sensor, error) {
 
 	// == Max
 	// Is there a tempN_highest file? Use it for max value
-	value, err = readIntFromFile(basePath + "_max")
+	value, err = readIntFromFile(basePath + maxValueFileSuffix)
 	if err == nil {
 		sensor.Perfdata.Max = float64(value)
 	}
@@ -424,7 +432,7 @@ func readVoltageSensor(_, devicePath string, index int) (Sensor, error) {
 	sensor.Perfdata.Label = label
 
 	// Look for input (the actual value)
-	value, err := readIntFromFile(basePath + "_input")
+	value, err := readIntFromFile(basePath + inputFileSuffix)
 	if err != nil {
 		return sensor, err
 	}
@@ -440,7 +448,7 @@ func readVoltageSensor(_, devicePath string, index int) (Sensor, error) {
 	}
 	warnPresent := false
 	// Is there a inN_max file? If yes, use that as warning
-	value, err = readIntFromFile(basePath + "_max")
+	value, err = readIntFromFile(basePath + maxValueFileSuffix)
 	if err == nil {
 		tmpWarn.Upper = float64(value) / 1000
 		warnPresent = true
@@ -458,7 +466,7 @@ func readVoltageSensor(_, devicePath string, index int) (Sensor, error) {
 	}
 	critPresent := false
 	// Is there a inN_crit file? If yes, use that as critical
-	value, err = readIntFromFile(basePath + "_crit")
+	value, err = readIntFromFile(basePath + critThresholdFileSuffix)
 	if err == nil {
 		tmpCrit.Upper = float64(value) / 1000
 		critPresent = true
@@ -476,14 +484,14 @@ func readVoltageSensor(_, devicePath string, index int) (Sensor, error) {
 	}
 
 	// == Min
-	value, err = readIntFromFile(basePath + "_lowest")
+	value, err = readIntFromFile(basePath + lowestValueFileSuffix)
 	if err == nil {
 		sensor.Perfdata.Min = float64(value) / 1000
 	}
 
 	// == Max
 	// Is there a tempN_highest file? Use it for max value
-	value, err = readIntFromFile(basePath + "_highest")
+	value, err = readIntFromFile(basePath + highestValueFileSuffix)
 	if err == nil {
 		sensor.Perfdata.Max = float64(value) / 1000
 	}
@@ -503,7 +511,7 @@ func readPowerSensor(_, devicePath string, index int) (Sensor, error) {
 	sensor.Perfdata.Label = label
 
 	// Look for input (the actual value)
-	value, err := readIntFromFile(basePath + "_input")
+	value, err := readIntFromFile(basePath + inputFileSuffix)
 
 	if err != nil {
 		return sensor, err
@@ -551,7 +559,7 @@ func readPowerSensor(_, devicePath string, index int) (Sensor, error) {
 	}
 	critPresent := false
 	// Is there a powerN_crit file? If yes, use that as critical
-	value, err = readIntFromFile(basePath + "_crit")
+	value, err = readIntFromFile(basePath + critThresholdFileSuffix)
 	if err == nil {
 		tmpCrit.Upper = float64(value)
 		critPresent = true
@@ -574,7 +582,7 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 	sensor.Perfdata.Label = label
 
 	// Look for input (the actual value)
-	value, err := readIntFromFile(basePath + "_input")
+	value, err := readIntFromFile(basePath + inputFileSuffix)
 
 	if err != nil {
 		return sensor, err
@@ -591,7 +599,7 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 	}
 	warnPresent := false
 	// Is there a tempN_max file? If yes, use that as warning
-	value, err = readIntFromFile(basePath + "_max")
+	value, err = readIntFromFile(basePath + maxValueFileSuffix)
 
 	if err == nil {
 		tmpWarn.Upper = float64(value / 1000)
@@ -611,7 +619,7 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 
 	critPresent := false
 	// Is there a tempN_crit file? If yes, use that as critical
-	value, err = readIntFromFile(basePath + "_crit")
+	value, err = readIntFromFile(basePath + critThresholdFileSuffix)
 
 	if err == nil {
 		tmpCrit.Upper = float64(value / 1000)
@@ -640,7 +648,7 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 
 	// == Min
 	// Is there a tempN_lowest file? Use it for min value
-	value, err = readIntFromFile(basePath + "_lowest")
+	value, err = readIntFromFile(basePath + lowestValueFileSuffix)
 
 	if err == nil {
 		sensor.Perfdata.Min = value
@@ -648,7 +656,7 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 
 	// == Max
 	// Is there a tempN_highest file? Use it for max value
-	value, err = readIntFromFile(basePath + "_highest")
+	value, err = readIntFromFile(basePath + highestValueFileSuffix)
 
 	if err == nil {
 		sensor.Perfdata.Max = value

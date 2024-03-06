@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"regexp"
-	"syscall"
 
 	"github.com/shirou/gopsutil/v3/disk"
 )
@@ -35,14 +34,7 @@ func GetDiskUsageSingle(ctx context.Context, fs *FilesystemType) {
 	select {
 	case tmp := <-resChan:
 		if tmp.err != nil {
-			if errors.Is(tmp.err, syscall.Errno(syscall.EACCES)) {
-				// Treat Permission denied differently?
-				// Not sure why this is tested for that specifically
-				fs.Error = tmp.err
-			} else {
-				fs.Error = tmp.err
-			}
-
+			fs.Error = tmp.err
 			return
 		}
 

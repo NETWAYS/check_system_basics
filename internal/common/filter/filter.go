@@ -5,7 +5,7 @@ import (
 )
 
 type Filterable interface {
-	GetFilterableValue(uint) string
+	GetFilterableValue(val uint) string
 }
 
 type Options struct {
