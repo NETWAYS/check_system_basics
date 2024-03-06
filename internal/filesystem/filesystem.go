@@ -1,9 +1,10 @@
 package filesystem
 
 import (
+	"context"
 	"errors"
 	"regexp"
-	"syscall"
+	"time"
 
 	"github.com/shirou/gopsutil/v3/disk"
 )
@@ -15,16 +16,43 @@ type FilesystemType struct {
 	Error      error
 }
 
-func GetDiskUsage(fsList []FilesystemType, _ *CheckConfig) error {
-	for index := range fsList {
-		diskUsage, err := disk.Usage(fsList[index].PartStats.Mountpoint)
+type tmpFileSystemWrapper struct {
+	usage disk.UsageStat
+	err   error
+}
 
-		if errors.Is(err, syscall.Errno(13)) {
-			fsList[index].Error = err
-			continue
+func GetDiskUsageSingle(ctx context.Context, timeout time.Duration, fs *FilesystemType) {
+	myCtx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
+	resChan := make(chan tmpFileSystemWrapper, 1)
+
+	go func() {
+		tmp := tmpFileSystemWrapper{}
+		usageStats, err := disk.Usage(fs.PartStats.Mountpoint)
+		tmp.usage = *usageStats
+		tmp.err = err
+
+		resChan <- tmp
+	}()
+
+	select {
+	case tmp := <-resChan:
+		if tmp.err != nil {
+			fs.Error = tmp.err
+			return
 		}
 
-		fsList[index].UsageStats = *diskUsage
+		fs.UsageStats = tmp.usage
+	case <-myCtx.Done():
+		err := errors.New("Timeout exceeded for fs " + fs.PartStats.Mountpoint + ". Maybe hanging network filesystem?")
+		fs.Error = err
+	}
+}
+
+func GetDiskUsage(ctx context.Context, timeout time.Duration, fsList []FilesystemType, _ *CheckConfig) error {
+	for index := range fsList {
+		GetDiskUsageSingle(ctx, timeout/time.Duration(len(fsList)), &fsList[index])
 	}
 
 	return nil
