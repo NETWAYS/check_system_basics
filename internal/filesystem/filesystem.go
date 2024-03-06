@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"regexp"
+	"time"
 
 	"github.com/shirou/gopsutil/v3/disk"
 )
@@ -20,8 +21,12 @@ type tmpFileSystemWrapper struct {
 	err   error
 }
 
-func GetDiskUsageSingle(ctx context.Context, fs *FilesystemType) {
+func GetDiskUsageSingle(ctx context.Context, timeout time.Duration, fs *FilesystemType) {
+	myCtx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
 	resChan := make(chan tmpFileSystemWrapper, 1)
+
 	go func() {
 		tmp := tmpFileSystemWrapper{}
 		usageStats, err := disk.Usage(fs.PartStats.Mountpoint)
@@ -39,15 +44,15 @@ func GetDiskUsageSingle(ctx context.Context, fs *FilesystemType) {
 		}
 
 		fs.UsageStats = tmp.usage
-	case <-ctx.Done():
+	case <-myCtx.Done():
 		err := errors.New("Timeout exceeded for fs " + fs.PartStats.Mountpoint + ". Maybe hanging network filesystem?")
 		fs.Error = err
 	}
 }
 
-func GetDiskUsage(ctx context.Context, fsList []FilesystemType, _ *CheckConfig) error {
+func GetDiskUsage(ctx context.Context, timeout time.Duration, fsList []FilesystemType, _ *CheckConfig) error {
 	for index := range fsList {
-		GetDiskUsageSingle(ctx, &fsList[index])
+		GetDiskUsageSingle(ctx, timeout/time.Duration(len(fsList)), &fsList[index])
 	}
 
 	return nil

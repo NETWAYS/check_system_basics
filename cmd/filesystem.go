@@ -139,12 +139,10 @@ var diskCmd = &cobra.Command{
 		}
 
 		// Retrieve stats
-		intTimeout := time.Duration(Timeout/2) * time.Second
-		pCtx := context.Background()
-		ctx, cancel := context.WithTimeout(pCtx, intTimeout)
-		defer cancel()
+		internalTimeout := time.Duration(Timeout/2) * time.Second
+		ctx := context.Background()
 
-		err = filesystem.GetDiskUsage(ctx, filesystemList, &FsConfig)
+		err = filesystem.GetDiskUsage(ctx, internalTimeout, filesystemList, &FsConfig)
 		if err != nil {
 			check.ExitError(err)
 		}
