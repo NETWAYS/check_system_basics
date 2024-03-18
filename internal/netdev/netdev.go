@@ -18,6 +18,10 @@ const (
 	Unknown        = 4
 )
 
+const (
+	netDevicePath = "/sys/class/net"
+)
+
 func TranslateIfaceState(state uint) string {
 	switch state {
 	case Up:
@@ -140,7 +144,7 @@ func GetAllInterfaces() ([]IfaceData, error) {
 }
 
 func listInterfaces() ([]string, error) {
-	file, err := os.Open("/sys/class/net")
+	file, err := os.Open(netDevicePath)
 	if err != nil {
 		return []string{}, err
 	}
@@ -152,7 +156,7 @@ func listInterfaces() ([]string, error) {
 
 	result := make([]string, 0, len(devices))
 	for idx := range devices {
-		fileInfo, err := os.Stat("/sys/class/net/" + devices[idx])
+		fileInfo, err := os.Stat(netDevicePath + devices[idx])
 		if err != nil {
 			// Could not stat file there, not sure if this can be handled usefully. Just die for now.
 			return []string{}, err
@@ -172,7 +176,7 @@ func listInterfaces() ([]string, error) {
 // @result = 2 => Interface is down
 // @result = 3 => Interface is unknown or state of the interface is unknown for some reason
 func getInterfaceState(data *IfaceData) error {
-	basePath := "/sys/class/net/" + data.Name
+	basePath := netDevicePath + data.Name
 
 	bytes, err := os.ReadFile(basePath + "/operstate")
 	if err != nil {
@@ -201,7 +205,7 @@ func getInterfaceState(data *IfaceData) error {
 // Get interfaces statistics
 // @result: ifaceStats, err
 func getInfacesStatistics(data *IfaceData) error {
-	basePath := "/sys/class/net/" + data.Name + "/statistics"
+	basePath := netDevicePath + data.Name + "/statistics"
 
 	var val uint64
 
