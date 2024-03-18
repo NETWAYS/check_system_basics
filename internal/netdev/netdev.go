@@ -2,6 +2,7 @@ package netdev
 
 import (
 	"os"
+	"path"
 	"strconv"
 	"strings"
 
@@ -157,7 +158,7 @@ func listInterfaces() ([]string, error) {
 	result := make([]string, 0, len(devices))
 
 	for idx := range devices {
-		fileInfo, err := os.Stat(netDevicePath + devices[idx])
+		fileInfo, err := os.Stat(path.Join(netDevicePath, devices[idx]))
 		if err != nil {
 			// Could not stat file there, not sure if this can be handled usefully. Just die for now.
 			return []string{}, err
@@ -180,9 +181,9 @@ func listInterfaces() ([]string, error) {
 // @result = 2 => Interface is down
 // @result = 3 => Interface is unknown or state of the interface is unknown for some reason
 func getInterfaceState(data *IfaceData) error {
-	basePath := netDevicePath + data.Name
+	basePath := path.Join(netDevicePath, data.Name)
 
-	bytes, err := os.ReadFile(basePath + "/operstate")
+	bytes, err := os.ReadFile(path.Join(basePath, "operstate"))
 	if err != nil {
 		return err
 	}
@@ -209,12 +210,12 @@ func getInterfaceState(data *IfaceData) error {
 // Get interfaces statistics
 // @result: ifaceStats, err
 func getInfacesStatistics(data *IfaceData) error {
-	basePath := netDevicePath + data.Name + "/statistics"
+	basePath := path.Join(netDevicePath, data.Name, "statistics")
 
 	var val uint64
 
 	for idx, stat := range GetIfaceStatNames() {
-		numberBytes, err := os.ReadFile(basePath + "/" + stat)
+		numberBytes, err := os.ReadFile(path.Join(basePath, stat))
 
 		if err != nil {
 			return err
