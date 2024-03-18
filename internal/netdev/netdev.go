@@ -155,6 +155,7 @@ func listInterfaces() ([]string, error) {
 	}
 
 	result := make([]string, 0, len(devices))
+
 	for idx := range devices {
 		fileInfo, err := os.Stat(netDevicePath + devices[idx])
 		if err != nil {

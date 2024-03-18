@@ -369,7 +369,7 @@ func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 	return cpuCheck
 }
 
-//nolint:funlen,gocognit
+//nolint:funlen,gocognit,gocyclo
 func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 	var ioCheck result.PartialResult
 	_ = ioCheck.SetDefaultState(check.OK)
@@ -498,7 +498,7 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 	return ioCheck
 }
 
-//nolint:funlen,gocognit
+//nolint:funlen,gocognit,gocyclo
 func checkPsiMemoryPressure(config *psiConfig) result.PartialResult {
 	var memoryCheck result.PartialResult
 	_ = memoryCheck.SetDefaultState(check.OK)
