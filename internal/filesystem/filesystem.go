@@ -30,7 +30,11 @@ func GetDiskUsageSingle(ctx context.Context, timeout time.Duration, fs *Filesyst
 	go func() {
 		tmp := tmpFileSystemWrapper{}
 		usageStats, err := disk.Usage(fs.PartStats.Mountpoint)
-		tmp.usage = *usageStats
+
+		if err == nil {
+			tmp.usage = *usageStats
+		}
+
 		tmp.err = err
 
 		resChan <- tmp
