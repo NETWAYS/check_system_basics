@@ -593,7 +593,7 @@ func init() {
 		{
 			Th:          &FsConfig.CriticalAbsolutThreshold.Inodes.Free,
 			FlagString:  "warningAbsolutFreeInodes",
-			Description: "Absolute critical threshold for number of free inodes",
+			Description: "Absolute warning threshold for number of free inodes",
 		},
 		{
 			Th:          &FsConfig.CriticalAbsolutThreshold.Inodes.Used,
