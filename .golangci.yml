@@ -15,6 +15,12 @@ issues:
         - gocognit
         - maintidx
         - gocyclo
+    - path: 'cmd/psi.go'
+      linters:
+        - funlen
+        - gocognit
+        - gocyclo
+        - maintidx
     - path: 'internal/sensors/sensors.go'
       linters:
         - funlen

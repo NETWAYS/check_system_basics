@@ -2,6 +2,7 @@ package netdev
 
 import (
 	"os"
+	"path"
 	"strconv"
 	"strings"
 
@@ -16,6 +17,10 @@ const (
 	Lowerlayerdown = 2
 	Down           = 3
 	Unknown        = 4
+)
+
+const (
+	netDevicePath = "/sys/class/net"
 )
 
 func TranslateIfaceState(state uint) string {
@@ -140,7 +145,7 @@ func GetAllInterfaces() ([]IfaceData, error) {
 }
 
 func listInterfaces() ([]string, error) {
-	file, err := os.Open("/sys/class/net")
+	file, err := os.Open(netDevicePath)
 	if err != nil {
 		return []string{}, err
 	}
@@ -150,7 +155,24 @@ func listInterfaces() ([]string, error) {
 		return []string{}, err
 	}
 
-	return devices, nil
+	result := make([]string, 0, len(devices))
+
+	for idx := range devices {
+		fileInfo, err := os.Stat(path.Join(netDevicePath, devices[idx]))
+		if err != nil {
+			// Could not stat file there, not sure if this can be handled usefully. Just die for now.
+			return []string{}, err
+		}
+
+		// Filter here, to get only entries which end in a directory (the entries itself are mostly symlinks)
+		// Despite of what man 5 sysfs says, not all the files represent network interfaces, but might also
+		// be normal files (at least a "bonding_masters" file was found on a system with bonded interfaces)
+		if fileInfo.Mode().IsDir() {
+			result = append(result, devices[idx])
+		}
+	}
+
+	return result, nil
 }
 
 // getInterfaceState receives the name of an interfaces and returns
@@ -159,9 +181,9 @@ func listInterfaces() ([]string, error) {
 // @result = 2 => Interface is down
 // @result = 3 => Interface is unknown or state of the interface is unknown for some reason
 func getInterfaceState(data *IfaceData) error {
-	basePath := "/sys/class/net/" + data.Name
+	basePath := path.Join(netDevicePath, data.Name)
 
-	bytes, err := os.ReadFile(basePath + "/operstate")
+	bytes, err := os.ReadFile(path.Join(basePath, "operstate"))
 	if err != nil {
 		return err
 	}
@@ -188,12 +210,12 @@ func getInterfaceState(data *IfaceData) error {
 // Get interfaces statistics
 // @result: ifaceStats, err
 func getInfacesStatistics(data *IfaceData) error {
-	basePath := "/sys/class/net/" + data.Name + "/statistics"
+	basePath := path.Join(netDevicePath, data.Name, "statistics")
 
 	var val uint64
 
 	for idx, stat := range GetIfaceStatNames() {
-		numberBytes, err := os.ReadFile(basePath + "/" + stat)
+		numberBytes, err := os.ReadFile(path.Join(basePath, stat))
 
 		if err != nil {
 			return err

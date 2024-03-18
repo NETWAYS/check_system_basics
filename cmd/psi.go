@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"os"
 
 	"github.com/NETWAYS/check_system_basics/internal/common/thresholds"
 	"github.com/NETWAYS/check_system_basics/internal/psi"
@@ -232,14 +234,22 @@ func init() {
 	psiFs.BoolVar(&config.IncludeIO, "include-io", false, "Include IO values explicitly (by default all are included)")
 }
 
-//nolint:funlen,gocognit,gocyclo
 func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
+	var cpuCheck result.PartialResult
+	_ = cpuCheck.SetDefaultState(check.OK)
+
 	psiCPU, err := psi.ReadCPUPressure()
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			_ = cpuCheck.SetState(check.Unknown)
+			cpuCheck.Output = "CPU pressure file not found. Perhaps the PSI interface is not active on this system? It might be necessary to change the kernel config"
+
+			return cpuCheck
+		}
+
 		check.ExitError(err)
 	}
 
-	var cpuCheck result.PartialResult
 	cpuCheck.Perfdata = *psiCPU.Perfdata()
 	_ = cpuCheck.SetState(check.OK)
 
@@ -358,15 +368,22 @@ func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 	return cpuCheck
 }
 
-//nolint:funlen,gocognit
 func checkPsiIoPressure(config *psiConfig) result.PartialResult {
+	var ioCheck result.PartialResult
+	_ = ioCheck.SetDefaultState(check.OK)
+
 	psiIo, err := psi.ReadIoPressure()
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			_ = ioCheck.SetState(check.Unknown)
+			ioCheck.Output = "IO pressure file not found. Perhaps the PSI interface is not active on this system? It might be necessary to change the kernel config"
+
+			return ioCheck
+		}
+
 		check.ExitError(err)
 	}
 
-	var ioCheck result.PartialResult
-	_ = ioCheck.SetState(check.OK)
 	ioCheck.Perfdata = *psiIo.Perfdata()
 
 	//nolint:nestif
@@ -479,15 +496,22 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 	return ioCheck
 }
 
-//nolint:funlen,gocognit
 func checkPsiMemoryPressure(config *psiConfig) result.PartialResult {
+	var memoryCheck result.PartialResult
+	_ = memoryCheck.SetDefaultState(check.OK)
+
 	psiMemory, err := psi.ReadMemoryPressure()
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			_ = memoryCheck.SetState(check.Unknown)
+			memoryCheck.Output = "IO pressure file not found. Perhaps the PSI interface is not active on this system? It might be necessary to change the kernel config"
+
+			return memoryCheck
+		}
+
 		check.ExitError(err)
 	}
 
-	var memoryCheck result.PartialResult
-	_ = memoryCheck.SetState(check.OK)
 	memoryCheck.Perfdata = *psiMemory.Perfdata()
 
 	//nolint:nestif
