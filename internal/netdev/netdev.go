@@ -150,7 +150,20 @@ func listInterfaces() ([]string, error) {
 		return []string{}, err
 	}
 
-	return devices, nil
+	result := make([]string, 0, len(devices))
+	for idx := range devices {
+		fileInfo, err := os.Stat("/sys/class/net/" + devices[idx])
+		if err != nil {
+			// Could not stat file there, not sure if this can be handled usefully. Just die for now.
+			return []string{}, err
+		}
+
+		if fileInfo.Mode().IsDir() {
+			result = append(result, devices[idx])
+		}
+	}
+
+	return result, nil
 }
 
 // getInterfaceState receives the name of an interfaces and returns
