@@ -163,6 +163,9 @@ func listInterfaces() ([]string, error) {
 			return []string{}, err
 		}
 
+		// Filter here, to get only entries which end in a directory (the entries itself are mostly symlinks)
+		// Despite of what man 5 sysfs says, not all the files represent network interfaces, but might also
+		// be normal files (at least a "bonding_masters" file was found on a system with bonded interfaces)
 		if fileInfo.Mode().IsDir() {
 			result = append(result, devices[idx])
 		}
