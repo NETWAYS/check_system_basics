@@ -12,6 +12,7 @@ type CheckConfig struct {
 
 	DownIsCritical bool
 	NotUpIsOK      bool
+	UnknownIsOk    bool
 
 	Filters Filter
 }

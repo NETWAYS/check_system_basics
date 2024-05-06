@@ -40,6 +40,8 @@ func init() {
 		"Setting this option will set the state to CRITICAL if an interface is DOWN")
 	fs.BoolVar(&NetdevConfig.NotUpIsOK, "not-up-is-ok", false,
 		"Setting this option will set the state to OK regardless of the actual state of an interface")
+	fs.BoolVar(&NetdevConfig.UnknownIsOk, "unknown-is-ok", false,
+		"Setting this option will set the state to OK if the interface is in a state of UNKNOWN")
 }
 
 func NetdevCheck(_ *cobra.Command, _ []string) {
@@ -70,6 +72,12 @@ func NetdevCheck(_ *cobra.Command, _ []string) {
 			case netdev.Down:
 				if NetdevConfig.DownIsCritical {
 					_ = sc.SetState(check.Critical)
+				} else {
+					_ = sc.SetState(check.Warning)
+				}
+			case netdev.Unknown:
+				if NetdevConfig.UnknownIsOk {
+					_ = sc.SetState(check.OK)
 				} else {
 					_ = sc.SetState(check.Warning)
 				}
