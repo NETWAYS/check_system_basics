@@ -92,7 +92,7 @@ func GenerateIcinga2CheckCommandArgument(flags *pflag.Flag, returnList *[]icinga
 	switch flags.Value.Type() {
 	case "bool":
 		cca.SetIf = icingadsl.String(flags.Name)
-		cca.SkipKey = true
+		cca.SkipKey = false
 	case "stringSlice":
 		cca.RepeatKey = true
 		cca.Value = flags.Name
