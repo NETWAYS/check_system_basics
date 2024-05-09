@@ -434,7 +434,7 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 		}
 
 		ioFullSc := result.PartialResult{}
-		ioFullSc.SetDefaultState(check.OK)
+		_ = ioFullSc.SetDefaultState(check.OK)
 
 		if ioCheck.Perfdata[psi.IoFullAvg10].Warn.DoesViolate(psiIo.Full.Avg10) ||
 			ioCheck.Perfdata[psi.IoFullAvg60].Warn.DoesViolate(psiIo.Full.Avg60) ||
@@ -489,7 +489,7 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 	}
 
 	ioSomeSc := result.PartialResult{}
-	ioSomeSc.SetDefaultState(check.OK)
+	_ = ioSomeSc.SetDefaultState(check.OK)
 
 	if (ioCheck.GetStatus() != check.Critical) && (ioCheck.GetStatus() != check.Warning) {
 		if ioCheck.Perfdata[psi.IoSomeAvg10].Warn.DoesViolate(psiIo.Some.Avg10) ||
