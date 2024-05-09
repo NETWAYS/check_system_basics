@@ -237,6 +237,7 @@ func init() {
 func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 	var cpuCheck result.PartialResult
 	_ = cpuCheck.SetDefaultState(check.OK)
+	cpuCheck.Output = "CPU"
 
 	psiCPU, err := psi.ReadCPUPressure()
 	if err != nil {
@@ -251,7 +252,6 @@ func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 	}
 
 	cpuCheck.Perfdata = *psiCPU.Perfdata()
-	_ = cpuCheck.SetState(check.OK)
 
 	//nolint:nestif
 	if psiCPU.FullPresent {
@@ -293,17 +293,23 @@ func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 			cpuCheck.Perfdata[psi.CPUFullAvg300].Crit = &config.CriticalCPUAvg.Th
 		}
 
+		cpuFullSc := result.PartialResult{}
+		_ = cpuFullSc.SetDefaultState(check.OK)
+
 		if cpuCheck.Perfdata[psi.CPUFullAvg10].Warn.DoesViolate(psiCPU.Full.Avg10) ||
 			cpuCheck.Perfdata[psi.CPUFullAvg60].Warn.DoesViolate(psiCPU.Full.Avg60) ||
 			cpuCheck.Perfdata[psi.CPUFullAvg300].Warn.DoesViolate(psiCPU.Full.Avg300) {
-			_ = cpuCheck.SetState(check.Warning)
+			_ = cpuFullSc.SetState(check.Warning)
 		}
 
 		if cpuCheck.Perfdata[psi.CPUFullAvg10].Crit.DoesViolate(psiCPU.Full.Avg10) ||
 			cpuCheck.Perfdata[psi.CPUFullAvg60].Crit.DoesViolate(psiCPU.Full.Avg60) ||
 			cpuCheck.Perfdata[psi.CPUFullAvg300].Crit.DoesViolate(psiCPU.Full.Avg300) {
-			_ = cpuCheck.SetState(check.Critical)
+			_ = cpuFullSc.SetState(check.Critical)
 		}
+
+		cpuFullSc.Output = fmt.Sprintf("Full - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiCPU.Full.Avg10, psiCPU.Full.Avg60, psiCPU.Full.Avg300)
+		cpuCheck.AddSubcheck(cpuFullSc)
 	}
 
 	if config.WarningCPUSomeAvg10.IsSet {
@@ -343,11 +349,14 @@ func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 		cpuCheck.Perfdata[psi.CPUSomeAvg300].Crit = &config.CriticalCPUAvg.Th
 	}
 
+	cpuSomeSc := result.PartialResult{}
+	_ = cpuSomeSc.SetDefaultState(check.OK)
+
 	if (cpuCheck.GetStatus() != check.Critical) && (cpuCheck.GetStatus() != check.Warning) {
 		if cpuCheck.Perfdata[psi.CPUSomeAvg10].Warn.DoesViolate(psiCPU.Some.Avg10) ||
 			cpuCheck.Perfdata[psi.CPUSomeAvg60].Warn.DoesViolate(psiCPU.Some.Avg60) ||
 			cpuCheck.Perfdata[psi.CPUSomeAvg300].Warn.DoesViolate(psiCPU.Some.Avg300) {
-			_ = cpuCheck.SetState(check.Warning)
+			_ = cpuSomeSc.SetState(check.Warning)
 		}
 	}
 
@@ -355,15 +364,12 @@ func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 		if cpuCheck.Perfdata[psi.CPUSomeAvg10].Crit.DoesViolate(psiCPU.Some.Avg10) ||
 			cpuCheck.Perfdata[psi.CPUSomeAvg60].Crit.DoesViolate(psiCPU.Some.Avg60) ||
 			cpuCheck.Perfdata[psi.CPUSomeAvg300].Crit.DoesViolate(psiCPU.Some.Avg300) {
-			_ = cpuCheck.SetState(check.Critical)
+			_ = cpuSomeSc.SetState(check.Critical)
 		}
 	}
 
-	if psiCPU.FullPresent {
-		cpuCheck.Output = fmt.Sprintf("CPU Full Pressure - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiCPU.Full.Avg10, psiCPU.Full.Avg60, psiCPU.Full.Avg300)
-	} else {
-		cpuCheck.Output = fmt.Sprintf("CPU Some Pressure - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiCPU.Some.Avg10, psiCPU.Some.Avg60, psiCPU.Some.Avg300)
-	}
+	cpuSomeSc.Output = fmt.Sprintf("Some - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiCPU.Some.Avg10, psiCPU.Some.Avg60, psiCPU.Some.Avg300)
+	cpuCheck.AddSubcheck(cpuSomeSc)
 
 	return cpuCheck
 }
@@ -371,6 +377,7 @@ func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 	var ioCheck result.PartialResult
 	_ = ioCheck.SetDefaultState(check.OK)
+	ioCheck.Output = "IO"
 
 	psiIo, err := psi.ReadIoPressure()
 	if err != nil {
@@ -426,17 +433,23 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 			ioCheck.Perfdata[psi.IoFullAvg300].Crit = &config.CriticalIoAvg.Th
 		}
 
+		ioFullSc := result.PartialResult{}
+		ioFullSc.SetDefaultState(check.OK)
+
 		if ioCheck.Perfdata[psi.IoFullAvg10].Warn.DoesViolate(psiIo.Full.Avg10) ||
 			ioCheck.Perfdata[psi.IoFullAvg60].Warn.DoesViolate(psiIo.Full.Avg60) ||
 			ioCheck.Perfdata[psi.IoFullAvg300].Warn.DoesViolate(psiIo.Full.Avg300) {
-			_ = ioCheck.SetState(check.Warning)
+			_ = ioFullSc.SetState(check.Warning)
 		}
 
 		if ioCheck.Perfdata[psi.IoFullAvg10].Crit.DoesViolate(psiIo.Full.Avg10) ||
 			ioCheck.Perfdata[psi.IoFullAvg60].Crit.DoesViolate(psiIo.Full.Avg60) ||
 			ioCheck.Perfdata[psi.IoFullAvg300].Crit.DoesViolate(psiIo.Full.Avg300) {
-			_ = ioCheck.SetState(check.Critical)
+			_ = ioFullSc.SetState(check.Critical)
 		}
+
+		ioFullSc.Output = fmt.Sprintf("Full - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiIo.Full.Avg10, psiIo.Full.Avg60, psiIo.Full.Avg300)
+		ioCheck.AddSubcheck(ioFullSc)
 	}
 
 	if config.WarningIoSomeAvg10.IsSet {
@@ -475,11 +488,14 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 		ioCheck.Perfdata[psi.IoSomeAvg300].Crit = &config.CriticalIoAvg.Th
 	}
 
+	ioSomeSc := result.PartialResult{}
+	ioSomeSc.SetDefaultState(check.OK)
+
 	if (ioCheck.GetStatus() != check.Critical) && (ioCheck.GetStatus() != check.Warning) {
 		if ioCheck.Perfdata[psi.IoSomeAvg10].Warn.DoesViolate(psiIo.Some.Avg10) ||
 			ioCheck.Perfdata[psi.IoSomeAvg60].Warn.DoesViolate(psiIo.Some.Avg60) ||
 			ioCheck.Perfdata[psi.IoSomeAvg300].Warn.DoesViolate(psiIo.Some.Avg300) {
-			_ = ioCheck.SetState(check.Warning)
+			_ = ioSomeSc.SetState(check.Warning)
 		}
 	}
 
@@ -487,11 +503,12 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 		if ioCheck.Perfdata[psi.IoSomeAvg10].Crit.DoesViolate(psiIo.Some.Avg10) ||
 			ioCheck.Perfdata[psi.IoSomeAvg60].Crit.DoesViolate(psiIo.Some.Avg60) ||
 			ioCheck.Perfdata[psi.IoSomeAvg300].Crit.DoesViolate(psiIo.Some.Avg300) {
-			_ = ioCheck.SetState(check.Critical)
+			_ = ioSomeSc.SetState(check.Critical)
 		}
 	}
 
-	ioCheck.Output = fmt.Sprintf("IO Pressure - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiIo.Full.Avg10, psiIo.Full.Avg60, psiIo.Full.Avg300)
+	ioSomeSc.Output = fmt.Sprintf("Some - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiIo.Some.Avg10, psiIo.Some.Avg60, psiIo.Some.Avg300)
+	ioCheck.AddSubcheck(ioSomeSc)
 
 	return ioCheck
 }
@@ -499,6 +516,7 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 func checkPsiMemoryPressure(config *psiConfig) result.PartialResult {
 	var memoryCheck result.PartialResult
 	_ = memoryCheck.SetDefaultState(check.OK)
+	memoryCheck.Output = "Memory"
 
 	psiMemory, err := psi.ReadMemoryPressure()
 	if err != nil {
@@ -554,17 +572,23 @@ func checkPsiMemoryPressure(config *psiConfig) result.PartialResult {
 			memoryCheck.Perfdata[psi.MemoryFullAvg300].Crit = &config.CriticalMemoryAvg.Th
 		}
 
+		memoryFullSc := result.PartialResult{}
+		_ = memoryFullSc.SetDefaultState(check.OK)
+
 		if memoryCheck.Perfdata[psi.MemoryFullAvg10].Warn.DoesViolate(psiMemory.Full.Avg10) ||
 			memoryCheck.Perfdata[psi.MemoryFullAvg60].Warn.DoesViolate(psiMemory.Full.Avg60) ||
 			memoryCheck.Perfdata[psi.MemoryFullAvg300].Warn.DoesViolate(psiMemory.Full.Avg300) {
-			_ = memoryCheck.SetState(check.Warning)
+			_ = memoryFullSc.SetState(check.Warning)
 		}
 
 		if memoryCheck.Perfdata[psi.MemoryFullAvg10].Crit.DoesViolate(psiMemory.Full.Avg10) ||
 			memoryCheck.Perfdata[psi.MemoryFullAvg60].Crit.DoesViolate(psiMemory.Full.Avg60) ||
 			memoryCheck.Perfdata[psi.MemoryFullAvg300].Crit.DoesViolate(psiMemory.Full.Avg300) {
-			_ = memoryCheck.SetState(check.Critical)
+			_ = memoryFullSc.SetState(check.Critical)
 		}
+
+		memoryFullSc.Output = fmt.Sprintf("Full - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiMemory.Full.Avg10, psiMemory.Full.Avg60, psiMemory.Full.Avg300)
+		memoryCheck.AddSubcheck(memoryFullSc)
 	}
 
 	if config.WarningMemorySomeAvg10.IsSet {
@@ -604,11 +628,14 @@ func checkPsiMemoryPressure(config *psiConfig) result.PartialResult {
 		memoryCheck.Perfdata[psi.MemorySomeAvg300].Crit = &config.CriticalMemoryAvg.Th
 	}
 
+	memorySomeSc := result.PartialResult{}
+	_ = memorySomeSc.SetDefaultState(check.OK)
+
 	if (memoryCheck.GetStatus() != check.Critical) && (memoryCheck.GetStatus() != check.Warning) {
 		if memoryCheck.Perfdata[psi.MemorySomeAvg10].Warn.DoesViolate(psiMemory.Some.Avg10) ||
 			memoryCheck.Perfdata[psi.MemorySomeAvg60].Warn.DoesViolate(psiMemory.Some.Avg60) ||
 			memoryCheck.Perfdata[psi.MemorySomeAvg300].Warn.DoesViolate(psiMemory.Some.Avg300) {
-			_ = memoryCheck.SetState(check.Warning)
+			_ = memorySomeSc.SetState(check.Warning)
 		}
 	}
 
@@ -616,11 +643,12 @@ func checkPsiMemoryPressure(config *psiConfig) result.PartialResult {
 		if memoryCheck.Perfdata[psi.MemorySomeAvg10].Crit.DoesViolate(psiMemory.Some.Avg10) ||
 			memoryCheck.Perfdata[psi.MemorySomeAvg60].Crit.DoesViolate(psiMemory.Some.Avg60) ||
 			memoryCheck.Perfdata[psi.MemorySomeAvg300].Crit.DoesViolate(psiMemory.Some.Avg300) {
-			_ = memoryCheck.SetState(check.Critical)
+			_ = memorySomeSc.SetState(check.Critical)
 		}
 	}
 
-	memoryCheck.Output = fmt.Sprintf("Memory Pressure - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiMemory.Full.Avg10, psiMemory.Full.Avg60, psiMemory.Full.Avg300)
+	memorySomeSc.Output = fmt.Sprintf("Some - Avg10: %.2f, Avg60: %.2f, Avg300: %.2f", psiMemory.Some.Avg10, psiMemory.Some.Avg60, psiMemory.Some.Avg300)
+	memoryCheck.AddSubcheck(memorySomeSc)
 
 	return memoryCheck
 }
