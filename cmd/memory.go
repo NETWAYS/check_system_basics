@@ -214,7 +214,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 
 	MemUsedPercentage := float64(memStats.VirtMem.Used) / (float64(memStats.VirtMem.Total) / 100)
 	pdMemUsedPercentage := perfdata.Perfdata{
-		Label: "free_memory_percentage",
+		Label: "used_memory_percentage",
 		Value: MemUsedPercentage,
 		Uom:   "%",
 	}
