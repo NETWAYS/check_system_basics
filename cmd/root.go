@@ -12,20 +12,22 @@ import (
 var Timeout = 30
 var debug = false
 
+var (
+	version string
+)
+
 var rootCmd = &cobra.Command{
-	Use:   "check_system_basics",
-	Short: "Icinga check plugin to check various Linux metrics",
+	Use:     "check_system_basics",
+	Short:   "Icinga check plugin to check various Linux metrics",
+	Version: version,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		go check.HandleTimeout(Timeout)
 	},
 	Run: RunFunction,
 }
 
-func Execute(version string) {
+func Execute() {
 	defer check.CatchPanic()
-
-	rootCmd.Version = version
-	rootCmd.VersionTemplate()
 
 	if err := rootCmd.Execute(); err != nil {
 		check.ExitError(err)
@@ -52,8 +54,6 @@ func init() {
 
 	flagSet := rootCmd.Flags()
 	flagSet.Bool("dump-icinga2-config", false, "Dump icinga2 config for this plugin")
-
-	flagSet.Bool("version", false, "Display version and other information about this program")
 }
 
 func RunFunction(cmd *cobra.Command, args []string) {
@@ -66,16 +66,6 @@ func RunFunction(cmd *cobra.Command, args []string) {
 
 	if dumpConfig {
 		ConfigDump(cmd, cmd.CommandPath())
-		os.Exit(check.OK)
-	}
-
-	showVersion, err := flagSet.GetBool("version")
-	if err != nil {
-		check.ExitError(err)
-	}
-
-	if showVersion {
-		fmt.Println(cmd.Version)
 		os.Exit(check.OK)
 	}
 
