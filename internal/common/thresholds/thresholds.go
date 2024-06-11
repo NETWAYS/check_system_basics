@@ -52,7 +52,6 @@ func AddFlags(flagP *pflag.FlagSet, ths *[]ThresholdOption) {
 		desc.WriteString((*ths)[i].Description)
 
 		if (*ths)[i].Default.IsSet {
-			desc.WriteString(" (Default: " + (*ths)[i].Default.Th.String() + ")")
 			(*ths)[i].Th.IsSet = (*ths)[i].Default.IsSet
 			(*ths)[i].Th.Th = (*ths)[i].Default.Th
 		}
