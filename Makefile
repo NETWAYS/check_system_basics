@@ -15,7 +15,7 @@ ifeq ($(GIT_COMMIT), $(GIT_LAST_TAG_COMMIT))
 	VERSION = $(shell git tag -l --contains $(GIT_COMMIT))
 endif
 
-GO_LINKERFLAGS := "-X main.version=$(VERSION)"
+GO_LINKERFLAGS := "-X github.com/NETWAYS/check_system_basics/cmd.version=$(VERSION)"
 
 GO_LINKEROPTS := -ldflags $(GO_LINKERFLAGS)
 
