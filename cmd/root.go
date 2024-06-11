@@ -52,19 +52,30 @@ func init() {
 
 	flagSet := rootCmd.Flags()
 	flagSet.Bool("dump-icinga2-config", false, "Dump icinga2 config for this plugin")
+
+	flagSet.Bool("version", false, "Display version and other information about this program")
 }
 
 func RunFunction(cmd *cobra.Command, args []string) {
 	flagSet := cmd.Flags()
 
 	dumpConfig, err := flagSet.GetBool("dump-icinga2-config")
-
 	if err != nil {
 		check.ExitError(err)
 	}
 
 	if dumpConfig {
 		ConfigDump(cmd, cmd.CommandPath())
+		os.Exit(check.OK)
+	}
+
+	showVersion, err := flagSet.GetBool("version")
+	if err != nil {
+		check.ExitError(err)
+	}
+
+	if showVersion {
+		fmt.Println(cmd.Version)
 		os.Exit(check.OK)
 	}
 
