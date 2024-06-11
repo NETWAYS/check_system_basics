@@ -24,3 +24,5 @@ builds:
       - amd64
       - 386
       - riscv64
+    ldflags:
+      - -X github.com/NETWAYS/check_system_basics/cmd.version={{.Version}}
