@@ -22,7 +22,7 @@ GO_LINKEROPTS := -ldflags $(GO_LINKERFLAGS)
 GO_FILES = $(shell find . -iname '*.go')
 
 build:
-	go build
+	go build $(GO_LINKEROPTS)
 
 build-all: $(TARGET_arm6) $(TARGET_amd64) $(TARGET_386) $(TARGET_arm64) $(TARGET_riscv64)
 
