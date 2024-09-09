@@ -328,7 +328,7 @@ func init() {
 				IsSet: true,
 				Th: check.Threshold{
 					Lower: 15,
-					Upper: 100,
+					Upper: check.PosInf,
 				},
 			},
 		},
@@ -340,7 +340,7 @@ func init() {
 				IsSet: true,
 				Th: check.Threshold{
 					Lower: 5,
-					Upper: 100,
+					Upper: check.PosInf,
 				},
 			},
 		},
