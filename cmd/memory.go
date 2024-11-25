@@ -26,7 +26,7 @@ var memoryCmd = &cobra.Command{
 \_ [OK] Swap Usage 0.00% (0 B / 36 GiB)
 |available_memory_percentage=74.36%;15:100;5:100 available_memory=24856633344B;10:20;;0;33427595264 free_memory=16696102912B;;;0;33427595264 free_memory_percentage=49.947%;;50:80 used_memory=6542696448B;@10;;0;33427595264 free_memory_percentage=19.573% swap_usage_percent=0%;20;85 swap_used=0B;;;0;38654701568
 `,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, args []string) {
 
 		var overall result.Overall
 
