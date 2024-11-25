@@ -25,7 +25,7 @@ var loadCmd = &cobra.Command{
 \_ [OK] 5 minute average: 0.21
 \_ [OK] 15 minute average: 0.25
 |load1=0.1;2;;0 load5=0.21;;;0 load15=0.25;;;0`,
-	Run: func(_ *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		loadStats, err := load.GetActualLoadValues()
 		if err != nil {
 			check.ExitError(err)

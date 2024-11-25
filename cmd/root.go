@@ -20,7 +20,7 @@ var rootCmd = &cobra.Command{
 	Use:     "check_system_basics",
 	Short:   "Icinga check plugin to check various Linux metrics",
 	Version: version,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+	PersistentPreRun: func(_ *cobra.Command, _ []string) {
 		go check.HandleTimeout(Timeout)
 	},
 	Run: RunFunction,

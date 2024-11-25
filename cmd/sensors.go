@@ -35,7 +35,7 @@ thresholds respecting the sensor type and the respective specialities`,
     \_ [OK] iwlwifi_1_temp1: Ok - 47C
 |acpitz_temp1=48C;;~:210 BAT1_in0=17.544V BAT1_curr1=0A Composite=37C;~:83;-5:87  'Package id 0'=48C;~:100;~:100 'Core 0'=47C;~:100;~:100 'Core 1'=46C;~:100;~:100 'Core 2'=46C;~:100;~:100 'Core 3'=45C;~:100;~:100 iwlwifi_1_temp1=47C
 `,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		devices, err := sensors.GetDefaultDevices()
 		if err != nil {
 			check.ExitError(err)
