@@ -138,7 +138,7 @@ var psiCmd = &cobra.Command{
 \_ [WARNING] IO Pressure - Avg10: 0.00, Avg60: 0.00, Avg300: 0.00
 \_ [WARNING] Memory Pressure - Avg10: 0.00, Avg60: 0.00, Avg300: 0.00
 |cpu-some-avg10=0%;30:80;@95:100;0;100 cpu-some-avg60=0.02%;30:80;@95:100;0;100 cpu-some-avg300=0.02%;30:80;@95:100;0;100 cpu-some-total=33046682c;30:80;@95:100;0 cpu-full-avg10=0%;30:80;@31:81;0;100 cpu-full-avg60=0%;30:80;@95:100;0;100 cpu-full-avg300=0%;;;0;100 cpu-full-total=0c;;;0 io-some-avg10=0%;11:99;@95:100;0;100 io-some-avg60=0%;11:99;@95:100;0;100 io-some-avg300=0%;11:99;@49:51;0;100 io-some-total=27037011c;11:99;@95:100;0 io-full-avg10=0%;11:99;@95:100;0;100 io-full-avg60=0%;11:99;@95:100;0;100 io-full-avg300=0%;;;0;100 io-full-total=26265104c;;;0 memory-some-avg10=0%;@23;@95:100;0;100 memory-some-avg60=0%;@23;@95:100;0;100 memory-some-avg300=0%;@23;@95:100;0;100 memory-some-total=354c;@23;@95:100;0 memory-full-avg10=0%;@23;@95:100;0;100 memory-full-avg60=0%;@23;@95:100;0;100 memory-full-avg300=0%;;;0;100 memory-full-total=193c;;;0`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		var overall result.Overall
 
 		// If no mode is selected, select all

@@ -46,10 +46,10 @@ issues:
 linters:
    enable-all: true
    disable:
+     - mnd
      - dupl
      - cyclop
      - depguard
-     - exhaustivestruct
      - exhaustruct
      - forbidigo
      - forcetypeassert
@@ -58,7 +58,7 @@ linters:
      - gochecknoinits
      - godox
      - godot
-     - goerr113
+     - err113
      - gofumpt
      - gomnd
      - lll

@@ -69,7 +69,7 @@ var diskCmd = &cobra.Command{
 		\_ [OK] Percentage of used space: 48.05%
 		\_ [OK] Percentage of used inodes: 5.23%
 |/_inodes_free_percentage=82.688% /_space_free=33146855424B;@40;@20;0;62669000704 /_space_used=26305536000B;40;20;0;62669000704 /_inodes_free=3231100;;@200;0;3907584 /_inodes_used=676484;;@400;0;3907584 /_space_free_percentage=55.754%;60;30 /_space_used_percentage=44.246%;@20:40;@20 /_inodes_used_percentage=17.312%;99;98 /boot_inodes_free_percentage=99.718% /boot_space_free=173091840B;@40;@20;0;493201408 /boot_space_used=294524928B;40;20;0;493201408 /boot_inodes_free=124576;;@200;0;124928 /boot_inodes_used=352;;@400;0;124928 /boot_space_free_percentage=37.016%;60;30 /boot_space_used_percentage=62.984%;@20:40;@20 /boot_inodes_used_percentage=0.282%;99;98 /var_inodes_free_percentage=92.832% /var_space_free=141826428928B;@40;@20;0;250843787264 /var_space_used=96200613888B;40;20;0;250843787264 /var_inodes_free=14510026;;@200;0;15630336 /var_inodes_used=1120310;;@400;0;15630336 /var_space_free_percentage=59.584%;60;30 /var_space_used_percentage=40.416%;@20:40;@20 /var_inodes_used_percentage=7.168%;99;98 /home_inodes_free_percentage=94.768% /home_space_free=247921197056B;@40;@20;0;502813065216 /home_space_used=229275156480B;40;20;0;502813065216 /home_inodes_free=29617311;;@200;0;31252480 /home_inodes_used=1635169;;@400;0;31252480 /home_space_free_percentage=51.954%;60;30 /home_space_used_percentage=48.046%;@20:40;@20 /home_inodes_used_percentage=5.232%;99;98`,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 
 		overall := result.Overall{}
 
