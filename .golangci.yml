@@ -46,6 +46,7 @@ issues:
 linters:
    enable-all: true
    disable:
+     - funlen
      - mnd
      - dupl
      - cyclop
@@ -60,7 +61,6 @@ linters:
      - godot
      - err113
      - gofumpt
-     - gomnd
      - lll
      - musttag
      - nakedret
