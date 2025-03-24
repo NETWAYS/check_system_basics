@@ -29,8 +29,10 @@ func GenerateIcinga2Config(cmd *cobra.Command, commandName, executableName strin
 
 	ccaFlags = make([]icingadsl.CheckCommandArgument, 0)
 
-	flags.VisitAll(func(foo *pflag.Flag) {
-		_ = GenerateIcinga2CheckCommandArgument(foo, &ccaFlags)
+	flags.VisitAll(func(flag *pflag.Flag) {
+		if flag.Name != "help" && flag.Name != "debug" {
+			_ = GenerateIcinga2CheckCommandArgument(flag, &ccaFlags)
+		}
 	})
 
 	parentArgs := make([]icingadsl.CheckCommandArgument, len(ccaFlags))
@@ -41,6 +43,11 @@ func GenerateIcinga2Config(cmd *cobra.Command, commandName, executableName strin
 	checkCommands = append(checkCommands, parentDefinition)
 
 	for _, command := range cmd.Commands() {
+		// Ignore the magical cobra command "no-help"
+		if command.Name() == "no-help" {
+			continue
+		}
+
 		ccaFlags = make([]icingadsl.CheckCommandArgument, 0)
 
 		// This triggers a side effect to get inherited flags
@@ -49,7 +56,9 @@ func GenerateIcinga2Config(cmd *cobra.Command, commandName, executableName strin
 
 		scFlags := command.Flags()
 		scFlags.VisitAll(func(foo *pflag.Flag) {
-			_ = GenerateIcinga2CheckCommandArgument(foo, &ccaFlags)
+			if foo.Name != "help" && foo.Name != "debug" {
+				_ = GenerateIcinga2CheckCommandArgument(foo, &ccaFlags)
+			}
 		})
 
 		cc := icingadsl.CheckCommand{}
