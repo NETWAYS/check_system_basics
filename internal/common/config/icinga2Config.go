@@ -29,9 +29,9 @@ func GenerateIcinga2Config(cmd *cobra.Command, commandName, executableName strin
 
 	ccaFlags = make([]icingadsl.CheckCommandArgument, 0)
 
-	flags.VisitAll(func(foo *pflag.Flag) {
-		if foo.Name != "help" && foo.Name != "debug" {
-			_ = GenerateIcinga2CheckCommandArgument(foo, &ccaFlags)
+	flags.VisitAll(func(flag *pflag.Flag) {
+		if flag.Name != "help" && flag.Name != "debug" {
+			_ = GenerateIcinga2CheckCommandArgument(flag, &ccaFlags)
 		}
 	})
 
