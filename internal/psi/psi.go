@@ -13,27 +13,33 @@ const (
 	CPUSomeAvg10 uint = iota
 	CPUSomeAvg60
 	CPUSomeAvg300
+	CPUSomeTotal
 	CPUFullAvg10
 	CPUFullAvg60
 	CPUFullAvg300
+	CPUFullTotal
 )
 
 const (
 	IoSomeAvg10 uint = iota
 	IoSomeAvg60
 	IoSomeAvg300
+	IoSomeTotal
 	IoFullAvg10
 	IoFullAvg60
 	IoFullAvg300
+	IoFullTotal
 )
 
 const (
 	MemorySomeAvg10 uint = iota
 	MemorySomeAvg60
 	MemorySomeAvg300
+	MemorySomeTotal
 	MemoryFullAvg10
 	MemoryFullAvg60
 	MemoryFullAvg300
+	MemoryFullTotal
 )
 
 type PressureValue struct {
