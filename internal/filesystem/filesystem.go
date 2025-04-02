@@ -9,7 +9,7 @@ import (
 	"github.com/shirou/gopsutil/v3/disk"
 )
 
-// nolint: revive, golint
+// nolint: revive
 type FilesystemType struct {
 	PartStats  disk.PartitionStat
 	UsageStats disk.UsageStat
