@@ -1,72 +1,90 @@
+version: "2"
 run:
-  timeout: 5m
   tests: false
-issues:
-  exclude-rules:
-    - path: 'cmd/memory.go'
-      linters:
-        - funlen
-        - gocognit
-        - gocyclo
-        - maintidx
-    - path: 'cmd/filesystem.go'
-      linters:
-        - funlen
-        - gocognit
-        - maintidx
-        - gocyclo
-    - path: 'cmd/psi.go'
-      linters:
-        - funlen
-        - gocognit
-        - gocyclo
-        - maintidx
-    - path: 'internal/sensors/sensors.go'
-      linters:
-        - funlen
-        - gocognit
-    - path: 'internal/filesystem/filesystem.go'
-      linters:
-        - funlen
-        - gocognit
-        - gocyclo
-        - maintidx
-    - path: 'cmd/filesystem.go'
-      linters:
-        - nestif
-    - path: 'internal/netdev/netdev.go'
-      linters:
-        - deadcode
-        - golint
-        - unused
-        - nosnakecase
-        - stylecheck
-        - varcheck
-        - revive
 linters:
-   enable-all: true
-   disable:
-     - funlen
-     - mnd
-     - dupl
-     - cyclop
-     - depguard
-     - exhaustruct
-     - forbidigo
-     - forcetypeassert
-     - gci
-     - gochecknoglobals
-     - gochecknoinits
-     - godox
-     - godot
-     - err113
-     - gofumpt
-     - lll
-     - musttag
-     - nakedret
-     - nlreturn
-     - nolintlint
-     - nonamedreturns
-     - tagliatelle
-     - varnamelen
-     - wrapcheck
+  default: all
+  disable:
+    - cyclop
+    - depguard
+    - dupl
+    - err113
+    - exhaustruct
+    - forbidigo
+    - forcetypeassert
+    - funlen
+    - gochecknoglobals
+    - gochecknoinits
+    - godot
+    - godox
+    - lll
+    - mnd
+    - musttag
+    - nakedret
+    - nlreturn
+    - nolintlint
+    - nonamedreturns
+    - tagliatelle
+    - varnamelen
+    - wrapcheck
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - funlen
+          - gocognit
+          - gocyclo
+          - maintidx
+        path: cmd/memory.go
+      - linters:
+          - funlen
+          - gocognit
+          - gocyclo
+          - maintidx
+        path: cmd/filesystem.go
+      - linters:
+          - funlen
+          - gocognit
+          - gocyclo
+          - maintidx
+        path: cmd/psi.go
+      - linters:
+          - funlen
+          - gocognit
+        path: internal/sensors/sensors.go
+      - linters:
+          - funlen
+          - gocognit
+          - gocyclo
+          - maintidx
+        path: internal/filesystem/filesystem.go
+      - linters:
+          - nestif
+        path: cmd/filesystem.go
+      - linters:
+          - deadcode
+          - golint
+          - nosnakecase
+          - revive
+          - staticcheck
+          - unused
+          - varcheck
+        path: internal/netdev/netdev.go
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
