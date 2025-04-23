@@ -3,27 +3,40 @@ version: 2
 before:
   hooks:
     - go mod download
-
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goarch:
+      - 386
+      - amd64
+      - arm
+      - arm64
+      - riscv64
+    goos:
+      - linux
+    ldflags:
+      - >-
+        -s -w
+        -X github.com/NETWAYS/check_system_basics/cmd.version={{.Version}}
 release:
-  github:
   draft: true
+  github:
+    owner: NETWAYS
+    name: check_system_basics
+archives:
+  - formats: [ binary ]
+    name_template: >-
+      {{ .ProjectName }}_{{ .Tag }}_
+      {{- if eq .Os "linux" }}Linux{{ end }}
+      {{- if eq .Arch "amd64" }}_x86_64{{ end }}
+      {{- if eq .Arch "arm64" }}_arm64{{ end }}
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  version_template: '{{ .Tag }}-SNAPSHOT-{{.ShortCommit}}'
 changelog:
   sort: asc
   filters:
     exclude:
       - '^docs:'
       - '^test:'
-
-builds:
-  - env:
-    - CGO_ENABLED=0
-    goos:
-      - linux
-    goarch:
-      - arm
-      - arm64
-      - amd64
-      - 386
-      - riscv64
-    ldflags:
-      - -X github.com/NETWAYS/check_system_basics/cmd.version={{.Version}}
