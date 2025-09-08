@@ -1,10 +1,10 @@
 package thresholds
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/NETWAYS/go-check"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestThresholdSet(t *testing.T) {
@@ -21,5 +21,7 @@ func TestThresholdSet(t *testing.T) {
 
 	tw2.Set(tw.String())
 
-	assert.Equal(t, tw, tw2)
+	if !reflect.DeepEqual(tw, tw2) {
+		t.Fatalf("expected %v, got %v", tw, tw2)
+	}
 }
