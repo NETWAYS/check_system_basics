@@ -5,9 +5,9 @@ import (
 
 	"github.com/NETWAYS/check_system_basics/internal/common/thresholds"
 	"github.com/NETWAYS/check_system_basics/internal/filesystem"
+
 	"github.com/NETWAYS/go-check"
 	"github.com/shirou/gopsutil/v3/disk"
-	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -39,8 +39,13 @@ func TestFsCheckResult0(t *testing.T) {
 
 	result := computeFsCheckResult(&testFsHalfFull, &config)
 
-	assert.Equal(t, check.OK, result.GetStatus())
-	assert.Equal(t, "/testMountpoint", result.Output)
+	if check.OK != result.GetStatus() {
+		t.Fatalf("expected %v, got %v", check.OK, result.GetStatus())
+	}
+
+	if "/testMountpoint" != result.Output {
+		t.Fatalf("expected %v, got %v", "/testMountpoint", result.Output)
+	}
 }
 
 func TestFsCheckResult1(t *testing.T) {
@@ -63,5 +68,7 @@ func TestFsCheckResult1(t *testing.T) {
 
 	result := computeFsCheckResult(&testFsHalfFull, &config)
 
-	assert.Equal(t, check.Warning, result.GetStatus())
+	if check.Warning != result.GetStatus() {
+		t.Fatalf("expected %v, got %v", check.Warning, result.GetStatus())
+	}
 }

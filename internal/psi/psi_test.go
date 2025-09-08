@@ -1,10 +1,10 @@
 package psi
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/NETWAYS/go-check/perfdata"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestPressureValueString(t *testing.T) {
@@ -21,7 +21,9 @@ func TestPressureValueString(t *testing.T) {
 	expected.Add(&perfdata.Perfdata{Label: "preavg300", Value: 3.5, Min: 0, Max: 100, Uom: "%"})
 	expected.Add(&perfdata.Perfdata{Label: "pretotal", Value: uint64(0), Min: 0, Uom: "c"})
 
-	assert.Equal(t, &expected, pv.Perfdata("pre"))
+	if !reflect.DeepEqual(&expected, pv.Perfdata("pre")) {
+		t.Fatalf("expected %v, got %v", &expected, pv.Perfdata("pre"))
+	}
 }
 
 func TestPressureElementString(t *testing.T) {
@@ -43,7 +45,9 @@ func TestPressureElementString(t *testing.T) {
 	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-full-avg300", Value: float64(0.3), Min: 0, Max: 100, Uom: "%"})
 	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-full-total", Value: uint64(0), Min: 0, Uom: "c"})
 
-	assert.Equal(t, &pecpuexpected, pecpu.Perfdata())
+	if !reflect.DeepEqual(&pecpuexpected, pecpu.Perfdata()) {
+		t.Fatalf("expected %v, got %v", &pecpuexpected, pecpu.Perfdata())
+	}
 
 	peio := PressureElement{
 		Some:        PressureValue{Avg10: 0.1, Avg60: 0.6, Avg300: 0.3, Total: 0},
@@ -59,14 +63,17 @@ func TestPressureElementString(t *testing.T) {
 	peioexpected.Add(&perfdata.Perfdata{Label: "io-some-avg300", Value: float64(0.3), Min: 0, Max: 100, Uom: "%"})
 	peioexpected.Add(&perfdata.Perfdata{Label: "io-some-total", Value: uint64(0), Min: 0, Uom: "c"})
 
-	assert.Equal(t, &peioexpected, peio.Perfdata())
-
+	if !reflect.DeepEqual(&peioexpected, peio.Perfdata()) {
+		t.Fatalf("expected %v, got %v", &peioexpected, peio.Perfdata())
+	}
 }
 
 func TestReadPressureFile(t *testing.T) {
 	cpuPressure, err := readPressureFile("testdata/cpu")
 
-	assert.Equal(t, nil, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
 	expectedResult := PressureElement{
 		Some:        PressureValue{Avg10: 0.0, Avg60: 0.08, Avg300: 0.05, Total: 3391622},
@@ -74,5 +81,7 @@ func TestReadPressureFile(t *testing.T) {
 		FullPresent: true,
 	}
 
-	assert.Equal(t, &expectedResult, cpuPressure)
+	if !reflect.DeepEqual(&expectedResult, cpuPressure) {
+		t.Fatalf("expected %v, got %v", &expectedResult, cpuPressure)
+	}
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/NETWAYS/go-check"
 	"github.com/NETWAYS/go-check/perfdata"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestSensorAndDeviceString(t *testing.T) {
@@ -24,29 +23,52 @@ func TestSensorAndDeviceString(t *testing.T) {
 		},
 	}
 
-	assert.Equal(t, "testname - 10%", s.String())
+	if "testname - 10%" != s.String() {
+		t.Fatalf("expected %v, got %v", "testname - 10%", s.String())
+	}
 
 	d := Device{
 		Name:    "test",
 		Sensors: []Sensor{s},
 	}
 
-	assert.Equal(t, "test: testname - 10%;", d.String())
+	expected := "test: testname - 10%;"
+	if expected != d.String() {
+		t.Fatalf("expected %v, got %v", expected, d.String())
+	}
 }
 
 func TestReadSensorDataSingle(t *testing.T) {
 	sensors, err := readSensorData("testdata/01")
 
-	assert.Equal(t, nil, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, "tempSensor=20C", sensors[0].Perfdata.String())
+	expected := "tempSensor=20C"
+	if expected != sensors[0].Perfdata.String() {
+		t.Fatalf("expected %v, got %v", expected, sensors[0].Perfdata.String())
+	}
 }
 
 func TestReadSensorDataMultiple(t *testing.T) {
 	sensors, err := readSensorData("testdata/02")
-	assert.Equal(t, nil, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, "tempSensor=20C", sensors[0].Perfdata.String())
-	assert.Equal(t, "testDevice2_temp2=20C;~:30;~:40", sensors[1].Perfdata.String())
-	assert.Equal(t, "tempSensor3=20C;~:30;~:60", sensors[2].Perfdata.String())
+	expected := "tempSensor=20C"
+	if expected != sensors[0].Perfdata.String() {
+		t.Fatalf("expected %v, got %v", expected, sensors[0].Perfdata.String())
+	}
+
+	expected = "testDevice2_temp2=20C;~:30;~:40"
+	if expected != sensors[1].Perfdata.String() {
+		t.Fatalf("expected %v, got %v", expected, sensors[1].Perfdata.String())
+	}
+
+	expected = "tempSensor3=20C;~:30;~:60"
+	if expected != sensors[2].Perfdata.String() {
+		t.Fatalf("expected %v, got %v", expected, sensors[2].Perfdata.String())
+	}
 }

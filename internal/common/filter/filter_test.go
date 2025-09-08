@@ -1,9 +1,8 @@
 package filter
 
 import (
+	"reflect"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 type TestObject struct {
@@ -59,9 +58,13 @@ func TestEmptyFilter(t *testing.T) {
 
 	testResult1, err := Filter(objList, &filterList, Name, filterOpts)
 
-	assert.NoError(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, []TestObject{}, testResult1)
+	if !reflect.DeepEqual([]TestObject{}, testResult1) {
+		t.Fatalf("expected %v, got %v", []TestObject{}, testResult1)
+	}
 }
 
 func TestSimpleIncludeFilter(t *testing.T) {
@@ -83,9 +86,13 @@ func TestSimpleIncludeFilter(t *testing.T) {
 		},
 	}
 
-	assert.NoError(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, testResult1Expected, testResult1)
+	if !reflect.DeepEqual(testResult1Expected, testResult1) {
+		t.Fatalf("expected %v, got %v", testResult1Expected, testResult1)
+	}
 }
 
 func TestSimpleExcludeFilter(t *testing.T) {
@@ -122,7 +129,11 @@ func TestSimpleExcludeFilter(t *testing.T) {
 		},
 	}
 
-	assert.NoError(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, testResult1Expected, testResult1)
+	if !reflect.DeepEqual(testResult1Expected, testResult1) {
+		t.Fatalf("expected %v, got %v", testResult1Expected, testResult1)
+	}
 }

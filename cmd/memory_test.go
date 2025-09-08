@@ -5,9 +5,9 @@ import (
 
 	"github.com/NETWAYS/check_system_basics/internal/common/thresholds"
 	"github.com/NETWAYS/check_system_basics/internal/memory"
+
 	"github.com/NETWAYS/go-check"
 	"github.com/shirou/gopsutil/v3/mem"
-	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -34,9 +34,13 @@ func TestComputeMemResultsWithoutThresholds(t *testing.T) {
 
 	memPartial := computeMemResults(&config, &testMemStats)
 
-	assert.Equal(t, check.OK, memPartial.GetStatus())
+	if check.OK != memPartial.GetStatus() {
+		t.Fatalf("expected %v, got %v", check.OK, memPartial.GetStatus())
+	}
 
-	assert.Equal(t, 3, len(memPartial.PartialResults))
+	if 3 != len(memPartial.PartialResults) {
+		t.Fatalf("expected %v, got %v", 3, len(memPartial.PartialResults))
+	}
 }
 
 func TestComputeMemResultsWithThresholds(t *testing.T) {
@@ -56,7 +60,11 @@ func TestComputeMemResultsWithThresholds(t *testing.T) {
 
 	memPartial := computeMemResults(&testConfig, &testMemStats)
 
-	assert.Equal(t, check.Warning, memPartial.GetStatus())
+	if check.Warning != memPartial.GetStatus() {
+		t.Fatalf("expected %v, got %v", check.Warning, memPartial.GetStatus())
+	}
 
-	assert.Equal(t, 3, len(memPartial.PartialResults))
+	if 3 != len(memPartial.PartialResults) {
+		t.Fatalf("expected %v, got %v", 3, len(memPartial.PartialResults))
+	}
 }

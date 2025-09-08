@@ -1,10 +1,10 @@
 package filesystem
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/shirou/gopsutil/v3/disk"
-	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -62,10 +62,13 @@ func TestFilterSDA(t *testing.T) {
 
 	result, err := FilterFileSystem(fileSystemSet, &filters)
 
-	assert.Nil(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, result, []FilesystemType{testSda})
-
+	if !reflect.DeepEqual(result, []FilesystemType{testSda}) {
+		t.Fatalf("expected %v, got %v", result, []FilesystemType{testSda})
+	}
 }
 
 func TestFilterHalfFull(t *testing.T) {
@@ -75,10 +78,13 @@ func TestFilterHalfFull(t *testing.T) {
 
 	result, err := FilterFileSystem(fileSystemSet, &filters)
 
-	assert.Nil(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, result, []FilesystemType{testFsHalfFull})
-
+	if !reflect.DeepEqual(result, []FilesystemType{testFsHalfFull}) {
+		t.Fatalf("expected %v, got %v", result, []FilesystemType{testFsHalfFull})
+	}
 }
 
 func TestFilterNoFilter(t *testing.T) {
@@ -86,10 +92,13 @@ func TestFilterNoFilter(t *testing.T) {
 
 	result, err := FilterFileSystem(fileSystemSet, &filters)
 
-	assert.Nil(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, result, []FilesystemType{testSda, testFsHalfFull})
-
+	if !reflect.DeepEqual(result, []FilesystemType{testSda, testFsHalfFull}) {
+		t.Fatalf("expected %v, got %v", result, []FilesystemType{testSda, testFsHalfFull})
+	}
 }
 
 func TestFilterIncludeDevicePaths(t *testing.T) {
@@ -99,10 +108,13 @@ func TestFilterIncludeDevicePaths(t *testing.T) {
 
 	result, err := FilterFileSystem(fileSystemSet, &filters)
 
-	assert.Nil(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, result, []FilesystemType{testSda, testFsHalfFull})
-
+	if !reflect.DeepEqual(result, []FilesystemType{testSda, testFsHalfFull}) {
+		t.Fatalf("expected %v, got %v", result, []FilesystemType{testSda, testFsHalfFull})
+	}
 }
 
 func TestFilterExcludeDevicePaths(t *testing.T) {
@@ -112,10 +124,13 @@ func TestFilterExcludeDevicePaths(t *testing.T) {
 
 	result, err := FilterFileSystem(fileSystemSet, &filters)
 
-	assert.Nil(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, result, []FilesystemType{testFsHalfFull})
-
+	if !reflect.DeepEqual(result, []FilesystemType{testFsHalfFull}) {
+		t.Fatalf("expected %v, got %v", result, []FilesystemType{testFsHalfFull})
+	}
 }
 
 func TestFilterRegexFilter(t *testing.T) {
@@ -125,10 +140,13 @@ func TestFilterRegexFilter(t *testing.T) {
 
 	result, err := FilterFileSystem(fileSystemSet, &filters)
 
-	assert.Nil(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, result, []FilesystemType{testSda})
-
+	if !reflect.DeepEqual(result, []FilesystemType{testSda}) {
+		t.Fatalf("expected %v, got %v", result, []FilesystemType{testSda})
+	}
 }
 
 func TestFilterRegexFilterAll(t *testing.T) {
@@ -138,8 +156,11 @@ func TestFilterRegexFilterAll(t *testing.T) {
 
 	result, err := FilterFileSystem(fileSystemSet, &filters)
 
-	assert.Nil(t, err)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
 
-	assert.Equal(t, result, []FilesystemType{})
-
+	if !reflect.DeepEqual(result, []FilesystemType{}) {
+		t.Fatalf("expected %v, got %v", result, []FilesystemType{})
+	}
 }
