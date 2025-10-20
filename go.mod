@@ -3,7 +3,7 @@ module github.com/NETWAYS/check_system_basics
 go 1.22
 
 require (
-	github.com/NETWAYS/go-check v0.6.2
+	github.com/NETWAYS/go-check v0.6.3
 	github.com/NETWAYS/go-icingadsl v0.1.2
 	github.com/dustin/go-humanize v1.0.1
 	github.com/shirou/gopsutil/v3 v3.24.5
