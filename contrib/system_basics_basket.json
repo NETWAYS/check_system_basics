@@ -1,0 +1,2249 @@
+{
+    "Command": {
+        "system_basics_filesystem": {
+            "arguments": {
+                "--criticalAbsolutFreeSpace": {
+                    "description": "Absolute critical threshold for free filesystem space.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_criticalAbsolutFreeSpace$"
+                },
+                "--criticalAbsolutUsedInodes": {
+                    "description": "Absolute critical threshold for number of used inodes.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_criticalAbsolutUsedInodes$"
+                },
+                "--criticalAbsolutUsedSpace": {
+                    "description": "Absolute critical threshold for used filesystem space.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_criticalAbsolutUsedSpace$"
+                },
+                "--criticalPercentFreeInodes": {
+                    "description": "Percentage critical threshold for percentage of free inodes.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_criticalPercentFreeInodes$"
+                },
+                "--criticalPercentFreeSpace": {
+                    "description": "Percentage critical threshold for free filesystem space.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_criticalPercentFreeSpace$"
+                },
+                "--criticalPercentUsedInodes": {
+                    "description": "Percentage critical threshold for percentage of used inodes.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_criticalPercentUsedInodes$"
+                },
+                "--criticalPercentUsedSpace": {
+                    "description": "Percentage critical threshold for used filesystem space.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_criticalPercentUsedSpace$"
+                },
+                "--criticalTotalCountOfMatches": {
+                    "description": "A critical threshold for the number of filesystems matching the filters.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_criticalTotalCountOfMatches$"
+                },
+                "--exclude-device-path": {
+                    "description": "Ignore the given device path regex (may be repeated). E.g. '/dev/sd.*'",
+                    "value": "$system_basics_filesystem_exclude_device_path$"
+                },
+                "--exclude-fs-type": {
+                    "description": "Ignore all filesystems of indicated type (may be repeated). E.g. 'zfs', 'apfs'\\nNote: The same thresholds will be applied to all filesystems",
+                    "value": "$system_basics_filesystem_exclude_fs_type$"
+                },
+                "--exclude-mount-options": {
+                    "description": "Ignore the filesystems with this mount option (in form of a go regexp regex) (may be repeated). E.g. 'async' or '^sync$'",
+                    "value": "$system_basics_filesystem_exclude_mount_options$"
+                },
+                "--exclude-mount-path": {
+                    "description": "Ignore the given mount path regex (may be repeated). E.g. '^/srv/mount.*'",
+                    "value": "$system_basics_filesystem_exclude_mount_path$"
+                },
+                "--include-device-path": {
+                    "description": "Explicitly include only filesystems of indicated type (may be repeated). E.g. '/dev/sda'",
+                    "value": "$system_basics_filesystem_include_device_path$"
+                },
+                "--include-fs-type": {
+                    "description": "Explicitly include only filesystems of indicated type (may be repeated). E.g. 'zfs', 'apfs'\\nNote: The same thresholds will be applied to all filesystems",
+                    "value": "$system_basics_filesystem_include_fs_type$"
+                },
+                "--include-mount-options": {
+                    "description": "Explicitly include only filesystems mounted with the given option (in form of a go regexp regex) (may be repeated). E.g. 'async' or '^sync$'",
+                    "value": "$system_basics_filesystem_include_mount_options$"
+                },
+                "--include-mount-path": {
+                    "description": "Explicitly include only filesystems of indicated type (may be repeated). E.g. '/dev/sda'",
+                    "value": "$system_basics_filesystem_include_mount_path$"
+                },
+                "--readonly-filesystems": {
+                    "description": "Only list filesystem mounted as readonly. This is just a convenient shorthand for \\\"--include-mount-options '^ro$'\\\"",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_readonly_filesystems$"
+                },
+                "--readwrite-filesystems": {
+                    "description": "Only list filesystem mounted as readwrite. This is just a convenient shorthand for \\\"--include-mount-options '^rw$'\\\"",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_readwrite_filesystems$"
+                },
+                "--warningAbsolutFreeInodes": {
+                    "description": "Absolute warning threshold for number of free inodes",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_warningAbsolutFreeInodes$"
+                },
+                "--warningAbsolutFreeSpace": {
+                    "description": "Absolute warning threshold for free filesystem space.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_warningAbsolutFreeSpace$"
+                },
+                "--warningAbsolutUsedSpace": {
+                    "description": "Absolute warning threshold for used filesystem space.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_warningAbsolutUsedSpace$"
+                },
+                "--warningPercentFreeInodes": {
+                    "description": "Percentage warning threshold for percentage of free inodes",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_warningPercentFreeInodes$"
+                },
+                "--warningPercentFreeSpace": {
+                    "description": "Percentage warning threshold for free filesystem space.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_warningPercentFreeSpace$"
+                },
+                "--warningPercentUsedInodes": {
+                    "description": "Percentage warning threshold for percentage of used inodes",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_warningPercentUsedInodes$"
+                },
+                "--warningPercentUsedSpace": {
+                    "description": "Percentage warning threshold for used filesystem space.",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_warningPercentUsedSpace$"
+                },
+                "--warningTotalCountOfMatches": {
+                    "description": "A warning threshold for the number of filesystems matching the filters",
+                    "repeat_key": false,
+                    "value": "$system_basics_filesystem_warningTotalCountOfMatches$"
+                },
+                "filesystem": {
+                    "repeat_key": false,
+                    "set_if": "1",
+                    "set_if_format": "string",
+                    "order": "-1"
+                }
+            },
+            "fields": [
+                {
+                    "datafield_id": 429,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 430,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 431,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 432,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 433,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 434,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 435,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 436,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 437,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 438,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 439,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 425,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 440,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 441,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 442,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 443,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 444,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 445,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 447,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 448,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 449,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 450,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 451,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 452,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 453,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 454,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [
+                "system_basics"
+            ],
+            "methods_execute": "PluginCheck",
+            "object_name": "system_basics_filesystem",
+            "object_type": "object"
+        },
+        "system_basics_load": {
+            "arguments": {
+                "--load1-critical": {
+                    "description": "Critical threshold for the load 1 minute average.",
+                    "repeat_key": false,
+                    "value": "$system_basics_load_load1_critical$"
+                },
+                "--load1-warning": {
+                    "description": "Warning threshold for the load 1 minute average.",
+                    "repeat_key": false,
+                    "value": "$system_basics_load_load1_warning$"
+                },
+                "--load15-critical": {
+                    "description": "Critical threshold for the load 15 minute average.",
+                    "repeat_key": false,
+                    "value": "$system_basics_load_load15_critical$"
+                },
+                "--load15-warning": {
+                    "description": "Warning threshold for the load 15 minute average.",
+                    "repeat_key": false,
+                    "value": "$system_basics_load_load15_warning$"
+                },
+                "--load5-critical": {
+                    "description": "Critical threshold for the load 5 minute average.",
+                    "repeat_key": false,
+                    "value": "$system_basics_load_load5_critical$"
+                },
+                "--load5-warning": {
+                    "description": "Warning threshold for the load 5 minute average.",
+                    "repeat_key": false,
+                    "value": "$system_basics_load_load5_warning$"
+                },
+                "--per-cpu": {
+                    "description": "Divide the load averages by the number of CPUs",
+                    "repeat_key": false,
+                    "value": "$system_basics_load_per_cpu$"
+                },
+                "load": {
+                    "repeat_key": false,
+                    "set_if": "1",
+                    "set_if_format": "string",
+                    "order": "-1"
+                }
+            },
+            "fields": [
+                {
+                    "datafield_id": 455,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 456,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 457,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 458,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 459,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 460,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 461,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [
+                "system_basics"
+            ],
+            "methods_execute": "PluginCheck",
+            "object_name": "system_basics_load",
+            "object_type": "object"
+        },
+        "system_basics_memory": {
+            "arguments": {
+                "--memory-available-critical": {
+                    "description": "Critical threshold for available memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_available_critical$"
+                },
+                "--memory-available-critical-percentage": {
+                    "description": "Critical threshold for available memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_available_critical_percentage$"
+                },
+                "--memory-available-warning": {
+                    "description": "Warning threshold for available memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_available_warning$"
+                },
+                "--memory-available-warning-percentage": {
+                    "description": "Warning threshold for available memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_available_warning_percentage$"
+                },
+                "--memory-free-critical": {
+                    "description": "Critical threshold for free memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_free_critical$"
+                },
+                "--memory-free-critical-percentage": {
+                    "description": "Critical threshold for free memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_free_critical_percentage$"
+                },
+                "--memory-free-warning": {
+                    "description": "Warning threshold for free memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_free_warning$"
+                },
+                "--memory-used-critical": {
+                    "description": "Critical threshold for used memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_used_critical$"
+                },
+                "--memory-used-critical-percentage": {
+                    "description": "Critical threshold for used memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_used_critical_percentage$"
+                },
+                "--memory-used-warning": {
+                    "description": "Warning threshold for used memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_used_warning$"
+                },
+                "--memory-used-warning-percentage": {
+                    "description": "Warning threshold for used memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_memory_used_warning_percentage$"
+                },
+                "--percentage-in-perfdata": {
+                    "description": "Add computed percentage values to perfdata, although they are technically redundant",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_percentage_in_perfdata$"
+                },
+                "--swap-free-critical": {
+                    "description": "Critical threshold for free memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_swap_free_critical$"
+                },
+                "--swap-free-critical-percentage": {
+                    "description": "Critical threshold for free memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_swap_free_critical_percentage$"
+                },
+                "--swap-free-warning": {
+                    "description": "Warning threshold for free memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_swap_free_warning$"
+                },
+                "--swap-free-warning-percentage": {
+                    "description": "Warning threshold for free memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_swap_free_warning_percentage$"
+                },
+                "--swap-used-critical": {
+                    "description": "Critical threshold for used memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_swap_used_critical$"
+                },
+                "--swap-used-critical-percentage": {
+                    "description": "Critical threshold for used memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_swap_used_critical_percentage$"
+                },
+                "--swap-used-warning": {
+                    "description": "Warning threshold for used memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_swap_used_warning$"
+                },
+                "--swap-used-warning-percentage": {
+                    "description": "Warning threshold for used memory",
+                    "repeat_key": false,
+                    "value": "$system_basics_memory_swap_used_warning_percentage$"
+                },
+                "memory": {
+                    "repeat_key": false,
+                    "set_if": "1",
+                    "set_if_format": "string",
+                    "order": "-1"
+                }
+            },
+            "fields": [
+                {
+                    "datafield_id": 463,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 464,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 465,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 466,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 467,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 468,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 469,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 470,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 471,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 472,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 473,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 474,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 475,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 476,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 477,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 478,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 479,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 480,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 481,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 482,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [
+                "system_basics"
+            ],
+            "methods_execute": "PluginCheck",
+            "object_name": "system_basics_memory",
+            "object_type": "object"
+        },
+        "system_basics_netdev": {
+            "arguments": {
+                "--down-is-critical": {
+                    "description": "Setting this option will set the state to CRITICAL if an interface is DOWN",
+                    "repeat_key": false,
+                    "set_if": "$system_basics_netdev_down_is_critical$",
+                    "set_if_format": "string"
+                },
+                "--exclude-interface-name": {
+                    "description": "Ignore all interfaces where the interface name matches this regexp regex (may be repeated). E.g. 'eth', '^et.*'",
+                    "value": "$system_basics_netdev_exclude_interface_name$"
+                },
+                "--include-interface-name": {
+                    "description": "Explicitly include only interfaces whose names match this regexp regex (may be repeated). E.g. 'eth', '^et.*'",
+                    "value": "$system_basics_netdev_include_interface_name$"
+                },
+                "--not-up-is-ok": {
+                    "description": "Setting this option will set the state to OK regardless of the actual state of an interface",
+                    "repeat_key": false,
+                    "set_if": "$system_basics_netdev_not_up_is_ok$",
+                    "set_if_format": "string"
+                },
+                "--unknown-is-ok": {
+                    "description": "Setting this option will set the state to OK if the interface is in a state of UNKNOWN",
+                    "repeat_key": false,
+                    "set_if": "$system_basics_netdev_unknown_is_ok$",
+                    "set_if_format": "string"
+                },
+                "netdev": {
+                    "repeat_key": false,
+                    "set_if": "1",
+                    "set_if_format": "string",
+                    "order": "-1"
+                }
+            },
+            "fields": [
+                {
+                    "datafield_id": 487,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 484,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 485,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 488,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 489,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [
+                "system_basics"
+            ],
+            "methods_execute": "PluginCheck",
+            "object_name": "system_basics_netdev",
+            "object_type": "object"
+        },
+        "system_basics_psi": {
+            "arguments": {
+                "--critical-cpu-avg": {
+                    "description": "Critical threshold for all the pressure/cpu values. Will be overwritten by more specific parameters.",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_cpu_avg$"
+                },
+                "--critical-cpu-full-avg10": {
+                    "description": "Critical threshold for the pressure/cpu Full Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_cpu_full_avg10$"
+                },
+                "--critical-cpu-full-avg300": {
+                    "description": "Critical threshold for the pressure/cpu Full Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_cpu_full_avg300$"
+                },
+                "--critical-cpu-full-avg60": {
+                    "description": "Critical threshold for the pressure/cpu Full Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_cpu_full_avg60$"
+                },
+                "--critical-cpu-some-avg10": {
+                    "description": "Critical threshold for the pressure/cpu Some Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_cpu_some_avg10$"
+                },
+                "--critical-cpu-some-avg300": {
+                    "description": "Critical threshold for the pressure/cpu Some Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_cpu_some_avg300$"
+                },
+                "--critical-cpu-some-avg60": {
+                    "description": "Critical threshold for the pressure/cpu Some Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_cpu_some_avg60$"
+                },
+                "--critical-io-avg": {
+                    "description": "Critical threshold for all the pressure/io values. Will be overwritten by more specific parameters.",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_io_avg$"
+                },
+                "--critical-io-full-avg10": {
+                    "description": "Critical threshold for the pressure/io Full Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_io_full_avg10$"
+                },
+                "--critical-io-full-avg300": {
+                    "description": "Critical threshold for the pressure/io Full Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_io_full_avg300$"
+                },
+                "--critical-io-full-avg60": {
+                    "description": "Critical threshold for the pressure/io Full Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_io_full_avg60$"
+                },
+                "--critical-io-some-avg10": {
+                    "description": "Critical threshold for the pressure/io Some Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_io_some_avg10$"
+                },
+                "--critical-io-some-avg300": {
+                    "description": "Critical threshold for the pressure/io Some Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_io_some_avg300$"
+                },
+                "--critical-io-some-avg60": {
+                    "description": "Critical threshold for the pressure/io Some Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_io_some_avg60$"
+                },
+                "--critical-memory-avg": {
+                    "description": "Critical threshold for all the pressure/memory values. Will be overwritten by more specific parameters.",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_memory_avg$"
+                },
+                "--critical-memory-full-avg10": {
+                    "description": "Critical threshold for the pressure/memory Full Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_memory_full_avg10$"
+                },
+                "--critical-memory-full-avg300": {
+                    "description": "Critical threshold for the pressure/memory Full Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_memory_full_avg300$"
+                },
+                "--critical-memory-full-avg60": {
+                    "description": "Critical threshold for the pressure/memory Full Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_memory_full_avg60$"
+                },
+                "--critical-memory-some-avg10": {
+                    "description": "Critical threshold for the pressure/memory Some Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_memory_some_avg10$"
+                },
+                "--critical-memory-some-avg300": {
+                    "description": "Critical threshold for the pressure/memory Some Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_memory_some_avg300$"
+                },
+                "--critical-memory-some-avg60": {
+                    "description": "Critical threshold for the pressure/memory Some Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_critical_memory_some_avg60$"
+                },
+                "--include-cpu": {
+                    "description": "Include CPU values explicitly (by default all are included)",
+                    "repeat_key": false,
+                    "set_if": "$system_basics_psi_include_cpu$",
+                    "set_if_format": "string"
+                },
+                "--include-io": {
+                    "description": "Include IO values explicitly (by default all are included)",
+                    "repeat_key": false,
+                    "set_if": "$system_basics_psi_include_io$",
+                    "set_if_format": "string"
+                },
+                "--include-memory": {
+                    "description": "Include Memory values explicitly (by default all are included)",
+                    "repeat_key": false,
+                    "set_if": "$system_basics_psi_include_memory$",
+                    "set_if_format": "string"
+                },
+                "--warning-cpu-avg": {
+                    "description": "Warning threshold for all the pressure/cpu values. Will be overwritten by more specific parameters.",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_cpu_avg$"
+                },
+                "--warning-cpu-full-avg10": {
+                    "description": "Warning threshold for the pressure/cpu Full Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_cpu_full_avg10$"
+                },
+                "--warning-cpu-full-avg300": {
+                    "description": "Warning threshold for the pressure/cpu Full Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_cpu_full_avg300$"
+                },
+                "--warning-cpu-full-avg60": {
+                    "description": "Warning threshold for the pressure/cpu Full Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_cpu_full_avg60$"
+                },
+                "--warning-cpu-some-avg10": {
+                    "description": "Warning threshold for the pressure/cpu Some Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_cpu_some_avg10$"
+                },
+                "--warning-cpu-some-avg300": {
+                    "description": "Warning threshold for the pressure/cpu Some Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_cpu_some_avg300$"
+                },
+                "--warning-cpu-some-avg60": {
+                    "description": "Warning threshold for the pressure/cpu Some Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_cpu_some_avg60$"
+                },
+                "--warning-io-avg": {
+                    "description": "Warning threshold for all the pressure/io values. Will be overwritten by more specific parameters.",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_io_avg$"
+                },
+                "--warning-io-full-avg10": {
+                    "description": "Warning threshold for the pressure/io Full Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_io_full_avg10$"
+                },
+                "--warning-io-full-avg300": {
+                    "description": "Warning threshold for the pressure/io Full Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_io_full_avg300$"
+                },
+                "--warning-io-full-avg60": {
+                    "description": "Warning threshold for the pressure/io Full Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_io_full_avg60$"
+                },
+                "--warning-io-some-avg10": {
+                    "description": "Warning threshold for the pressure/io Some Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_io_some_avg10$"
+                },
+                "--warning-io-some-avg300": {
+                    "description": "Warning threshold for the pressure/io Some Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_io_some_avg300$"
+                },
+                "--warning-io-some-avg60": {
+                    "description": "Warning threshold for the pressure/io Some Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_io_some_avg60$"
+                },
+                "--warning-memory-avg": {
+                    "description": "Warning threshold for all the pressure/memory values. Will be overwritten by more specific parameters.",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_memory_avg$"
+                },
+                "--warning-memory-full-avg10": {
+                    "description": "Warning threshold for the pressure/memory Full Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_memory_full_avg10$"
+                },
+                "--warning-memory-full-avg300": {
+                    "description": "Warning threshold for the pressure/memory Full Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_memory_full_avg300$"
+                },
+                "--warning-memory-full-avg60": {
+                    "description": "Warning threshold for the pressure/memory Full Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_memory_full_avg60$"
+                },
+                "--warning-memory-some-avg10": {
+                    "description": "Warning threshold for the pressure/memory Some Avg10 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_memory_some_avg10$"
+                },
+                "--warning-memory-some-avg300": {
+                    "description": "Warning threshold for the pressure/memory Some Avg300 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_memory_some_avg300$"
+                },
+                "--warning-memory-some-avg60": {
+                    "description": "Warning threshold for the pressure/memory Some Avg60 value",
+                    "repeat_key": false,
+                    "value": "$system_basics_psi_warning_memory_some_avg60$"
+                },
+                "psi": {
+                    "repeat_key": false,
+                    "set_if": "1",
+                    "set_if_format": "string",
+                    "order": "-1"
+                }
+            },
+            "fields": [
+                {
+                    "datafield_id": 490,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 491,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 492,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 493,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 494,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 495,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 496,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 497,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 498,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 499,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 500,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 501,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 502,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 503,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 504,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 505,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 506,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 507,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 508,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 509,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 510,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 422,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 423,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 424,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 512,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 513,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 515,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 514,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 516,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 518,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 519,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 520,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 521,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 522,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 523,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 524,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 525,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 526,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 527,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 528,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 529,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 530,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 531,
+                    "is_required": "n",
+                    "var_filter": null
+                },
+                {
+                    "datafield_id": 532,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "imports": [
+                "system_basics"
+            ],
+            "methods_execute": "PluginCheck",
+            "object_name": "system_basics_psi",
+            "object_type": "object"
+        },
+        "system_basics_sensors": {
+            "arguments": {
+                "sensors": {
+                    "repeat_key": false,
+                    "set_if": "1",
+                    "set_if_format": "string",
+                    "order": "-1"
+                }
+            },
+            "fields": [],
+            "imports": [
+                "system_basics"
+            ],
+            "methods_execute": "PluginCheck",
+            "object_name": "system_basics_sensors",
+            "object_type": "object"
+        }
+    },
+    "CommandTemplate": {
+        "system_basics": {
+            "arguments": {
+                "--dump-icinga2-config": {
+                    "description": "Dump icinga2 config for this plugin",
+                    "repeat_key": false,
+                    "set_if": "$system_basics_dump_icinga2_config$",
+                    "set_if_format": "string"
+                },
+                "--timeout": {
+                    "description": "Timeout for the check",
+                    "repeat_key": false,
+                    "value": "$system_basics_timeout$"
+                },
+                "--version": {
+                    "description": "version for check_system_basics",
+                    "repeat_key": false,
+                    "set_if": "$system_basics_version$",
+                    "set_if_format": "string"
+                }
+            },
+            "command": "PluginDir + /check_system_basics",
+            "fields": [
+                {
+                    "datafield_id": 426,
+                    "is_required": "n",
+                    "var_filter": null
+                }
+            ],
+            "methods_execute": "PluginCheck",
+            "object_name": "system_basics",
+            "object_type": "template",
+            "timeout": 60
+        }
+    },
+    "Datafield": {
+        "429": {
+            "varname": "system_basics_filesystem_criticalAbsolutFreeSpace",
+            "caption": "system_basics_filesystem_criticalAbsolutFreeSpace",
+            "description": "Absolute critical threshold for free filesystem space.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "430": {
+            "varname": "system_basics_filesystem_criticalAbsolutUsedInodes",
+            "caption": "system_basics_filesystem_criticalAbsolutUsedInodes",
+            "description": "Absolute critical threshold for number of used inodes.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "431": {
+            "varname": "system_basics_filesystem_criticalAbsolutUsedSpace",
+            "caption": "system_basics_filesystem_criticalAbsolutUsedSpace",
+            "description": "Absolute critical threshold for used filesystem space.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "432": {
+            "varname": "system_basics_filesystem_criticalPercentFreeInodes",
+            "caption": "system_basics_filesystem_criticalPercentFreeInodes",
+            "description": "Percentage critical threshold for percentage of free inodes.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "433": {
+            "varname": "system_basics_filesystem_criticalPercentFreeSpace",
+            "caption": "system_basics_filesystem_criticalPercentFreeSpace",
+            "description": "Percentage critical threshold for free filesystem space.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "434": {
+            "varname": "system_basics_filesystem_criticalPercentUsedInodes",
+            "caption": "system_basics_filesystem_criticalPercentUsedInodes",
+            "description": "Percentage critical threshold for percentage of used inodes.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "435": {
+            "varname": "system_basics_filesystem_criticalPercentUsedSpace",
+            "caption": "system_basics_filesystem_criticalPercentUsedSpace",
+            "description": "Percentage critical threshold for used filesystem space.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "436": {
+            "varname": "system_basics_filesystem_criticalTotalCountOfMatches",
+            "caption": "system_basics_filesystem_criticalTotalCountOfMatches",
+            "description": "A critical threshold for the number of filesystems matching the filters.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "437": {
+            "varname": "system_basics_filesystem_exclude_device_path",
+            "caption": "system_basics_filesystem_exclude_device_path",
+            "description": "Ignore the given device path regex (may be repeated). E.g. '/dev/sd.*'",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "438": {
+            "varname": "system_basics_filesystem_exclude_fs_type",
+            "caption": "system_basics_filesystem_exclude_fs_type",
+            "description": "Ignore all filesystems of indicated type (may be repeated). E.g. 'zfs', 'apfs'\\nNote: The same thresholds will be applied to all filesystems",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "439": {
+            "varname": "system_basics_filesystem_exclude_mount_options",
+            "caption": "system_basics_filesystem_exclude_mount_options",
+            "description": "Ignore the filesystems with this mount option (in form of a go regexp regex) (may be repeated). E.g. 'async' or '^sync$'",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "425": {
+            "varname": "system_basics_filesystem_exclude_mount_path",
+            "caption": "system_basics_filesystem_exclude_mount_path",
+            "description": "Ignore the given mount path regex (may be repeated). E.g. '^/srv/mount.*'",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeArray",
+            "format": null,
+            "settings": {},
+            "category": "System Basics Parameter"
+        },
+        "440": {
+            "varname": "system_basics_filesystem_include_device_path",
+            "caption": "system_basics_filesystem_include_device_path",
+            "description": "Explicitly include only filesystems of indicated type (may be repeated). E.g. '/dev/sda'",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "441": {
+            "varname": "system_basics_filesystem_include_fs_type",
+            "caption": "system_basics_filesystem_include_fs_type",
+            "description": "Explicitly include only filesystems of indicated type (may be repeated). E.g. 'zfs', 'apfs'\\nNote: The same thresholds will be applied to all filesystems",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "442": {
+            "varname": "system_basics_filesystem_include_mount_options",
+            "caption": "system_basics_filesystem_include_mount_options",
+            "description": "Explicitly include only filesystems mounted with the given option (in form of a go regexp regex) (may be repeated). E.g. 'async' or '^sync$'",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "443": {
+            "varname": "system_basics_filesystem_include_mount_path",
+            "caption": "system_basics_filesystem_include_mount_path",
+            "description": "Explicitly include only filesystems of indicated type (may be repeated). E.g. '/dev/sda'",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "444": {
+            "varname": "system_basics_filesystem_readonly_filesystems",
+            "caption": "system_basics_filesystem_readonly_filesystems",
+            "description": "Only list filesystem mounted as readonly. This is just a convenient shorthand for \\\"--include-mount-options '^ro$'\\\"",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "445": {
+            "varname": "system_basics_filesystem_readwrite_filesystems",
+            "caption": "system_basics_filesystem_readwrite_filesystems",
+            "description": "Only list filesystem mounted as readwrite. This is just a convenient shorthand for \\\"--include-mount-options '^rw$'\\\"",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "447": {
+            "varname": "system_basics_filesystem_warningAbsolutFreeInodes",
+            "caption": "system_basics_filesystem_warningAbsolutFreeInodes",
+            "description": "Absolute warning threshold for number of free inodes",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "448": {
+            "varname": "system_basics_filesystem_warningAbsolutFreeSpace",
+            "caption": "system_basics_filesystem_warningAbsolutFreeSpace",
+            "description": "Absolute warning threshold for free filesystem space.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "449": {
+            "varname": "system_basics_filesystem_warningAbsolutUsedSpace",
+            "caption": "system_basics_filesystem_warningAbsolutUsedSpace",
+            "description": "Absolute warning threshold for used filesystem space.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "450": {
+            "varname": "system_basics_filesystem_warningPercentFreeInodes",
+            "caption": "system_basics_filesystem_warningPercentFreeInodes",
+            "description": "Percentage warning threshold for percentage of free inodes",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "451": {
+            "varname": "system_basics_filesystem_warningPercentFreeSpace",
+            "caption": "system_basics_filesystem_warningPercentFreeSpace",
+            "description": "Percentage warning threshold for free filesystem space.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "452": {
+            "varname": "system_basics_filesystem_warningPercentUsedInodes",
+            "caption": "system_basics_filesystem_warningPercentUsedInodes",
+            "description": "Percentage warning threshold for percentage of used inodes",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "453": {
+            "varname": "system_basics_filesystem_warningPercentUsedSpace",
+            "caption": "system_basics_filesystem_warningPercentUsedSpace",
+            "description": "Percentage warning threshold for used filesystem space.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "454": {
+            "varname": "system_basics_filesystem_warningTotalCountOfMatches",
+            "caption": "system_basics_filesystem_warningTotalCountOfMatches",
+            "description": "A warning threshold for the number of filesystems matching the filters",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "455": {
+            "varname": "system_basics_load_load15_critical",
+            "caption": "system_basics_load_load15_critical",
+            "description": "Critical threshold for the load 15 minute average.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "456": {
+            "varname": "system_basics_load_load15_warning",
+            "caption": "system_basics_load_load15_warning",
+            "description": "Warning threshold for the load 15 minute average.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "457": {
+            "varname": "system_basics_load_load1_critical",
+            "caption": "system_basics_load_load1_critical",
+            "description": "Critical threshold for the load 1 minute average.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "458": {
+            "varname": "system_basics_load_load1_warning",
+            "caption": "system_basics_load_load1_warning",
+            "description": "Warning threshold for the load 1 minute average.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "459": {
+            "varname": "system_basics_load_load5_critical",
+            "caption": "system_basics_load_load5_critical",
+            "description": "Critical threshold for the load 5 minute average.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "460": {
+            "varname": "system_basics_load_load5_warning",
+            "caption": "system_basics_load_load5_warning",
+            "description": "Warning threshold for the load 5 minute average.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "461": {
+            "varname": "system_basics_load_per_cpu",
+            "caption": "system_basics_load_per_cpu",
+            "description": "Divide the load averages by the number of CPUs",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "463": {
+            "varname": "system_basics_memory_memory_available_critical",
+            "caption": "system_basics_memory_memory_available_critical",
+            "description": "Critical threshold for available memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "464": {
+            "varname": "system_basics_memory_memory_available_critical_percentage",
+            "caption": "system_basics_memory_memory_available_critical_percentage",
+            "description": "Critical threshold for available memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "465": {
+            "varname": "system_basics_memory_memory_available_warning",
+            "caption": "system_basics_memory_memory_available_warning",
+            "description": "Warning threshold for available memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "466": {
+            "varname": "system_basics_memory_memory_available_warning_percentage",
+            "caption": "system_basics_memory_memory_available_warning_percentage",
+            "description": "Warning threshold for available memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "467": {
+            "varname": "system_basics_memory_memory_free_critical",
+            "caption": "system_basics_memory_memory_free_critical",
+            "description": "Critical threshold for free memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "468": {
+            "varname": "system_basics_memory_memory_free_critical_percentage",
+            "caption": "system_basics_memory_memory_free_critical_percentage",
+            "description": "Critical threshold for free memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "469": {
+            "varname": "system_basics_memory_memory_free_warning",
+            "caption": "system_basics_memory_memory_free_warning",
+            "description": "Warning threshold for free memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "470": {
+            "varname": "system_basics_memory_memory_used_critical",
+            "caption": "system_basics_memory_memory_used_critical",
+            "description": "Critical threshold for used memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "471": {
+            "varname": "system_basics_memory_memory_used_critical_percentage",
+            "caption": "system_basics_memory_memory_used_critical_percentage",
+            "description": "Critical threshold for used memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "472": {
+            "varname": "system_basics_memory_memory_used_warning",
+            "caption": "system_basics_memory_memory_used_warning",
+            "description": "Warning threshold for used memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "473": {
+            "varname": "system_basics_memory_memory_used_warning_percentage",
+            "caption": "system_basics_memory_memory_used_warning_percentage",
+            "description": "Warning threshold for used memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "474": {
+            "varname": "system_basics_memory_percentage_in_perfdata",
+            "caption": "system_basics_memory_percentage_in_perfdata",
+            "description": "Add computed percentage values to perfdata, although they are technically redundant",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "475": {
+            "varname": "system_basics_memory_swap_free_critical",
+            "caption": "system_basics_memory_swap_free_critical",
+            "description": "Critical threshold for free memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "476": {
+            "varname": "system_basics_memory_swap_free_critical_percentage",
+            "caption": "system_basics_memory_swap_free_critical_percentage",
+            "description": "Critical threshold for free memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "477": {
+            "varname": "system_basics_memory_swap_free_warning",
+            "caption": "system_basics_memory_swap_free_warning",
+            "description": "Warning threshold for free memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "478": {
+            "varname": "system_basics_memory_swap_free_warning_percentage",
+            "caption": "system_basics_memory_swap_free_warning_percentage",
+            "description": "Warning threshold for free memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "479": {
+            "varname": "system_basics_memory_swap_used_critical",
+            "caption": "system_basics_memory_swap_used_critical",
+            "description": "Critical threshold for used memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "480": {
+            "varname": "system_basics_memory_swap_used_critical_percentage",
+            "caption": "system_basics_memory_swap_used_critical_percentage",
+            "description": "Critical threshold for used memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "481": {
+            "varname": "system_basics_memory_swap_used_warning",
+            "caption": "system_basics_memory_swap_used_warning",
+            "description": "Warning threshold for used memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "482": {
+            "varname": "system_basics_memory_swap_used_warning_percentage",
+            "caption": "system_basics_memory_swap_used_warning_percentage",
+            "description": "Warning threshold for used memory",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "487": {
+            "varname": "system_basics_netdev_down_is_critical",
+            "caption": "system_basics_netdev_down_is_critical",
+            "description": "Setting this option will set the state to CRITICAL if an interface is DOWN",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "settings": {},
+            "category": "System Basics Parameter"
+        },
+        "484": {
+            "varname": "system_basics_netdev_exclude_interface_name",
+            "caption": "system_basics_netdev_exclude_interface_name",
+            "description": "Ignore all interfaces where the interface name matches this regexp regex (may be repeated). E.g. 'eth', '^et.*'",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "485": {
+            "varname": "system_basics_netdev_include_interface_name",
+            "caption": "system_basics_netdev_include_interface_name",
+            "description": "Explicitly include only interfaces whose names match this regexp regex (may be repeated). E.g. 'eth', '^et.*'",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "488": {
+            "varname": "system_basics_netdev_not_up_is_ok",
+            "caption": "system_basics_netdev_not_up_is_ok",
+            "description": "Setting this option will set the state to OK regardless of the actual state of an interface",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "settings": {},
+            "category": "System Basics Parameter"
+        },
+        "489": {
+            "varname": "system_basics_netdev_unknown_is_ok",
+            "caption": "system_basics_netdev_unknown_is_ok",
+            "description": "Setting this option will set the state to OK if the interface is in a state of UNKNOWN",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "settings": {},
+            "category": "System Basics Parameter"
+        },
+        "490": {
+            "varname": "system_basics_psi_critical_cpu_avg",
+            "caption": "system_basics_psi_critical_cpu_avg",
+            "description": "Critical threshold for all the pressure/cpu values. Will be overwritten by more specific parameters.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "491": {
+            "varname": "system_basics_psi_critical_cpu_full_avg10",
+            "caption": "system_basics_psi_critical_cpu_full_avg10",
+            "description": "Critical threshold for the pressure/cpu Full Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "492": {
+            "varname": "system_basics_psi_critical_cpu_full_avg300",
+            "caption": "system_basics_psi_critical_cpu_full_avg300",
+            "description": "Critical threshold for the pressure/cpu Full Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "493": {
+            "varname": "system_basics_psi_critical_cpu_full_avg60",
+            "caption": "system_basics_psi_critical_cpu_full_avg60",
+            "description": "Critical threshold for the pressure/cpu Full Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "494": {
+            "varname": "system_basics_psi_critical_cpu_some_avg10",
+            "caption": "system_basics_psi_critical_cpu_some_avg10",
+            "description": "Critical threshold for the pressure/cpu Some Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "495": {
+            "varname": "system_basics_psi_critical_cpu_some_avg300",
+            "caption": "system_basics_psi_critical_cpu_some_avg300",
+            "description": "Critical threshold for the pressure/cpu Some Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "496": {
+            "varname": "system_basics_psi_critical_cpu_some_avg60",
+            "caption": "system_basics_psi_critical_cpu_some_avg60",
+            "description": "Critical threshold for the pressure/cpu Some Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "497": {
+            "varname": "system_basics_psi_critical_io_avg",
+            "caption": "system_basics_psi_critical_io_avg",
+            "description": "Critical threshold for all the pressure/io values. Will be overwritten by more specific parameters.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "498": {
+            "varname": "system_basics_psi_critical_io_full_avg10",
+            "caption": "system_basics_psi_critical_io_full_avg10",
+            "description": "Critical threshold for the pressure/io Full Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "499": {
+            "varname": "system_basics_psi_critical_io_full_avg300",
+            "caption": "system_basics_psi_critical_io_full_avg300",
+            "description": "Critical threshold for the pressure/io Full Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "500": {
+            "varname": "system_basics_psi_critical_io_full_avg60",
+            "caption": "system_basics_psi_critical_io_full_avg60",
+            "description": "Critical threshold for the pressure/io Full Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "501": {
+            "varname": "system_basics_psi_critical_io_some_avg10",
+            "caption": "system_basics_psi_critical_io_some_avg10",
+            "description": "Critical threshold for the pressure/io Some Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "502": {
+            "varname": "system_basics_psi_critical_io_some_avg300",
+            "caption": "system_basics_psi_critical_io_some_avg300",
+            "description": "Critical threshold for the pressure/io Some Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "503": {
+            "varname": "system_basics_psi_critical_io_some_avg60",
+            "caption": "system_basics_psi_critical_io_some_avg60",
+            "description": "Critical threshold for the pressure/io Some Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "504": {
+            "varname": "system_basics_psi_critical_memory_avg",
+            "caption": "system_basics_psi_critical_memory_avg",
+            "description": "Critical threshold for all the pressure/memory values. Will be overwritten by more specific parameters.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "505": {
+            "varname": "system_basics_psi_critical_memory_full_avg10",
+            "caption": "system_basics_psi_critical_memory_full_avg10",
+            "description": "Critical threshold for the pressure/memory Full Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "506": {
+            "varname": "system_basics_psi_critical_memory_full_avg300",
+            "caption": "system_basics_psi_critical_memory_full_avg300",
+            "description": "Critical threshold for the pressure/memory Full Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "507": {
+            "varname": "system_basics_psi_critical_memory_full_avg60",
+            "caption": "system_basics_psi_critical_memory_full_avg60",
+            "description": "Critical threshold for the pressure/memory Full Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        },
+        "508": {
+            "varname": "system_basics_psi_critical_memory_some_avg10",
+            "caption": "system_basics_psi_critical_memory_some_avg10",
+            "description": "Critical threshold for the pressure/memory Some Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "509": {
+            "varname": "system_basics_psi_critical_memory_some_avg300",
+            "caption": "system_basics_psi_critical_memory_some_avg300",
+            "description": "Critical threshold for the pressure/memory Some Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "510": {
+            "varname": "system_basics_psi_critical_memory_some_avg60",
+            "caption": "system_basics_psi_critical_memory_some_avg60",
+            "description": "Critical threshold for the pressure/memory Some Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "422": {
+            "varname": "system_basics_psi_include_cpu",
+            "caption": "system_basics_psi_include_cpu",
+            "description": "Include CPU values explicitly (by default all are included)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "settings": {},
+            "category": "System Basics Parameter"
+        },
+        "423": {
+            "varname": "system_basics_psi_include_io",
+            "caption": "system_basics_psi_include_io",
+            "description": "Include IO values explicitly (by default all are included)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "settings": {},
+            "category": "System Basics Parameter"
+        },
+        "424": {
+            "varname": "system_basics_psi_include_memory",
+            "caption": "system_basics_psi_include_memory",
+            "description": "Include Memory values explicitly (by default all are included)",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeBoolean",
+            "format": null,
+            "settings": {},
+            "category": "System Basics Parameter"
+        },
+        "512": {
+            "varname": "system_basics_psi_warning_cpu_avg",
+            "caption": "system_basics_psi_warning_cpu_avg",
+            "description": "Warning threshold for all the pressure/cpu values. Will be overwritten by more specific parameters.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "513": {
+            "varname": "system_basics_psi_warning_cpu_full_avg10",
+            "caption": "system_basics_psi_warning_cpu_full_avg10",
+            "description": "Warning threshold for the pressure/cpu Full Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "515": {
+            "varname": "system_basics_psi_warning_cpu_full_avg300",
+            "caption": "system_basics_psi_warning_cpu_full_avg300",
+            "description": "Warning threshold for the pressure/cpu Full Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "514": {
+            "varname": "system_basics_psi_warning_cpu_full_avg60",
+            "caption": "system_basics_psi_warning_cpu_full_avg60",
+            "description": "Warning threshold for the pressure/cpu Full Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "516": {
+            "varname": "system_basics_psi_warning_cpu_some_avg300",
+            "caption": "system_basics_psi_warning_cpu_some_avg300",
+            "description": "Warning threshold for the pressure/cpu Some Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "518": {
+            "varname": "system_basics_psi_warning_cpu_some_avg60",
+            "caption": "system_basics_psi_warning_cpu_some_avg60",
+            "description": "Warning threshold for the pressure/cpu Some Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "519": {
+            "varname": "system_basics_psi_warning_io_avg",
+            "caption": "system_basics_psi_warning_io_avg",
+            "description": "Warning threshold for all the pressure/io values. Will be overwritten by more specific parameters.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "520": {
+            "varname": "system_basics_psi_warning_io_full_avg10",
+            "caption": "system_basics_psi_warning_io_full_avg10",
+            "description": "Warning threshold for the pressure/io Full Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "521": {
+            "varname": "system_basics_psi_warning_io_full_avg300",
+            "caption": "system_basics_psi_warning_io_full_avg300",
+            "description": "Warning threshold for the pressure/io Full Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "522": {
+            "varname": "system_basics_psi_warning_io_full_avg60",
+            "caption": "system_basics_psi_warning_io_full_avg60",
+            "description": "Warning threshold for the pressure/io Full Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "523": {
+            "varname": "system_basics_psi_warning_io_some_avg10",
+            "caption": "system_basics_psi_warning_io_some_avg10",
+            "description": "Warning threshold for the pressure/io Some Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "524": {
+            "varname": "system_basics_psi_warning_io_some_avg300",
+            "caption": "system_basics_psi_warning_io_some_avg300",
+            "description": "Warning threshold for the pressure/io Some Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "525": {
+            "varname": "system_basics_psi_warning_io_some_avg60",
+            "caption": "system_basics_psi_warning_io_some_avg60",
+            "description": "Warning threshold for the pressure/io Some Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "526": {
+            "varname": "system_basics_psi_warning_memory_avg",
+            "caption": "system_basics_psi_warning_memory_avg",
+            "description": "Warning threshold for all the pressure/memory values. Will be overwritten by more specific parameters.",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "527": {
+            "varname": "system_basics_psi_warning_memory_full_avg10",
+            "caption": "system_basics_psi_warning_memory_full_avg10",
+            "description": "Warning threshold for the pressure/memory Full Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "528": {
+            "varname": "system_basics_psi_warning_memory_full_avg300",
+            "caption": "system_basics_psi_warning_memory_full_avg300",
+            "description": "Warning threshold for the pressure/memory Full Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "529": {
+            "varname": "system_basics_psi_warning_memory_full_avg60",
+            "caption": "system_basics_psi_warning_memory_full_avg60",
+            "description": "Warning threshold for the pressure/memory Full Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "530": {
+            "varname": "system_basics_psi_warning_memory_some_avg10",
+            "caption": "system_basics_psi_warning_memory_some_avg10",
+            "description": "Warning threshold for the pressure/memory Some Avg10 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "531": {
+            "varname": "system_basics_psi_warning_memory_some_avg300",
+            "caption": "system_basics_psi_warning_memory_some_avg300",
+            "description": "Warning threshold for the pressure/memory Some Avg300 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "532": {
+            "varname": "system_basics_psi_warning_memory_some_avg60",
+            "caption": "system_basics_psi_warning_memory_some_avg60",
+            "description": "Warning threshold for the pressure/memory Some Avg60 value",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {},
+            "category": null
+        },
+        "426": {
+            "varname": "system_basics_timeout",
+            "caption": "system_basics_timeout",
+            "description": "Timeout for the check",
+            "datatype": "Icinga\\Module\\Director\\DataType\\DataTypeString",
+            "format": null,
+            "settings": {
+                "visibility": "visible"
+            },
+            "category": "System Basics Parameter"
+        }
+    },
+    "DatafieldCategory": {
+        "System Basics Parameter": {
+            "category_name": "System Basics Parameter",
+            "description": "Check system_basics plugin parameters",
+            "originalId": "4"
+        }
+    }
+}
