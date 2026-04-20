@@ -38,17 +38,18 @@ const (
 )
 
 func (d *Device) String() string {
-	result := d.Name
-	result += ": "
+	var result strings.Builder
+	result.WriteString(d.Name)
+	result.WriteString(": ")
 
 	for idx := range d.Sensors {
-		result += d.Sensors[idx].String()
+		result.WriteString(d.Sensors[idx].String())
 		if idx < len(d.Sensors) {
-			result += ";"
+			result.WriteString(";")
 		}
 	}
 
-	return result
+	return result.String()
 }
 
 func (s *Sensor) String() string {

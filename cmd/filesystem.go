@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"slices"
 	"strconv"
 	"time"
 
@@ -521,11 +522,8 @@ func computeFsCheckResult(fs *filesystem.FilesystemType, config *filesystem.Chec
 
 	filesystemsWithFixedNumberOfInodes := filesystem.GetFilesystemsWithFixedNumberOfInodes()
 
-	for i := range filesystemsWithFixedNumberOfInodes {
-		if fs.PartStats.Fstype == filesystemsWithFixedNumberOfInodes[i] {
-			returnResult.AddSubcheck(computeFsCheckResultInodes(fs, config))
-			break
-		}
+	if slices.Contains(filesystemsWithFixedNumberOfInodes, fs.PartStats.Fstype) {
+		returnResult.AddSubcheck(computeFsCheckResultInodes(fs, config))
 	}
 
 	return returnResult
