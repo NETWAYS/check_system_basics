@@ -47,18 +47,23 @@ thresholds respecting the sensor type and the respective specialities`,
 			overall.Add(check.Unknown, "No devices found")
 			check.ExitRaw(overall.GetStatus(), overall.GetOutput())
 		}
+
 		var (
 			alarms uint = 0
 		)
 
 		for _, device := range devices {
 			var devicePartial result.PartialResult
+
 			_ = devicePartial.SetDefaultState(check.OK)
+
 			devicePartial.Output = device.Name
 			for idx, sensor := range device.Sensors {
 				var ssc result.PartialResult
+
 				_ = ssc.SetDefaultState(check.OK)
 				ssc.Perfdata.Add(&(device.Sensors[idx]).Perfdata)
+
 				if sensor.Alarm {
 					ssc.Output = "Alarm!"
 					_ = ssc.SetState(check.Critical)

@@ -9,6 +9,7 @@ import (
 	"github.com/shirou/gopsutil/v3/disk"
 )
 
+// FilesystemType describes the retrieved metadata of a filesystem
 // nolint: revive
 type FilesystemType struct {
 	PartStats  disk.PartitionStat
@@ -29,8 +30,8 @@ func GetDiskUsageSingle(ctx context.Context, timeout time.Duration, fs *Filesyst
 
 	go func() {
 		tmp := tmpFileSystemWrapper{}
-		usageStats, err := disk.Usage(fs.PartStats.Mountpoint)
 
+		usageStats, err := disk.Usage(fs.PartStats.Mountpoint)
 		if err == nil {
 			tmp.usage = *usageStats
 		}

@@ -175,7 +175,6 @@ func parsePressureValue(val string) (PressureValue, error) {
 
 func readPressureFile(pressurePath string) (*PressureElement, error) {
 	readFile, err := os.Open(pressurePath)
-
 	if err != nil {
 		return nil, err
 	}
