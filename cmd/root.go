@@ -29,7 +29,8 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	defer check.CatchPanic()
 
-	if err := rootCmd.Execute(); err != nil {
+	err := rootCmd.Execute()
+	if err != nil {
 		check.ExitError(err)
 	}
 }

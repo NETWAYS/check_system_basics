@@ -236,6 +236,7 @@ func init() {
 
 func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 	var cpuCheck result.PartialResult
+
 	_ = cpuCheck.SetDefaultState(check.OK)
 	cpuCheck.Output = "CPU"
 
@@ -376,6 +377,7 @@ func checkPsiCPUPressure(config *psiConfig) result.PartialResult {
 
 func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 	var ioCheck result.PartialResult
+
 	_ = ioCheck.SetDefaultState(check.OK)
 	ioCheck.Output = "IO"
 
@@ -515,6 +517,7 @@ func checkPsiIoPressure(config *psiConfig) result.PartialResult {
 
 func checkPsiMemoryPressure(config *psiConfig) result.PartialResult {
 	var memoryCheck result.PartialResult
+
 	_ = memoryCheck.SetDefaultState(check.OK)
 	memoryCheck.Output = "Memory"
 

@@ -14,7 +14,7 @@ type Options struct {
 	RegexpMatching        bool
 }
 
-// Filters on Value with a list of filters
+// Filter filters the input with a list of filters
 // @return, true if value should be included, false otherwise
 func Filter[I Filterable](input []I, filterList *[]string, valueIdentifier uint, opts Options) ([]I, error) {
 	if len(*filterList) == 0 {
@@ -40,7 +40,6 @@ func Filter[I Filterable](input []I, filterList *[]string, valueIdentifier uint,
 					(*filterList)[j],
 					input[i].GetFilterableValue(valueIdentifier),
 				)
-
 				if err != nil {
 					return []I{}, err
 				}

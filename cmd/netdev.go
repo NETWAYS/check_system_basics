@@ -48,13 +48,11 @@ func NetdevCheck(_ *cobra.Command, _ []string) {
 	overall := result.Overall{}
 
 	interfaces, err := netdev.GetAllInterfaces()
-
 	if err != nil {
 		check.ExitError(err)
 	}
 
 	interfaces, err = netdev.FilterInterfaces(&interfaces, &NetdevConfig.Filters)
-
 	if err != nil {
 		check.ExitError(err)
 	}

@@ -27,7 +27,6 @@ var memoryCmd = &cobra.Command{
 |available_memory_percentage=74.36%;15:100;5:100 available_memory=24856633344B;10:20;;0;33427595264 free_memory=16696102912B;;;0;33427595264 free_memory_percentage=49.947%;;50:80 used_memory=6542696448B;@10;;0;33427595264 free_memory_percentage=19.573% swap_usage_percent=0%;20;85 swap_used=0B;;;0;38654701568
 `,
 	Run: func(_ *cobra.Command, _ []string) {
-
 		var overall result.Overall
 
 		// ## RAM stuff
@@ -59,6 +58,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 
 	// # Available
 	var partialMemAvailable result.PartialResult
+
 	_ = partialMemAvailable.SetDefaultState(check.OK)
 
 	partialMemAvailable.Output = fmt.Sprintf("Available Memory (%s/%s, %.2f%%)",
@@ -127,6 +127,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 
 	// # Free
 	var partialMemFree result.PartialResult
+
 	_ = partialMemFree.SetDefaultState(check.OK)
 
 	pdMemFree := perfdata.Perfdata{
@@ -197,6 +198,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 
 	// Used Memory
 	var partialMemUsed result.PartialResult
+
 	_ = partialMemUsed.SetDefaultState(check.OK)
 
 	partialMemUsed.Output = fmt.Sprintf("Used Memory (%s/%s, %.2f%%)",
@@ -411,6 +413,7 @@ func init() {
 
 func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 	var partialSwap result.PartialResult
+
 	_ = partialSwap.SetDefaultState(check.OK)
 
 	_ = partialSwap.SetDefaultState(check.OK)

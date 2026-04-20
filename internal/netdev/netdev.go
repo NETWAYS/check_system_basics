@@ -115,7 +115,6 @@ func (iface IfaceData) GetFilterableValue(ident uint) string {
 
 func GetAllInterfaces() ([]IfaceData, error) {
 	interfaces, err := listInterfaces()
-
 	if err != nil {
 		return []IfaceData{}, err
 	}
@@ -130,7 +129,6 @@ func GetAllInterfaces() ([]IfaceData, error) {
 		result[i].Name = interfaces[i]
 
 		err = getInterfaceState(&result[i])
-
 		if err != nil {
 			return result, err
 		}
@@ -216,14 +214,13 @@ func getInfacesStatistics(data *IfaceData) error {
 
 	for idx, stat := range GetIfaceStatNames() {
 		numberBytes, err := os.ReadFile(path.Join(basePath, stat))
-
 		if err != nil {
 			return err
 		}
 
 		numberString := string(numberBytes)
-		val, err = strconv.ParseUint(numberString[:len(numberString)-1], 10, 64)
 
+		val, err = strconv.ParseUint(numberString[:len(numberString)-1], 10, 64)
 		if err != nil {
 			return err
 		}
@@ -244,7 +241,6 @@ func FilterInterfaces(interfaces *[]IfaceData, filters *Filter) ([]IfaceData, er
 			EmptyFilterNoMatch:    false,
 		},
 	)
-
 	if err != nil {
 		return []IfaceData{}, err
 	}
@@ -258,7 +254,6 @@ func FilterInterfaces(interfaces *[]IfaceData, filters *Filter) ([]IfaceData, er
 			EmptyFilterNoMatch:    false,
 		},
 	)
-
 	if err != nil {
 		return []IfaceData{}, err
 	}

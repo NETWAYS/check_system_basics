@@ -39,11 +39,13 @@ const (
 
 func (d *Device) String() string {
 	var result strings.Builder
+
 	result.WriteString(d.Name)
 	result.WriteString(": ")
 
 	for idx := range d.Sensors {
 		result.WriteString(d.Sensors[idx].String())
+
 		if idx < len(d.Sensors) {
 			result.WriteString(";")
 		}
@@ -66,7 +68,6 @@ func GetDevices(hwmonPath string) ([]Device, error) {
 	 * hwmon0 hwmon1 hwmon2 ...
 	 */
 	files, err := filepath.Glob(hwmonPath + "/*")
-
 	if err != nil {
 		return []Device{}, err
 	}
@@ -273,7 +274,6 @@ func readHumiditySensor(devicePath string, index int) (Sensor, error) {
 
 	// Look for input (the actual value)
 	value, err := readIntFromFile(basePath + inputFileSuffix)
-
 	if err != nil {
 		return sensor, err
 	}
@@ -513,7 +513,6 @@ func readPowerSensor(_, devicePath string, index int) (Sensor, error) {
 
 	// Look for input (the actual value)
 	value, err := readIntFromFile(basePath + inputFileSuffix)
-
 	if err != nil {
 		return sensor, err
 	}
@@ -584,7 +583,6 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 
 	// Look for input (the actual value)
 	value, err := readIntFromFile(basePath + inputFileSuffix)
-
 	if err != nil {
 		return sensor, err
 	}
@@ -601,7 +599,6 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 	warnPresent := false
 	// Is there a tempN_max file? If yes, use that as warning
 	value, err = readIntFromFile(basePath + maxValueFileSuffix)
-
 	if err == nil {
 		tmpWarn.Upper = float64(value / 1000)
 		warnPresent = true
@@ -621,7 +618,6 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 	critPresent := false
 	// Is there a tempN_crit file? If yes, use that as critical
 	value, err = readIntFromFile(basePath + critThresholdFileSuffix)
-
 	if err == nil {
 		tmpCrit.Upper = float64(value / 1000)
 		critPresent = true
@@ -629,7 +625,6 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 
 	// Is there a tempN_emergency file? If yes, use that instead of crit
 	value, err = readIntFromFile(basePath + "_emergency")
-
 	if err == nil {
 		tmpCrit.Upper = float64(value / 1000)
 		critPresent = true
@@ -637,7 +632,6 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 
 	// Is there a tempN_min file? If yes, use that as lower boundary
 	value, err = readIntFromFile(basePath + "_min")
-
 	if err == nil {
 		tmpCrit.Lower = float64(value / 1000)
 		critPresent = true
@@ -650,7 +644,6 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 	// == Min
 	// Is there a tempN_lowest file? Use it for min value
 	value, err = readIntFromFile(basePath + lowestValueFileSuffix)
-
 	if err == nil {
 		sensor.Perfdata.Min = value
 	}
@@ -658,7 +651,6 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 	// == Max
 	// Is there a tempN_highest file? Use it for max value
 	value, err = readIntFromFile(basePath + highestValueFileSuffix)
-
 	if err == nil {
 		sensor.Perfdata.Max = value
 	}
@@ -670,7 +662,6 @@ func readTempSensor(_, devicePath string, index int) (Sensor, error) {
 
 func readStringFromFile(fp string) (string, error) {
 	tmp, err := os.ReadFile(fp)
-
 	if err != nil {
 		return "", err
 	}
@@ -680,13 +671,11 @@ func readStringFromFile(fp string) (string, error) {
 
 func readIntFromFile(fp string) (int, error) {
 	tmp, err := os.ReadFile(fp)
-
 	if err != nil {
 		return 0, err
 	}
 
 	value, err := strconv.ParseInt(strings.TrimSpace(string(tmp)), 10, 64)
-
 	if err != nil {
 		return 0, err
 	}
@@ -696,13 +685,11 @@ func readIntFromFile(fp string) (int, error) {
 
 func readBoolFromFile(fp string) (bool, error) {
 	tmp, err := os.ReadFile(fp)
-
 	if err != nil {
 		return false, err
 	}
 
 	value, err := strconv.ParseInt(strings.TrimSpace(string(tmp)), 10, 64)
-
 	if err != nil {
 		return false, err
 	}
@@ -719,7 +706,6 @@ func readBoolFromFile(fp string) (bool, error) {
 func readSensorLabel(sensorBasePath string) string {
 	// See if Sensor is alarmed, use that for the status
 	label, err := readStringFromFile(sensorBasePath + "_label")
-
 	if err == nil {
 		return label
 	}
@@ -727,8 +713,8 @@ func readSensorLabel(sensorBasePath string) string {
 	// Try the "name" of the device and add the sensor type
 	devicePath := path.Dir(sensorBasePath)
 	sensorBaseName := path.Base(sensorBasePath)
-	label, err = readStringFromFile(devicePath + "/name")
 
+	label, err = readStringFromFile(devicePath + "/name")
 	if err == nil {
 		return label + "_" + sensorBaseName
 	}
@@ -743,7 +729,6 @@ func readSensorLabel(sensorBasePath string) string {
 func readSensorAlarm(sensorBasePath string) bool {
 	// See if Sensor is alarmed, use that for the status
 	alarmFiles, err := filepath.Glob(sensorBasePath + "*_alarm")
-
 	if err != nil {
 		return false
 	}

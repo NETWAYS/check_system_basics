@@ -51,6 +51,7 @@ var loadCmd = &cobra.Command{
 
 		// 1 Minute average
 		var partialLoad1 result.PartialResult
+
 		_ = partialLoad1.SetDefaultState(check.OK)
 
 		// TODO Use strings.Builder
@@ -77,14 +78,17 @@ var loadCmd = &cobra.Command{
 		} else {
 			_ = partialLoad1.SetState(check.OK)
 		}
+
 		if LoadConfig.PerCPU {
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[0])
 		}
+
 		partialLoad1.Output = tmpOutput
 		partialLoad1.Perfdata.Add(tmpPerfdata)
 
 		// 5 Minute average
 		var partialLoad5 result.PartialResult
+
 		_ = partialLoad5.SetDefaultState(check.OK)
 
 		tmpOutput = fmt.Sprintf("5 minute average: %.2f", loadStats.LoadAvg.Load5)
@@ -110,14 +114,17 @@ var loadCmd = &cobra.Command{
 		} else {
 			_ = partialLoad5.SetState(check.OK)
 		}
+
 		if LoadConfig.PerCPU {
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[1])
 		}
+
 		partialLoad5.Output = tmpOutput
 		partialLoad5.Perfdata.Add(tmpPerfdata)
 
 		// 15 Minute average
 		var partialLoad15 result.PartialResult
+
 		_ = partialLoad15.SetDefaultState(check.OK)
 
 		tmpOutput = fmt.Sprintf("15 minute average: %.2f", loadStats.LoadAvg.Load15)
@@ -143,9 +150,11 @@ var loadCmd = &cobra.Command{
 		} else {
 			_ = partialLoad15.SetState(check.OK)
 		}
+
 		if LoadConfig.PerCPU {
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[2])
 		}
+
 		partialLoad15.Output = tmpOutput
 		partialLoad15.Perfdata.Add(tmpPerfdata)
 
