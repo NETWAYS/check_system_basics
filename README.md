@@ -15,7 +15,7 @@ Basic usage:
 check_system_basics memory
 ```
 
-A sub command to measure and evaluate memory and swap usage. This is not a trivial topic, but there is [detailed information](https://www.thegeekdiary.com/understanding-proc-meminfo-file-analyzing-memory-utilization-in-linux/) available for those who search for it.
+A sub command to measure and evaluate memory and swap usage. This is not a trivial topic, but there is [detailed information](https://web.archive.org/web/20250318062547/https://www.thegeekdiary.com/understanding-proc-meminfo-file-analyzing-memory-utilization-in-linux/) available for those who search for it.
 
 For the memory usage thresholds can be applied to either available, free or used memory. The recommended way is to set thresholds for available memory,
 since this is probably the metric most administrators are interested in.
