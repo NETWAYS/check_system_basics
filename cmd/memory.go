@@ -6,9 +6,9 @@ import (
 	"github.com/NETWAYS/check_system_basics/internal/common/thresholds"
 	"github.com/NETWAYS/check_system_basics/internal/memory"
 	"github.com/NETWAYS/go-check"
+	"github.com/NETWAYS/go-check/convert"
 	"github.com/NETWAYS/go-check/perfdata"
 	"github.com/NETWAYS/go-check/result"
-	"github.com/dustin/go-humanize"
 	"github.com/spf13/cobra"
 )
 
@@ -62,8 +62,8 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 	_ = partialMemAvailable.SetDefaultState(check.OK)
 
 	partialMemAvailable.Output = fmt.Sprintf("Available Memory (%s/%s, %.2f%%)",
-		humanize.IBytes(memStats.VirtMem.Available),
-		humanize.IBytes(memStats.VirtMem.Total),
+		convert.BytesIEC(memStats.VirtMem.Available).HumanReadable(),
+		convert.BytesIEC(memStats.VirtMem.Total).HumanReadable(),
 		memStats.MemAvailablePercentage)
 
 	// perfdata
@@ -147,8 +147,8 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 	}
 
 	partialMemFree.Output = fmt.Sprintf("Free Memory (%s/%s, %.2f%%)",
-		humanize.IBytes(memStats.VirtMem.Free),
-		humanize.IBytes(memStats.VirtMem.Total),
+		convert.BytesIEC(memStats.VirtMem.Free).HumanReadable(),
+		convert.BytesIEC(memStats.VirtMem.Total).HumanReadable(),
 		MemFreePercentage)
 
 	if config.MemFree.Warn.IsSet {
@@ -202,8 +202,8 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 	_ = partialMemUsed.SetDefaultState(check.OK)
 
 	partialMemUsed.Output = fmt.Sprintf("Used Memory (%s/%s, %.2f%%)",
-		humanize.IBytes(memStats.VirtMem.Used),
-		humanize.IBytes(memStats.VirtMem.Total),
+		convert.BytesIEC(memStats.VirtMem.Used).HumanReadable(),
+		convert.BytesIEC(memStats.VirtMem.Total).HumanReadable(),
 		memStats.VirtMem.UsedPercent)
 
 	pdMemUsed := perfdata.Perfdata{
@@ -425,7 +425,7 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 		return &partialSwap
 	}
 
-	partialSwap.Output = fmt.Sprintf("Swap Usage %.2f%% (%s / %s)", stats.SwapInfo.UsedPercent, humanize.IBytes(stats.SwapInfo.Used), humanize.IBytes(stats.SwapInfo.Total))
+	partialSwap.Output = fmt.Sprintf("Swap Usage %.2f%% (%s / %s)", stats.SwapInfo.UsedPercent, convert.BytesIEC(stats.SwapInfo.Used).HumanReadable(), convert.BytesIEC(stats.SwapInfo.Total).HumanReadable())
 
 	pdSwapUsed := perfdata.Perfdata{
 		Label: "swap_used",
