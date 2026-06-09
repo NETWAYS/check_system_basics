@@ -11,9 +11,9 @@ import (
 	"github.com/NETWAYS/check_system_basics/internal/common/thresholds"
 	"github.com/NETWAYS/check_system_basics/internal/filesystem"
 	"github.com/NETWAYS/go-check"
+	"github.com/NETWAYS/go-check/convert"
 	"github.com/NETWAYS/go-check/perfdata"
 	"github.com/NETWAYS/go-check/result"
-	"github.com/dustin/go-humanize"
 	"github.com/shirou/gopsutil/v3/disk"
 	"github.com/spf13/cobra"
 )
@@ -356,7 +356,7 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.WarningAbsolutThreshold.Space.Free.Th.DoesViolate(float64(fs.UsageStats.Free)) {
 				_ = tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute free space violates threshold: %s / %s", humanize.IBytes(fs.UsageStats.Free), humanize.IBytes(fs.UsageStats.Total))
+				tmpPartialResult.Output = fmt.Sprintf("Absolute free space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Free).HumanReadable(), convert.BytesIEC(fs.UsageStats.Total).HumanReadable())
 			}
 		}
 
@@ -365,12 +365,12 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.CriticalAbsolutThreshold.Space.Free.Th.DoesViolate(float64(fs.UsageStats.Free)) {
 				_ = tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute free space violates threshold: %s / %s", humanize.IBytes(fs.UsageStats.Free), humanize.IBytes(fs.UsageStats.Total))
+				tmpPartialResult.Output = fmt.Sprintf("Absolute free space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Free).HumanReadable(), convert.BytesIEC(fs.UsageStats.Total).HumanReadable())
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Absolute free space: %s / %s", humanize.IBytes(fs.UsageStats.Free), humanize.IBytes(fs.UsageStats.Total))
+			tmpPartialResult.Output = fmt.Sprintf("Absolute free space: %s / %s", convert.BytesIEC(fs.UsageStats.Free).HumanReadable(), convert.BytesIEC(fs.UsageStats.Total).HumanReadable())
 		}
 
 		tmpPartialResult.Perfdata.Add(&pdAbsoluteFreeSpace)
@@ -397,7 +397,7 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.WarningAbsolutThreshold.Space.Used.Th.DoesViolate(float64(fs.UsageStats.Used)) {
 				_ = tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute used space violates threshold: %s / %s", humanize.IBytes(fs.UsageStats.Used), humanize.IBytes(fs.UsageStats.Total))
+				tmpPartialResult.Output = fmt.Sprintf("Absolute used space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Used).HumanReadable(), convert.BytesIEC(fs.UsageStats.Total).HumanReadable())
 			}
 		}
 
@@ -406,12 +406,12 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.CriticalAbsolutThreshold.Space.Used.Th.DoesViolate(float64(fs.UsageStats.Used)) {
 				_ = tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute used space violates threshold: %s / %s", humanize.IBytes(fs.UsageStats.Used), humanize.IBytes(fs.UsageStats.Total))
+				tmpPartialResult.Output = fmt.Sprintf("Absolute used space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Used).HumanReadable(), convert.BytesIEC(fs.UsageStats.Total).HumanReadable())
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Absolute used space: %s / %s", humanize.IBytes(fs.UsageStats.Used), humanize.IBytes(fs.UsageStats.Total))
+			tmpPartialResult.Output = fmt.Sprintf("Absolute used space: %s / %s", convert.BytesIEC(fs.UsageStats.Used).HumanReadable(), convert.BytesIEC(fs.UsageStats.Total).HumanReadable())
 		}
 
 		tmpPartialResult.Perfdata.Add(&pdAbsoluteUsedSpace)
