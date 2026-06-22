@@ -669,7 +669,7 @@ func readStringFromFile(fp string) (string, error) {
 	return strings.TrimRight(string(tmp), "\n"), nil
 }
 
-func readIntFromFile(fp string) (int, error) {
+func readIntFromFile(fp string) (int64, error) {
 	tmp, err := os.ReadFile(fp)
 	if err != nil {
 		return 0, err
@@ -680,7 +680,7 @@ func readIntFromFile(fp string) (int, error) {
 		return 0, err
 	}
 
-	return int(value), nil
+	return value, nil
 }
 
 func readBoolFromFile(fp string) (bool, error) {
