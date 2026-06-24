@@ -66,12 +66,14 @@ var loadCmd = &cobra.Command{
 			tmpPerfdata.Crit = &LoadConfig.Load1Th.Crit.Th
 			if LoadConfig.Load1Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load1) {
 				partialLoad1.SetState(check.Critical)
+
 				tmpOutput += critThresMsg
 			}
 		} else if LoadConfig.Load1Th.Warn.IsSet {
 			tmpPerfdata.Warn = &LoadConfig.Load1Th.Warn.Th
 			if LoadConfig.Load1Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load1) {
 				partialLoad1.SetState(check.Warning)
+
 				tmpOutput += warnThresMsg
 			}
 		} else {
@@ -102,12 +104,14 @@ var loadCmd = &cobra.Command{
 			tmpPerfdata.Crit = &LoadConfig.Load5Th.Crit.Th
 			if LoadConfig.Load5Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load5) {
 				partialLoad5.SetState(check.Critical)
+
 				tmpOutput += critThresMsg
 			}
 		} else if LoadConfig.Load5Th.Warn.IsSet {
 			tmpPerfdata.Warn = &LoadConfig.Load5Th.Warn.Th
 			if LoadConfig.Load5Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load5) {
 				partialLoad5.SetState(check.Warning)
+
 				tmpOutput += warnThresMsg
 			}
 		} else {
@@ -138,12 +142,14 @@ var loadCmd = &cobra.Command{
 			tmpPerfdata.Crit = &LoadConfig.Load15Th.Crit.Th
 			if LoadConfig.Load15Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load15) {
 				partialLoad15.SetState(check.Critical)
+
 				tmpOutput += critThresMsg
 			}
 		} else if LoadConfig.Load15Th.Warn.IsSet {
 			tmpPerfdata.Warn = &LoadConfig.Load15Th.Warn.Th
 			if LoadConfig.Load15Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load15) {
 				partialLoad15.SetState(check.Warning)
+
 				tmpOutput += warnThresMsg
 			}
 		} else {

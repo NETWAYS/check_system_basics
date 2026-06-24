@@ -67,6 +67,7 @@ thresholds respecting the sensor type and the respective specialities`,
 				if sensor.Alarm {
 					ssc.Output = "Alarm!"
 					ssc.SetState(check.Critical)
+
 					alarms++
 				} else {
 					ssc.Output = "Ok"
