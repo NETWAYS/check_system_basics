@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/NETWAYS/go-check"
-	"github.com/NETWAYS/go-check/perfdata"
 )
 
 /*
@@ -21,7 +20,7 @@ type Sensor struct {
 	Name     string
 	Path     string
 	Alarm    bool
-	Perfdata perfdata.Perfdata
+	Perfdata check.Perfdata
 }
 
 type Device struct {

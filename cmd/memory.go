@@ -7,7 +7,6 @@ import (
 	"github.com/NETWAYS/check_system_basics/internal/memory"
 	"github.com/NETWAYS/go-check"
 	"github.com/NETWAYS/go-check/convert"
-	"github.com/NETWAYS/go-check/perfdata"
 	"github.com/NETWAYS/go-check/result"
 	"github.com/spf13/cobra"
 )
@@ -43,31 +42,30 @@ var memoryCmd = &cobra.Command{
 		// Swap stuff
 		if memStats.VirtMem.SwapTotal != 0 {
 			partSwap := computeSwapResults(memStats)
-			overall.AddSubcheck(*partSwap)
+			overall.AddSubcheck(partSwap)
 		}
 
-		check.ExitRaw(overall.GetStatus(), overall.GetOutput())
+		check.Exit(overall.GetStatus(), overall.GetOutput())
 	},
 }
 
-func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.PartialResult {
-	partialMem := result.PartialResult{
-		Output: "RAM",
-	}
-	_ = partialMem.SetDefaultState(check.OK)
+func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) *result.PartialResult {
+	partialMem := result.NewPartialResult()
+	partialMem.Output = "RAM"
+	partialMem.SetDefaultState(check.OK)
 
 	// # Available
-	var partialMemAvailable result.PartialResult
+	partialMemAvailable := result.NewPartialResult()
 
-	_ = partialMemAvailable.SetDefaultState(check.OK)
+	partialMemAvailable.SetDefaultState(check.OK)
 
 	partialMemAvailable.Output = fmt.Sprintf("Available Memory (%s/%s, %.2f%%)",
-		convert.BytesIEC(memStats.VirtMem.Available).HumanReadable(),
-		convert.BytesIEC(memStats.VirtMem.Total).HumanReadable(),
+		convert.BytesIEC(memStats.VirtMem.Available),
+		convert.BytesIEC(memStats.VirtMem.Total),
 		memStats.MemAvailablePercentage)
 
 	// perfdata
-	pdMemAvailable := perfdata.Perfdata{
+	pdMemAvailable := check.Perfdata{
 		Label: "available_memory",
 		Value: memStats.VirtMem.Available,
 		Uom:   "B",
@@ -75,7 +73,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		Max:   memStats.VirtMem.Total,
 	}
 
-	pdMemAvailablePrcnt := perfdata.Perfdata{
+	pdMemAvailablePrcnt := check.Perfdata{
 		Label: "available_memory_percentage",
 		Value: float64(memStats.VirtMem.Available) / float64(memStats.VirtMem.Total/100),
 		Uom:   "%",
@@ -85,7 +83,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemAvailable.Warn = &config.MemAvailable.Warn.Th
 
 		if config.MemAvailable.Warn.Th.DoesViolate(float64(memStats.VirtMem.Available)) {
-			_ = partialMemAvailable.SetState(check.Warning)
+			partialMemAvailable.SetState(check.Warning)
 		}
 	}
 
@@ -93,7 +91,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemAvailablePrcnt.Warn = &config.MemAvailablePercentage.Warn.Th
 
 		if config.MemAvailablePercentage.Warn.Th.DoesViolate(memStats.MemAvailablePercentage) {
-			_ = partialMemAvailable.SetState(check.Warning)
+			partialMemAvailable.SetState(check.Warning)
 		}
 	}
 
@@ -101,7 +99,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemAvailable.Crit = &config.MemAvailable.Crit.Th
 
 		if config.MemAvailable.Crit.Th.DoesViolate(float64(memStats.VirtMem.Available)) {
-			_ = partialMemAvailable.SetState(check.Critical)
+			partialMemAvailable.SetState(check.Critical)
 		}
 	}
 
@@ -109,7 +107,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemAvailablePrcnt.Crit = &config.MemAvailablePercentage.Crit.Th
 
 		if config.MemAvailablePercentage.Crit.Th.DoesViolate(memStats.MemAvailablePercentage) {
-			_ = partialMemAvailable.SetState(check.Critical)
+			partialMemAvailable.SetState(check.Critical)
 		}
 	}
 
@@ -122,15 +120,15 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 
 	if (partialMemAvailable.GetStatus() > partialMem.GetStatus()) &&
 		partialMemAvailable.GetStatus() != check.Unknown {
-		_ = partialMem.SetState(partialMemAvailable.GetStatus())
+		partialMem.SetState(partialMemAvailable.GetStatus())
 	}
 
 	// # Free
-	var partialMemFree result.PartialResult
+	partialMemFree := result.NewPartialResult()
 
-	_ = partialMemFree.SetDefaultState(check.OK)
+	partialMemFree.SetDefaultState(check.OK)
 
-	pdMemFree := perfdata.Perfdata{
+	pdMemFree := check.Perfdata{
 		Label: "free_memory",
 		Uom:   "B",
 		Value: memStats.VirtMem.Free,
@@ -140,22 +138,22 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 
 	MemFreePercentage := float64(memStats.VirtMem.Free) / (float64(memStats.VirtMem.Total) / 100)
 
-	pdMemFreePercentage := perfdata.Perfdata{
+	pdMemFreePercentage := check.Perfdata{
 		Label: "free_memory_percentage",
 		Value: MemFreePercentage,
 		Uom:   "%",
 	}
 
 	partialMemFree.Output = fmt.Sprintf("Free Memory (%s/%s, %.2f%%)",
-		convert.BytesIEC(memStats.VirtMem.Free).HumanReadable(),
-		convert.BytesIEC(memStats.VirtMem.Total).HumanReadable(),
+		convert.BytesIEC(memStats.VirtMem.Free),
+		convert.BytesIEC(memStats.VirtMem.Total),
 		MemFreePercentage)
 
 	if config.MemFree.Warn.IsSet {
 		pdMemFree.Warn = &config.MemFree.Warn.Th
 
 		if config.MemFree.Warn.Th.DoesViolate(float64(memStats.VirtMem.Free)) {
-			_ = partialMemFree.SetState(check.Warning)
+			partialMemFree.SetState(check.Warning)
 		}
 	}
 
@@ -163,7 +161,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemFree.Crit = &config.MemFree.Crit.Th
 
 		if config.MemFree.Crit.Th.DoesViolate(float64(memStats.VirtMem.Free)) {
-			_ = partialMemFree.SetState(check.Critical)
+			partialMemFree.SetState(check.Critical)
 		}
 	}
 
@@ -171,7 +169,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemFreePercentage.Warn = &config.MemFreePercentage.Warn.Th
 
 		if config.MemFreePercentage.Warn.Th.DoesViolate(MemFreePercentage) {
-			_ = partialMemFree.SetState(check.Warning)
+			partialMemFree.SetState(check.Warning)
 		}
 	}
 
@@ -179,7 +177,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemFreePercentage.Crit = &config.MemFreePercentage.Crit.Th
 
 		if config.MemFreePercentage.Crit.Th.DoesViolate(MemFreePercentage) {
-			_ = partialMemFree.SetState(check.Critical)
+			partialMemFree.SetState(check.Critical)
 		}
 	}
 
@@ -193,20 +191,20 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 
 	if (partialMemFree.GetStatus() > partialMem.GetStatus()) &&
 		partialMemFree.GetStatus() != check.Unknown {
-		_ = partialMem.SetState(partialMemFree.GetStatus())
+		partialMem.SetState(partialMemFree.GetStatus())
 	}
 
 	// Used Memory
-	var partialMemUsed result.PartialResult
+	partialMemUsed := result.NewPartialResult()
 
-	_ = partialMemUsed.SetDefaultState(check.OK)
+	partialMemUsed.SetDefaultState(check.OK)
 
 	partialMemUsed.Output = fmt.Sprintf("Used Memory (%s/%s, %.2f%%)",
-		convert.BytesIEC(memStats.VirtMem.Used).HumanReadable(),
-		convert.BytesIEC(memStats.VirtMem.Total).HumanReadable(),
+		convert.BytesIEC(memStats.VirtMem.Used),
+		convert.BytesIEC(memStats.VirtMem.Total),
 		memStats.VirtMem.UsedPercent)
 
-	pdMemUsed := perfdata.Perfdata{
+	pdMemUsed := check.Perfdata{
 		Label: "used_memory",
 		Uom:   "B",
 		Value: memStats.VirtMem.Used,
@@ -215,7 +213,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 	}
 
 	MemUsedPercentage := float64(memStats.VirtMem.Used) / (float64(memStats.VirtMem.Total) / 100)
-	pdMemUsedPercentage := perfdata.Perfdata{
+	pdMemUsedPercentage := check.Perfdata{
 		Label: "used_memory_percentage",
 		Value: MemUsedPercentage,
 		Uom:   "%",
@@ -225,7 +223,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemUsed.Warn = &config.MemUsed.Warn.Th
 
 		if config.MemUsed.Warn.Th.DoesViolate(float64(memStats.VirtMem.Used)) {
-			_ = partialMemUsed.SetState(check.Warning)
+			partialMemUsed.SetState(check.Warning)
 		}
 	}
 
@@ -233,7 +231,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemUsedPercentage.Warn = &config.MemUsedPercentage.Warn.Th
 
 		if config.MemUsedPercentage.Warn.Th.DoesViolate(memStats.VirtMem.UsedPercent) {
-			_ = partialMemUsed.SetState(check.Warning)
+			partialMemUsed.SetState(check.Warning)
 		}
 	}
 
@@ -241,7 +239,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemUsed.Crit = &config.MemUsed.Crit.Th
 
 		if config.MemUsed.Crit.Th.DoesViolate(float64(memStats.VirtMem.Used)) {
-			_ = partialMemUsed.SetState(check.Critical)
+			partialMemUsed.SetState(check.Critical)
 		}
 	}
 
@@ -249,7 +247,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 		pdMemUsedPercentage.Crit = &config.MemUsedPercentage.Crit.Th
 
 		if config.MemUsedPercentage.Crit.Th.DoesViolate(memStats.VirtMem.UsedPercent) {
-			_ = partialMemUsed.SetState(check.Critical)
+			partialMemUsed.SetState(check.Critical)
 		}
 	}
 
@@ -263,7 +261,7 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) result.Pa
 
 	if (partialMemUsed.GetStatus() > partialMem.GetStatus()) &&
 		partialMemUsed.GetStatus() != check.Unknown {
-		_ = partialMem.SetState(partialMemUsed.GetStatus())
+		partialMem.SetState(partialMemUsed.GetStatus())
 	}
 
 	return partialMem
@@ -414,20 +412,20 @@ func init() {
 func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 	var partialSwap result.PartialResult
 
-	_ = partialSwap.SetDefaultState(check.OK)
+	partialSwap.SetDefaultState(check.OK)
 
-	_ = partialSwap.SetDefaultState(check.OK)
+	partialSwap.SetDefaultState(check.OK)
 
 	if stats.VirtMem.SwapTotal == 0 {
-		_ = partialSwap.SetState(check.Critical)
+		partialSwap.SetState(check.Critical)
 		partialSwap.Output = "Swap size is 0."
 
 		return &partialSwap
 	}
 
-	partialSwap.Output = fmt.Sprintf("Swap Usage %.2f%% (%s / %s)", stats.SwapInfo.UsedPercent, convert.BytesIEC(stats.SwapInfo.Used).HumanReadable(), convert.BytesIEC(stats.SwapInfo.Total).HumanReadable())
+	partialSwap.Output = fmt.Sprintf("Swap Usage %.2f%% (%s / %s)", stats.SwapInfo.UsedPercent, convert.BytesIEC(stats.SwapInfo.Used), convert.BytesIEC(stats.SwapInfo.Total))
 
-	pdSwapUsed := perfdata.Perfdata{
+	pdSwapUsed := check.Perfdata{
 		Label: "swap_used",
 		Value: stats.SwapInfo.Used,
 		Uom:   "B",
@@ -435,7 +433,7 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 		Max:   stats.SwapInfo.Total,
 	}
 
-	pdSwapPrcnt := perfdata.Perfdata{
+	pdSwapPrcnt := check.Perfdata{
 		Label: "swap_usage_percent",
 		Value: stats.SwapInfo.UsedPercent,
 		Uom:   "%",
@@ -444,13 +442,13 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 	// Warning
 	if MemoryConfig.SwapFree.Warn.IsSet {
 		if MemoryConfig.SwapFree.Warn.Th.DoesViolate(float64(stats.SwapInfo.Free)) {
-			_ = partialSwap.SetState(check.Warning)
+			partialSwap.SetState(check.Warning)
 		}
 	}
 
 	if MemoryConfig.SwapFreePercentage.Warn.IsSet {
 		if MemoryConfig.SwapFreePercentage.Warn.Th.DoesViolate(1 - stats.SwapInfo.UsedPercent) {
-			_ = partialSwap.SetState(check.Warning)
+			partialSwap.SetState(check.Warning)
 		}
 	}
 
@@ -458,7 +456,7 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 		pdSwapUsed.Warn = &MemoryConfig.SwapUsed.Warn.Th
 
 		if MemoryConfig.SwapUsed.Warn.Th.DoesViolate(float64(stats.SwapInfo.Used)) {
-			_ = partialSwap.SetState(check.Warning)
+			partialSwap.SetState(check.Warning)
 		}
 	}
 
@@ -466,20 +464,20 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 		pdSwapPrcnt.Warn = &MemoryConfig.SwapUsedPercentage.Warn.Th
 
 		if MemoryConfig.SwapUsedPercentage.Warn.Th.DoesViolate(stats.SwapInfo.UsedPercent) {
-			_ = partialSwap.SetState(check.Warning)
+			partialSwap.SetState(check.Warning)
 		}
 	}
 
 	// Critical
 	if MemoryConfig.SwapFree.Crit.IsSet {
 		if MemoryConfig.SwapFree.Crit.Th.DoesViolate(float64(stats.SwapInfo.Free)) {
-			_ = partialSwap.SetState(check.Critical)
+			partialSwap.SetState(check.Critical)
 		}
 	}
 
 	if MemoryConfig.SwapFreePercentage.Crit.IsSet {
 		if MemoryConfig.SwapFreePercentage.Crit.Th.DoesViolate(1 - stats.SwapInfo.UsedPercent) {
-			_ = partialSwap.SetState(check.Critical)
+			partialSwap.SetState(check.Critical)
 		}
 	}
 
@@ -487,7 +485,7 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 		pdSwapUsed.Crit = &MemoryConfig.SwapUsed.Crit.Th
 
 		if MemoryConfig.SwapUsed.Warn.Th.DoesViolate(float64(stats.SwapInfo.Used)) {
-			_ = partialSwap.SetState(check.Warning)
+			partialSwap.SetState(check.Warning)
 		}
 	}
 
@@ -495,7 +493,7 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 		pdSwapPrcnt.Crit = &MemoryConfig.SwapUsedPercentage.Crit.Th
 
 		if MemoryConfig.SwapUsedPercentage.Crit.Th.DoesViolate(stats.SwapInfo.UsedPercent) {
-			_ = partialSwap.SetState(check.Critical)
+			partialSwap.SetState(check.Critical)
 		}
 	}
 

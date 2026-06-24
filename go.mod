@@ -3,7 +3,7 @@ module github.com/NETWAYS/check_system_basics
 go 1.25.0
 
 require (
-	github.com/NETWAYS/go-check v0.6.4
+	github.com/NETWAYS/go-check v1.0.0-rc4
 	github.com/NETWAYS/go-icingadsl v0.1.2
 	github.com/shirou/gopsutil/v3 v3.24.5
 	github.com/spf13/cobra v1.10.2

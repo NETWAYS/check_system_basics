@@ -5,7 +5,6 @@ import (
 
 	"github.com/NETWAYS/check_system_basics/internal/load"
 	"github.com/NETWAYS/go-check"
-	"github.com/NETWAYS/go-check/perfdata"
 	"github.com/NETWAYS/go-check/result"
 	"github.com/shirou/gopsutil/v3/cpu"
 	"github.com/spf13/cobra"
@@ -50,13 +49,13 @@ var loadCmd = &cobra.Command{
 		var overall result.Overall
 
 		// 1 Minute average
-		var partialLoad1 result.PartialResult
+		partialLoad1 := result.NewPartialResult()
 
-		_ = partialLoad1.SetDefaultState(check.OK)
+		partialLoad1.SetDefaultState(check.OK)
 
 		// TODO Use strings.Builder
 		tmpOutput := fmt.Sprintf("1 minute average: %.2f", loadStats.LoadAvg.Load1)
-		tmpPerfdata := &perfdata.Perfdata{
+		tmpPerfdata := &check.Perfdata{
 			Label: "load1",
 			Value: loadStats.LoadAvg.Load1,
 			Min:   0,
@@ -66,17 +65,17 @@ var loadCmd = &cobra.Command{
 		if LoadConfig.Load1Th.Crit.IsSet {
 			tmpPerfdata.Crit = &LoadConfig.Load1Th.Crit.Th
 			if LoadConfig.Load1Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load1) {
-				_ = partialLoad1.SetState(check.Critical)
+				partialLoad1.SetState(check.Critical)
 				tmpOutput += critThresMsg
 			}
 		} else if LoadConfig.Load1Th.Warn.IsSet {
 			tmpPerfdata.Warn = &LoadConfig.Load1Th.Warn.Th
 			if LoadConfig.Load1Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load1) {
-				_ = partialLoad1.SetState(check.Warning)
+				partialLoad1.SetState(check.Warning)
 				tmpOutput += warnThresMsg
 			}
 		} else {
-			_ = partialLoad1.SetState(check.OK)
+			partialLoad1.SetState(check.OK)
 		}
 
 		if LoadConfig.PerCPU {
@@ -87,12 +86,12 @@ var loadCmd = &cobra.Command{
 		partialLoad1.Perfdata.Add(tmpPerfdata)
 
 		// 5 Minute average
-		var partialLoad5 result.PartialResult
+		partialLoad5 := result.NewPartialResult()
 
-		_ = partialLoad5.SetDefaultState(check.OK)
+		partialLoad5.SetDefaultState(check.OK)
 
 		tmpOutput = fmt.Sprintf("5 minute average: %.2f", loadStats.LoadAvg.Load5)
-		tmpPerfdata = &perfdata.Perfdata{
+		tmpPerfdata = &check.Perfdata{
 			Label: "load5",
 			Value: loadStats.LoadAvg.Load5,
 			Min:   0,
@@ -102,17 +101,17 @@ var loadCmd = &cobra.Command{
 		if LoadConfig.Load5Th.Crit.IsSet {
 			tmpPerfdata.Crit = &LoadConfig.Load5Th.Crit.Th
 			if LoadConfig.Load5Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load5) {
-				_ = partialLoad5.SetState(check.Critical)
+				partialLoad5.SetState(check.Critical)
 				tmpOutput += critThresMsg
 			}
 		} else if LoadConfig.Load5Th.Warn.IsSet {
 			tmpPerfdata.Warn = &LoadConfig.Load5Th.Warn.Th
 			if LoadConfig.Load5Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load5) {
-				_ = partialLoad5.SetState(check.Warning)
+				partialLoad5.SetState(check.Warning)
 				tmpOutput += warnThresMsg
 			}
 		} else {
-			_ = partialLoad5.SetState(check.OK)
+			partialLoad5.SetState(check.OK)
 		}
 
 		if LoadConfig.PerCPU {
@@ -123,12 +122,12 @@ var loadCmd = &cobra.Command{
 		partialLoad5.Perfdata.Add(tmpPerfdata)
 
 		// 15 Minute average
-		var partialLoad15 result.PartialResult
+		partialLoad15 := result.NewPartialResult()
 
-		_ = partialLoad15.SetDefaultState(check.OK)
+		partialLoad15.SetDefaultState(check.OK)
 
 		tmpOutput = fmt.Sprintf("15 minute average: %.2f", loadStats.LoadAvg.Load15)
-		tmpPerfdata = &perfdata.Perfdata{
+		tmpPerfdata = &check.Perfdata{
 			Label: "load15",
 			Value: loadStats.LoadAvg.Load15,
 			Min:   0,
@@ -138,17 +137,17 @@ var loadCmd = &cobra.Command{
 		if LoadConfig.Load15Th.Crit.IsSet {
 			tmpPerfdata.Crit = &LoadConfig.Load15Th.Crit.Th
 			if LoadConfig.Load15Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load15) {
-				_ = partialLoad15.SetState(check.Critical)
+				partialLoad15.SetState(check.Critical)
 				tmpOutput += critThresMsg
 			}
 		} else if LoadConfig.Load15Th.Warn.IsSet {
 			tmpPerfdata.Warn = &LoadConfig.Load15Th.Warn.Th
 			if LoadConfig.Load15Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load15) {
-				_ = partialLoad15.SetState(check.Warning)
+				partialLoad15.SetState(check.Warning)
 				tmpOutput += warnThresMsg
 			}
 		} else {
-			_ = partialLoad15.SetState(check.OK)
+			partialLoad15.SetState(check.OK)
 		}
 
 		if LoadConfig.PerCPU {
@@ -162,7 +161,7 @@ var loadCmd = &cobra.Command{
 		overall.AddSubcheck(partialLoad5)
 		overall.AddSubcheck(partialLoad15)
 
-		check.ExitRaw(overall.GetStatus(), overall.GetOutput())
+		check.Exit(overall.GetStatus(), overall.GetOutput())
 	},
 }
 

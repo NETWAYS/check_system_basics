@@ -45,7 +45,7 @@ thresholds respecting the sensor type and the respective specialities`,
 
 		if len(devices) == 0 {
 			overall.Add(check.Unknown, "No devices found")
-			check.ExitRaw(overall.GetStatus(), overall.GetOutput())
+			check.Exit(overall.GetStatus(), overall.GetOutput())
 		}
 
 		var (
@@ -53,24 +53,24 @@ thresholds respecting the sensor type and the respective specialities`,
 		)
 
 		for _, device := range devices {
-			var devicePartial result.PartialResult
+			devicePartial := result.NewPartialResult()
 
-			_ = devicePartial.SetDefaultState(check.OK)
+			devicePartial.SetDefaultState(check.OK)
 
 			devicePartial.Output = device.Name
 			for idx, sensor := range device.Sensors {
-				var ssc result.PartialResult
+				ssc := result.NewPartialResult()
 
-				_ = ssc.SetDefaultState(check.OK)
+				ssc.SetDefaultState(check.OK)
 				ssc.Perfdata.Add(&(device.Sensors[idx]).Perfdata)
 
 				if sensor.Alarm {
 					ssc.Output = "Alarm!"
-					_ = ssc.SetState(check.Critical)
+					ssc.SetState(check.Critical)
 					alarms++
 				} else {
 					ssc.Output = "Ok"
-					_ = ssc.SetState(check.OK)
+					ssc.SetState(check.OK)
 				}
 
 				// Add perfdata label (sensor name) to ouptput to make it more descriptive
@@ -84,7 +84,7 @@ thresholds respecting the sensor type and the respective specialities`,
 			overall.AddSubcheck(devicePartial)
 		}
 
-		check.ExitRaw(overall.GetStatus(), overall.GetOutput())
+		check.Exit(overall.GetStatus(), overall.GetOutput())
 	},
 }
 
