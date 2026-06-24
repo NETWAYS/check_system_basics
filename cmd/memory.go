@@ -288,7 +288,7 @@ func init() {
 		{
 			Th:          &MemoryConfig.MemFreePercentage.Crit,
 			FlagString:  "memory-free-critical-percentage",
-			Description: "Critical threshold for free memory",
+			Description: "Critical threshold for free memory (percentage)",
 		},
 		{
 			Th:          &MemoryConfig.MemUsed.Warn,
@@ -303,12 +303,12 @@ func init() {
 		{
 			Th:          &MemoryConfig.MemUsedPercentage.Warn,
 			FlagString:  "memory-used-warning-percentage",
-			Description: "Warning threshold for used memory",
+			Description: "Warning threshold for used memory (percentage)",
 		},
 		{
 			Th:          &MemoryConfig.MemUsedPercentage.Crit,
 			FlagString:  "memory-used-critical-percentage",
-			Description: "Critical threshold for used memory",
+			Description: "Critical threshold for used memory (percentage)",
 		},
 		{
 			Th:          &MemoryConfig.MemAvailable.Warn,
@@ -323,7 +323,7 @@ func init() {
 		{
 			Th:          &MemoryConfig.MemAvailablePercentage.Warn,
 			FlagString:  "memory-available-warning-percentage",
-			Description: "Warning threshold for available memory",
+			Description: "Warning threshold for available memory (percentage)",
 			Default: thresholds.ThresholdWrapper{
 				IsSet: true,
 				Th: check.Threshold{
@@ -335,7 +335,7 @@ func init() {
 		{
 			Th:          &MemoryConfig.MemAvailablePercentage.Crit,
 			FlagString:  "memory-available-critical-percentage",
-			Description: "Critical threshold for available memory",
+			Description: "Critical threshold for available memory (percentage)",
 			Default: thresholds.ThresholdWrapper{
 				IsSet: true,
 				Th: check.Threshold{
@@ -347,38 +347,38 @@ func init() {
 		{
 			Th:          &MemoryConfig.SwapFree.Warn,
 			FlagString:  "swap-free-warning",
-			Description: "Warning threshold for free memory",
+			Description: "Warning threshold for free swap memory",
 		},
 		{
 			Th:          &MemoryConfig.SwapFree.Crit,
 			FlagString:  "swap-free-critical",
-			Description: "Critical threshold for free memory",
+			Description: "Critical threshold for free swap memory",
 		},
 		{
 			Th:          &MemoryConfig.SwapFreePercentage.Warn,
 			FlagString:  "swap-free-warning-percentage",
-			Description: "Warning threshold for free memory",
+			Description: "Warning threshold for free swap memory (percentage)",
 		},
 		{
 			Th:          &MemoryConfig.SwapFreePercentage.Crit,
 			FlagString:  "swap-free-critical-percentage",
-			Description: "Critical threshold for free memory",
+			Description: "Critical threshold for free swap memory (percentage)",
 		},
 
 		{
 			Th:          &MemoryConfig.SwapUsed.Warn,
 			FlagString:  "swap-used-warning",
-			Description: "Warning threshold for used memory",
+			Description: "Warning threshold for used swap memory",
 		},
 		{
 			Th:          &MemoryConfig.SwapUsed.Crit,
 			FlagString:  "swap-used-critical",
-			Description: "Critical threshold for used memory",
+			Description: "Critical threshold for used swap memory",
 		},
 		{
 			Th:          &MemoryConfig.SwapUsedPercentage.Warn,
 			FlagString:  "swap-used-warning-percentage",
-			Description: "Warning threshold for used memory",
+			Description: "Warning threshold for used swap memory (percentage)",
 			Default: thresholds.ThresholdWrapper{
 				IsSet: true,
 				Th: check.Threshold{
@@ -390,7 +390,7 @@ func init() {
 		{
 			Th:          &MemoryConfig.SwapUsedPercentage.Crit,
 			FlagString:  "swap-used-critical-percentage",
-			Description: "Critical threshold for used memory",
+			Description: "Critical threshold for used swap memory (percentage)",
 			Default: thresholds.ThresholdWrapper{
 				IsSet: true,
 				Th: check.Threshold{
