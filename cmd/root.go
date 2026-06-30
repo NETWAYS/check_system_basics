@@ -67,7 +67,7 @@ func RunFunction(cmd *cobra.Command, args []string) {
 
 	if dumpConfig {
 		ConfigDump(cmd, cmd.CommandPath())
-		os.Exit(check.OK)
+		os.Exit(0)
 	}
 
 	Help(cmd, args)
@@ -76,7 +76,7 @@ func RunFunction(cmd *cobra.Command, args []string) {
 func Help(cmd *cobra.Command, _ []string) {
 	_ = cmd.Usage()
 
-	os.Exit(check.Unknown)
+	os.Exit(3)
 }
 
 func ConfigDump(cmd *cobra.Command, executableName string) {

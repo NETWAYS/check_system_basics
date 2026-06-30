@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/NETWAYS/go-check/perfdata"
+	"github.com/NETWAYS/go-check"
 )
 
 func TestPressureValueString(t *testing.T) {
@@ -15,11 +15,11 @@ func TestPressureValueString(t *testing.T) {
 	}
 
 	// Expected
-	expected := perfdata.PerfdataList{}
-	expected.Add(&perfdata.Perfdata{Label: "preavg10", Value: 1.5, Min: 0, Max: 100, Uom: "%"})
-	expected.Add(&perfdata.Perfdata{Label: "preavg60", Value: 2.5, Min: 0, Max: 100, Uom: "%"})
-	expected.Add(&perfdata.Perfdata{Label: "preavg300", Value: 3.5, Min: 0, Max: 100, Uom: "%"})
-	expected.Add(&perfdata.Perfdata{Label: "pretotal", Value: uint64(0), Min: 0, Uom: "c"})
+	expected := check.PerfdataList{}
+	expected.Add(&check.Perfdata{Label: "preavg10", Value: 1.5, Min: 0, Max: 100, Uom: "%"})
+	expected.Add(&check.Perfdata{Label: "preavg60", Value: 2.5, Min: 0, Max: 100, Uom: "%"})
+	expected.Add(&check.Perfdata{Label: "preavg300", Value: 3.5, Min: 0, Max: 100, Uom: "%"})
+	expected.Add(&check.Perfdata{Label: "pretotal", Value: uint64(0), Min: 0, Uom: "c"})
 
 	if !reflect.DeepEqual(&expected, pv.Perfdata("pre")) {
 		t.Fatalf("expected %v, got %v", &expected, pv.Perfdata("pre"))
@@ -35,15 +35,15 @@ func TestPressureElementString(t *testing.T) {
 	}
 
 	// Expected
-	pecpuexpected := perfdata.PerfdataList{}
-	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-some-avg10", Value: float64(0.1), Min: 0, Max: 100, Uom: "%"})
-	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-some-avg60", Value: float64(0.6), Min: 0, Max: 100, Uom: "%"})
-	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-some-avg300", Value: float64(0.3), Min: 0, Max: 100, Uom: "%"})
-	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-some-total", Value: uint64(0), Min: 0, Uom: "c"})
-	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-full-avg10", Value: float64(0.1), Min: 0, Max: 100, Uom: "%"})
-	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-full-avg60", Value: float64(0.6), Min: 0, Max: 100, Uom: "%"})
-	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-full-avg300", Value: float64(0.3), Min: 0, Max: 100, Uom: "%"})
-	pecpuexpected.Add(&perfdata.Perfdata{Label: "cpu-full-total", Value: uint64(0), Min: 0, Uom: "c"})
+	pecpuexpected := check.PerfdataList{}
+	pecpuexpected.Add(&check.Perfdata{Label: "cpu-some-avg10", Value: float64(0.1), Min: 0, Max: 100, Uom: "%"})
+	pecpuexpected.Add(&check.Perfdata{Label: "cpu-some-avg60", Value: float64(0.6), Min: 0, Max: 100, Uom: "%"})
+	pecpuexpected.Add(&check.Perfdata{Label: "cpu-some-avg300", Value: float64(0.3), Min: 0, Max: 100, Uom: "%"})
+	pecpuexpected.Add(&check.Perfdata{Label: "cpu-some-total", Value: uint64(0), Min: 0, Uom: "c"})
+	pecpuexpected.Add(&check.Perfdata{Label: "cpu-full-avg10", Value: float64(0.1), Min: 0, Max: 100, Uom: "%"})
+	pecpuexpected.Add(&check.Perfdata{Label: "cpu-full-avg60", Value: float64(0.6), Min: 0, Max: 100, Uom: "%"})
+	pecpuexpected.Add(&check.Perfdata{Label: "cpu-full-avg300", Value: float64(0.3), Min: 0, Max: 100, Uom: "%"})
+	pecpuexpected.Add(&check.Perfdata{Label: "cpu-full-total", Value: uint64(0), Min: 0, Uom: "c"})
 
 	if !reflect.DeepEqual(&pecpuexpected, pecpu.Perfdata()) {
 		t.Fatalf("expected %v, got %v", &pecpuexpected, pecpu.Perfdata())
@@ -57,11 +57,11 @@ func TestPressureElementString(t *testing.T) {
 	}
 
 	// Expected
-	peioexpected := perfdata.PerfdataList{}
-	peioexpected.Add(&perfdata.Perfdata{Label: "io-some-avg10", Value: float64(0.1), Min: 0, Max: 100, Uom: "%"})
-	peioexpected.Add(&perfdata.Perfdata{Label: "io-some-avg60", Value: float64(0.6), Min: 0, Max: 100, Uom: "%"})
-	peioexpected.Add(&perfdata.Perfdata{Label: "io-some-avg300", Value: float64(0.3), Min: 0, Max: 100, Uom: "%"})
-	peioexpected.Add(&perfdata.Perfdata{Label: "io-some-total", Value: uint64(0), Min: 0, Uom: "c"})
+	peioexpected := check.PerfdataList{}
+	peioexpected.Add(&check.Perfdata{Label: "io-some-avg10", Value: float64(0.1), Min: 0, Max: 100, Uom: "%"})
+	peioexpected.Add(&check.Perfdata{Label: "io-some-avg60", Value: float64(0.6), Min: 0, Max: 100, Uom: "%"})
+	peioexpected.Add(&check.Perfdata{Label: "io-some-avg300", Value: float64(0.3), Min: 0, Max: 100, Uom: "%"})
+	peioexpected.Add(&check.Perfdata{Label: "io-some-total", Value: uint64(0), Min: 0, Uom: "c"})
 
 	if !reflect.DeepEqual(&peioexpected, peio.Perfdata()) {
 		t.Fatalf("expected %v, got %v", &peioexpected, peio.Perfdata())

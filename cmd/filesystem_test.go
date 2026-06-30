@@ -42,10 +42,6 @@ func TestFsCheckResult0(t *testing.T) {
 	if check.OK != result.GetStatus() {
 		t.Fatalf("expected %v, got %v", check.OK, result.GetStatus())
 	}
-
-	if "/testMountpoint" != result.Output {
-		t.Fatalf("expected %v, got %v", "/testMountpoint", result.Output)
-	}
 }
 
 func TestFsCheckResult1(t *testing.T) {

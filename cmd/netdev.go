@@ -3,7 +3,6 @@ package cmd
 import (
 	"github.com/NETWAYS/check_system_basics/internal/netdev"
 	"github.com/NETWAYS/go-check"
-	"github.com/NETWAYS/go-check/perfdata"
 	"github.com/NETWAYS/go-check/result"
 	"github.com/spf13/cobra"
 )
@@ -58,42 +57,42 @@ func NetdevCheck(_ *cobra.Command, _ []string) {
 	}
 
 	for i := range interfaces {
-		sc := result.PartialResult{}
-		_ = sc.SetDefaultState(check.OK)
+		sc := result.NewPartialResult()
+		sc.SetDefaultState(check.OK)
 
-		sc.Output = interfaces[i].Name + " is " + netdev.TranslateIfaceState(interfaces[i].Operstate)
+		sc.SetOutput(interfaces[i].Name + " is " + netdev.TranslateIfaceState(interfaces[i].Operstate))
 
 		if !NetdevConfig.NotUpIsOK {
 			switch interfaces[i].Operstate {
 			case netdev.Up:
-				_ = sc.SetState(check.OK)
+				sc.SetState(check.OK)
 			case netdev.Down:
 				if NetdevConfig.DownIsCritical {
-					_ = sc.SetState(check.Critical)
+					sc.SetState(check.Critical)
 				} else {
-					_ = sc.SetState(check.Warning)
+					sc.SetState(check.Warning)
 				}
 			case netdev.Unknown:
 				if NetdevConfig.UnknownIsOk {
-					_ = sc.SetState(check.OK)
+					sc.SetState(check.OK)
 				} else {
-					_ = sc.SetState(check.Warning)
+					sc.SetState(check.Warning)
 				}
 			default:
-				_ = sc.SetState(check.Warning)
+				sc.SetState(check.Warning)
 			}
 		}
 
 		for j := range interfaces[i].Metrics {
-			pd := perfdata.Perfdata{}
+			pd := check.Perfdata{}
 			pd.Label = interfaces[i].Name + "_" + netdev.GetIfaceStatNames()[j]
 			pd.Value = interfaces[i].Metrics[j]
 
-			sc.Perfdata.Add(&pd)
+			sc.AddPerfdata(&pd)
 		}
 
 		overall.AddSubcheck(sc)
 	}
 
-	check.ExitRaw(overall.GetStatus(), overall.GetOutput())
+	check.Exit(overall.GetStatus(), overall.GetOutput())
 }

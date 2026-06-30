@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/NETWAYS/go-check"
-	"github.com/NETWAYS/go-check/perfdata"
 )
 
 func TestSensorAndDeviceString(t *testing.T) {
@@ -12,7 +11,7 @@ func TestSensorAndDeviceString(t *testing.T) {
 		Name:  "testname",
 		Path:  "testpath",
 		Alarm: false,
-		Perfdata: perfdata.Perfdata{
+		Perfdata: check.Perfdata{
 			Label: "test",
 			Value: 10.0,
 			Uom:   "%",

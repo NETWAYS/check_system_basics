@@ -3,7 +3,7 @@ package load
 import (
 	"fmt"
 
-	"github.com/NETWAYS/go-check/perfdata"
+	"github.com/NETWAYS/go-check"
 	"github.com/shirou/gopsutil/v3/load"
 )
 
@@ -34,8 +34,8 @@ func (l *Load) GetOutput() (output string) {
 	return output
 }
 
-func (l *Load) GetPerfData() perfdata.PerfdataList {
-	perfList := perfdata.PerfdataList{
+func (l *Load) GetPerfData() check.PerfdataList {
+	perfList := check.PerfdataList{
 		{
 			Label: "load1",
 			Value: l.LoadAvg.Load1,

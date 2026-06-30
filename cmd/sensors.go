@@ -45,7 +45,7 @@ thresholds respecting the sensor type and the respective specialities`,
 
 		if len(devices) == 0 {
 			overall.Add(check.Unknown, "No devices found")
-			check.ExitRaw(overall.GetStatus(), overall.GetOutput())
+			check.Exit(overall.GetStatus(), overall.GetOutput())
 		}
 
 		var (
@@ -53,30 +53,35 @@ thresholds respecting the sensor type and the respective specialities`,
 		)
 
 		for _, device := range devices {
-			var devicePartial result.PartialResult
+			devicePartial := result.NewPartialResult()
 
-			_ = devicePartial.SetDefaultState(check.OK)
+			devicePartial.SetDefaultState(check.OK)
 
-			devicePartial.Output = device.Name
+			devicePartial.SetOutput(device.Name)
+
 			for idx, sensor := range device.Sensors {
-				var ssc result.PartialResult
+				ssc := result.NewPartialResult()
 
-				_ = ssc.SetDefaultState(check.OK)
-				ssc.Perfdata.Add(&(device.Sensors[idx]).Perfdata)
+				ssc.SetDefaultState(check.OK)
 
+				sensorPerfdata := &(device.Sensors[idx]).Perfdata
+				ssc.AddPerfdata(sensorPerfdata)
+
+				preliminaryOutput := ""
 				if sensor.Alarm {
-					ssc.Output = "Alarm!"
-					_ = ssc.SetState(check.Critical)
+					preliminaryOutput = "Alarm!"
+
+					ssc.SetState(check.Critical)
+
 					alarms++
 				} else {
-					ssc.Output = "Ok"
-					_ = ssc.SetState(check.OK)
+					preliminaryOutput = "Ok"
+
+					ssc.SetState(check.OK)
 				}
 
 				// Add perfdata label (sensor name) to ouptput to make it more descriptive
-				if len(ssc.Perfdata) == 1 {
-					ssc.Output = fmt.Sprintf("%s: %s - %v%s", ssc.Perfdata[0].Label, ssc.Output, ssc.Perfdata[0].Value, ssc.Perfdata[0].Uom)
-				}
+				ssc.SetOutput(fmt.Sprintf("%s: %s - %v%s", sensorPerfdata.Label, preliminaryOutput, sensorPerfdata.Value, sensorPerfdata.Uom))
 
 				devicePartial.AddSubcheck(ssc)
 			}
@@ -84,7 +89,7 @@ thresholds respecting the sensor type and the respective specialities`,
 			overall.AddSubcheck(devicePartial)
 		}
 
-		check.ExitRaw(overall.GetStatus(), overall.GetOutput())
+		check.Exit(overall.GetStatus(), overall.GetOutput())
 	},
 }
 

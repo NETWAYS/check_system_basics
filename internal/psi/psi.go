@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/NETWAYS/go-check/perfdata"
+	"github.com/NETWAYS/go-check"
 )
 
 const (
@@ -64,10 +64,10 @@ const (
 	io
 )
 
-func (p *PressureValue) Perfdata(prefix string) *perfdata.PerfdataList {
-	var ret perfdata.PerfdataList
+func (p *PressureValue) Perfdata(prefix string) *check.PerfdataList {
+	var ret check.PerfdataList
 
-	avg10 := perfdata.Perfdata{}
+	avg10 := check.Perfdata{}
 	avg10.Label = prefix + "avg10"
 	avg10.Value = p.Avg10
 	avg10.Uom = "%"
@@ -75,7 +75,7 @@ func (p *PressureValue) Perfdata(prefix string) *perfdata.PerfdataList {
 	avg10.Max = 100
 	ret.Add(&avg10)
 
-	avg60 := perfdata.Perfdata{}
+	avg60 := check.Perfdata{}
 	avg60.Label = prefix + "avg60"
 	avg60.Value = p.Avg60
 	avg60.Uom = "%"
@@ -83,7 +83,7 @@ func (p *PressureValue) Perfdata(prefix string) *perfdata.PerfdataList {
 	avg60.Max = 100
 	ret.Add(&avg60)
 
-	avg300 := perfdata.Perfdata{}
+	avg300 := check.Perfdata{}
 	avg300.Label = prefix + "avg300"
 	avg300.Value = p.Avg300
 	avg300.Uom = "%"
@@ -91,7 +91,7 @@ func (p *PressureValue) Perfdata(prefix string) *perfdata.PerfdataList {
 	avg300.Max = 100
 	ret.Add(&avg300)
 
-	total := perfdata.Perfdata{}
+	total := check.Perfdata{}
 	total.Label = prefix + "total"
 	total.Value = p.Total
 	total.Min = 0
@@ -101,7 +101,7 @@ func (p *PressureValue) Perfdata(prefix string) *perfdata.PerfdataList {
 	return &ret
 }
 
-func (p *PressureElement) Perfdata() *perfdata.PerfdataList {
+func (p *PressureElement) Perfdata() *check.PerfdataList {
 	switch p.Type {
 	case cpu:
 		tmp := *p.Some.Perfdata("cpu-some-")
