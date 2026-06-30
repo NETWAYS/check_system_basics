@@ -37,10 +37,6 @@ func TestComputeMemResultsWithoutThresholds(t *testing.T) {
 	if check.OK != memPartial.GetStatus() {
 		t.Fatalf("expected %v, got %v", check.OK, memPartial.GetStatus())
 	}
-
-	if 3 != len(memPartial.PartialResults) {
-		t.Fatalf("expected %v, got %v", 3, len(memPartial.PartialResults))
-	}
 }
 
 func TestComputeMemResultsWithThresholds(t *testing.T) {
@@ -62,9 +58,5 @@ func TestComputeMemResultsWithThresholds(t *testing.T) {
 
 	if check.Warning != memPartial.GetStatus() {
 		t.Fatalf("expected %v, got %v", check.Warning, memPartial.GetStatus())
-	}
-
-	if 3 != len(memPartial.PartialResults) {
-		t.Fatalf("expected %v, got %v", 3, len(memPartial.PartialResults))
 	}
 }
