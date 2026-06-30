@@ -111,27 +111,32 @@ var diskCmd = &cobra.Command{
 			countResult := result.NewPartialResult()
 			countResult.SetDefaultState(check.OK)
 
+			tmpOutput := ""
 			if len(filesystemList) == 1 {
-				countResult.Output = "Found one matching filesystem"
+				tmpOutput = "Found one matching filesystem"
 			} else {
-				countResult.Output = "Found " + strconv.Itoa(len(filesystemList)) + " matching filesystems"
+				tmpOutput = "Found " + strconv.Itoa(len(filesystemList)) + " matching filesystems"
 			}
 
 			if FsConfig.CriticalTotalCountOfFs.IsSet && FsConfig.CriticalTotalCountOfFs.Th.DoesViolate(float64(len(filesystemList))) {
 				countResult.SetState(check.Critical)
-				countResult.Output += ". This violates the threshold of " + FsConfig.CriticalTotalCountOfFs.String()
+
+				tmpOutput += ". This violates the threshold of " + FsConfig.CriticalTotalCountOfFs.String()
 			} else if FsConfig.WarningTotalCountOfFs.IsSet && FsConfig.WarningTotalCountOfFs.Th.DoesViolate(float64(len(filesystemList))) {
 				countResult.SetState(check.Warning)
-				countResult.Output += ". This violates the threshold of " + FsConfig.WarningTotalCountOfFs.String()
+
+				tmpOutput += ". This violates the threshold of " + FsConfig.WarningTotalCountOfFs.String()
 			} else {
-				countResult.Output += ". This number resides within the given thresholds"
+				tmpOutput += ". This number resides within the given thresholds"
 			}
+
+			countResult.SetOutput(tmpOutput)
 
 			overall.AddSubcheck(countResult)
 		} else if len(filesystemList) == 0 {
 			nullResult := result.NewPartialResult()
 			nullResult.SetState(check.OK)
-			nullResult.Output = "No filesystems remaining after applying filter expressions. Therefore all are OK"
+			nullResult.SetOutput("No filesystems remaining after applying filter expressions. Therefore all are OK")
 			overall.AddSubcheck(nullResult)
 			check.Exit(overall.GetStatus(), overall.GetOutput())
 		}
@@ -150,7 +155,7 @@ var diskCmd = &cobra.Command{
 			sc := computeFsCheckResult(&filesystemList[index], &FsConfig)
 
 			if filesystemList[index].Error == nil {
-				sc.Output = fmt.Sprintf("%s (%.2f%% used space, %.2f%% free inodes)", sc.Output, filesystemList[index].UsageStats.UsedPercent, 100-filesystemList[index].UsageStats.InodesUsedPercent)
+				sc.SetOutput(fmt.Sprintf("%s (%.2f%% used space, %.2f%% free inodes)", filesystemList[index].PartStats.Mountpoint, filesystemList[index].UsageStats.UsedPercent, 100-filesystemList[index].UsageStats.InodesUsedPercent))
 			}
 
 			overall.AddSubcheck(sc)
@@ -162,9 +167,8 @@ var diskCmd = &cobra.Command{
 }
 
 func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesystem.CheckConfig) *result.PartialResult {
-	returnResult := result.PartialResult{
-		Output: "Inodes",
-	}
+	returnResult := result.NewPartialResult()
+	returnResult.SetOutput("Inodes")
 	returnResult.SetDefaultState(check.OK)
 
 	// One Perfdata point here with inodes free, warn, crit, total
@@ -185,7 +189,7 @@ func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesyste
 
 			if config.WarningAbsolutThreshold.Inodes.Free.Th.DoesViolate(float64(fs.UsageStats.InodesFree)) {
 				tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute free inode number violates threshold: %d / %d", fs.UsageStats.InodesFree, fs.UsageStats.InodesTotal)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Absolute free inode number violates threshold: %d / %d", fs.UsageStats.InodesFree, fs.UsageStats.InodesTotal))
 			}
 		}
 
@@ -194,18 +198,18 @@ func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesyste
 
 			if config.CriticalAbsolutThreshold.Inodes.Free.Th.DoesViolate(float64(fs.UsageStats.InodesFree)) {
 				tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute free inode number violates threshold: %d / %d", fs.UsageStats.InodesFree, fs.UsageStats.InodesTotal)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Absolute free inode number violates threshold: %d / %d", fs.UsageStats.InodesFree, fs.UsageStats.InodesTotal))
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Absolute number of free inodes: %d / %d", fs.UsageStats.InodesFree, fs.UsageStats.InodesTotal)
+			tmpPartialResult.SetOutput(fmt.Sprintf("Absolute number of free inodes: %d / %d", fs.UsageStats.InodesFree, fs.UsageStats.InodesTotal))
 		}
 
-		tmpPartialResult.Perfdata.Add(&pdAbsoluteFreeInodes)
+		tmpPartialResult.AddPerfdata(&pdAbsoluteFreeInodes)
 		returnResult.AddSubcheck(tmpPartialResult)
 	} else {
-		returnResult.Perfdata.Add(&pdAbsoluteFreeInodes)
+		returnResult.AddPerfdata(&pdAbsoluteFreeInodes)
 	}
 
 	// One Perfdata point here with inodes used, warn, crit, total
@@ -226,7 +230,7 @@ func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesyste
 
 			if config.WarningAbsolutThreshold.Inodes.Used.Th.DoesViolate(float64(fs.UsageStats.InodesUsed)) {
 				tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute used inode number violates threshold: %d / %d", fs.UsageStats.InodesUsed, fs.UsageStats.InodesTotal)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Absolute used inode number violates threshold: %d / %d", fs.UsageStats.InodesUsed, fs.UsageStats.InodesTotal))
 			}
 		}
 
@@ -235,18 +239,18 @@ func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesyste
 
 			if config.CriticalAbsolutThreshold.Inodes.Used.Th.DoesViolate(float64(fs.UsageStats.InodesUsed)) {
 				tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute used inode number violates threshold: %d / %d", fs.UsageStats.InodesUsed, fs.UsageStats.InodesTotal)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Absolute used inode number violates threshold: %d / %d", fs.UsageStats.InodesUsed, fs.UsageStats.InodesTotal))
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Absolute number of used inodes: %d / %d", fs.UsageStats.InodesUsed, fs.UsageStats.InodesTotal)
+			tmpPartialResult.SetOutput(fmt.Sprintf("Absolute number of used inodes: %d / %d", fs.UsageStats.InodesUsed, fs.UsageStats.InodesTotal))
 		}
 
-		tmpPartialResult.Perfdata.Add(&pdAbsoluteUsedInodes)
+		tmpPartialResult.AddPerfdata(&pdAbsoluteUsedInodes)
 		returnResult.AddSubcheck(tmpPartialResult)
 	} else {
-		returnResult.Perfdata.Add(&pdAbsoluteUsedInodes)
+		returnResult.AddPerfdata(&pdAbsoluteUsedInodes)
 	}
 
 	// One Perfdata point here with inodes free, warn, crit, total
@@ -265,7 +269,7 @@ func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesyste
 
 			if config.WarningPercentThreshold.Inodes.Free.Th.DoesViolate(pdPercentageFreeInodes.Value.(float64)) {
 				tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Percentage of free inodes violates threshold: %.2f%%", pdPercentageFreeInodes.Value)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of free inodes violates threshold: %.2f%%", pdPercentageFreeInodes.Value))
 			}
 		}
 
@@ -274,18 +278,18 @@ func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesyste
 
 			if config.CriticalPercentThreshold.Inodes.Free.Th.DoesViolate(pdPercentageFreeInodes.Value.(float64)) {
 				tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Percentage of free inodes violates threshold: %.2f%%", pdPercentageFreeInodes.Value)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of free inodes violates threshold: %.2f%%", pdPercentageFreeInodes.Value))
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Percentage of free inodes: %.2f%%", pdPercentageFreeInodes.Value)
+			tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of free inodes: %.2f%%", pdPercentageFreeInodes.Value))
 		}
 
-		tmpPartialResult.Perfdata.Add(&pdPercentageFreeInodes)
+		tmpPartialResult.AddPerfdata(&pdPercentageFreeInodes)
 		returnResult.AddSubcheck(tmpPartialResult)
 	} else {
-		returnResult.Perfdata.Add(&pdPercentageFreeInodes)
+		returnResult.AddPerfdata(&pdPercentageFreeInodes)
 	}
 
 	// One Perfdata point here with inodes used, warn, crit, total
@@ -304,7 +308,7 @@ func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesyste
 
 			if config.WarningPercentThreshold.Inodes.Used.Th.DoesViolate(fs.UsageStats.InodesUsedPercent) {
 				tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Percentage of used inodes violates threshold: %.2f%%", fs.UsageStats.InodesUsedPercent)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of used inodes violates threshold: %.2f%%", fs.UsageStats.InodesUsedPercent))
 			}
 		}
 
@@ -313,26 +317,26 @@ func computeFsCheckResultInodes(fs *filesystem.FilesystemType, config *filesyste
 
 			if config.CriticalPercentThreshold.Inodes.Used.Th.DoesViolate(fs.UsageStats.InodesUsedPercent) {
 				tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Percentage of used inodes violates threshold: %.2f%%", fs.UsageStats.InodesUsedPercent)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of used inodes violates threshold: %.2f%%", fs.UsageStats.InodesUsedPercent))
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Percentage of used inodes: %.2f%%", fs.UsageStats.InodesUsedPercent)
+			tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of used inodes: %.2f%%", fs.UsageStats.InodesUsedPercent))
 		}
 
-		tmpPartialResult.Perfdata.Add(&pdPercentageUsedInodes)
+		tmpPartialResult.AddPerfdata(&pdPercentageUsedInodes)
 		returnResult.AddSubcheck(tmpPartialResult)
 	} else {
-		returnResult.Perfdata.Add(&pdPercentageUsedInodes)
+		returnResult.AddPerfdata(&pdPercentageUsedInodes)
 	}
 
-	return &returnResult
+	return returnResult
 }
 
 func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem.CheckConfig) *result.PartialResult {
 	returnResult := result.NewPartialResult()
-	returnResult.Output = "Space usage"
+	returnResult.SetOutput("Space usage")
 	returnResult.SetDefaultState(check.OK)
 
 	// Absolute numbers
@@ -354,7 +358,7 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.WarningAbsolutThreshold.Space.Free.Th.DoesViolate(float64(fs.UsageStats.Free)) {
 				tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute free space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Free), convert.BytesIEC(fs.UsageStats.Total))
+				tmpPartialResult.SetOutput(fmt.Sprintf("Absolute free space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Free), convert.BytesIEC(fs.UsageStats.Total)))
 			}
 		}
 
@@ -363,18 +367,18 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.CriticalAbsolutThreshold.Space.Free.Th.DoesViolate(float64(fs.UsageStats.Free)) {
 				tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute free space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Free), convert.BytesIEC(fs.UsageStats.Total))
+				tmpPartialResult.SetOutput(fmt.Sprintf("Absolute free space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Free), convert.BytesIEC(fs.UsageStats.Total)))
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Absolute free space: %s / %s", convert.BytesIEC(fs.UsageStats.Free), convert.BytesIEC(fs.UsageStats.Total))
+			tmpPartialResult.SetOutput(fmt.Sprintf("Absolute free space: %s / %s", convert.BytesIEC(fs.UsageStats.Free), convert.BytesIEC(fs.UsageStats.Total)))
 		}
 
-		tmpPartialResult.Perfdata.Add(&pdAbsoluteFreeSpace)
+		tmpPartialResult.AddPerfdata(&pdAbsoluteFreeSpace)
 		returnResult.AddSubcheck(tmpPartialResult)
 	} else {
-		returnResult.Perfdata.Add(&pdAbsoluteFreeSpace)
+		returnResult.AddPerfdata(&pdAbsoluteFreeSpace)
 	}
 
 	// One Perfdata point here with bytes used, warn, crit, total
@@ -395,7 +399,7 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.WarningAbsolutThreshold.Space.Used.Th.DoesViolate(float64(fs.UsageStats.Used)) {
 				tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute used space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Used), convert.BytesIEC(fs.UsageStats.Total))
+				tmpPartialResult.SetOutput(fmt.Sprintf("Absolute used space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Used), convert.BytesIEC(fs.UsageStats.Total)))
 			}
 		}
 
@@ -404,18 +408,18 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.CriticalAbsolutThreshold.Space.Used.Th.DoesViolate(float64(fs.UsageStats.Used)) {
 				tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Absolute used space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Used), convert.BytesIEC(fs.UsageStats.Total))
+				tmpPartialResult.SetOutput(fmt.Sprintf("Absolute used space violates threshold: %s / %s", convert.BytesIEC(fs.UsageStats.Used), convert.BytesIEC(fs.UsageStats.Total)))
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Absolute used space: %s / %s", convert.BytesIEC(fs.UsageStats.Used), convert.BytesIEC(fs.UsageStats.Total))
+			tmpPartialResult.SetOutput(fmt.Sprintf("Absolute used space: %s / %s", convert.BytesIEC(fs.UsageStats.Used), convert.BytesIEC(fs.UsageStats.Total)))
 		}
 
-		tmpPartialResult.Perfdata.Add(&pdAbsoluteUsedSpace)
+		tmpPartialResult.AddPerfdata(&pdAbsoluteUsedSpace)
 		returnResult.AddSubcheck(tmpPartialResult)
 	} else {
-		returnResult.Perfdata.Add(&pdAbsoluteUsedSpace)
+		returnResult.AddPerfdata(&pdAbsoluteUsedSpace)
 	}
 
 	// Percentage numbers
@@ -437,7 +441,7 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.WarningPercentThreshold.Space.Free.Th.DoesViolate(pdPercentageFreeSpace.Value.(float64)) {
 				tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Percentage of free space violates threshold: %.2f%%", pdPercentageFreeSpace.Value)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of free space violates threshold: %.2f%%", pdPercentageFreeSpace.Value))
 			}
 		}
 
@@ -446,18 +450,18 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.CriticalPercentThreshold.Space.Free.Th.DoesViolate(pdPercentageFreeSpace.Value.(float64)) {
 				tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Percentage of free space violates threshold: %.2f%%", pdPercentageFreeSpace.Value)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of free space violates threshold: %.2f%%", pdPercentageFreeSpace.Value))
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Percentage of free space: %.2f%%", pdPercentageFreeSpace.Value)
+			tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of free space: %.2f%%", pdPercentageFreeSpace.Value))
 		}
 
-		tmpPartialResult.Perfdata.Add(&pdPercentageFreeSpace)
+		tmpPartialResult.AddPerfdata(&pdPercentageFreeSpace)
 		returnResult.AddSubcheck(tmpPartialResult)
 	} else {
-		returnResult.Perfdata.Add(&pdPercentageFreeSpace)
+		returnResult.AddPerfdata(&pdPercentageFreeSpace)
 	}
 
 	// One Perfdata point here with bytes used, warn, crit, total
@@ -476,7 +480,7 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.WarningPercentThreshold.Space.Used.Th.DoesViolate(fs.UsageStats.UsedPercent) {
 				tmpPartialResult.SetState(check.Warning)
-				tmpPartialResult.Output = fmt.Sprintf("Percentage of used space violates threshold: %.2f%%", fs.UsageStats.UsedPercent)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of used space violates threshold: %.2f%%", fs.UsageStats.UsedPercent))
 			}
 		}
 
@@ -485,18 +489,18 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 			if config.CriticalPercentThreshold.Space.Used.Th.DoesViolate(fs.UsageStats.UsedPercent) {
 				tmpPartialResult.SetState(check.Critical)
-				tmpPartialResult.Output = fmt.Sprintf("Percentage of used space violates threshold: %.2f%%", fs.UsageStats.UsedPercent)
+				tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of used space violates threshold: %.2f%%", fs.UsageStats.UsedPercent))
 			}
 		}
 
 		if tmpPartialResult.GetStatus() == check.OK {
-			tmpPartialResult.Output = fmt.Sprintf("Percentage of used space: %.2f%%", fs.UsageStats.UsedPercent)
+			tmpPartialResult.SetOutput(fmt.Sprintf("Percentage of used space: %.2f%%", fs.UsageStats.UsedPercent))
 		}
 
-		tmpPartialResult.Perfdata.Add(&pdPercentageUsedSpace)
+		tmpPartialResult.AddPerfdata(&pdPercentageUsedSpace)
 		returnResult.AddSubcheck(tmpPartialResult)
 	} else {
-		returnResult.Perfdata.Add(&pdPercentageUsedSpace)
+		returnResult.AddPerfdata(&pdPercentageUsedSpace)
 	}
 
 	return returnResult
@@ -504,12 +508,12 @@ func computeFsCheckResultSpace(fs *filesystem.FilesystemType, config *filesystem
 
 func computeFsCheckResult(fs *filesystem.FilesystemType, config *filesystem.CheckConfig) *result.PartialResult {
 	returnResult := result.NewPartialResult()
-	returnResult.Output = fs.PartStats.Mountpoint
+	returnResult.SetOutput(fs.PartStats.Mountpoint)
 	returnResult.SetDefaultState(check.OK)
 
 	if fs.Error != nil {
 		returnResult.SetState(check.Unknown)
-		returnResult.Output = fmt.Sprintf("Could not determine status of the filesystem  mounted at %s (%s) stats due to: %s", fs.PartStats.Mountpoint, fs.PartStats.Device, fs.Error)
+		returnResult.SetOutput(fmt.Sprintf("Could not determine status of the filesystem  mounted at %s (%s) stats due to: %s", fs.PartStats.Mountpoint, fs.PartStats.Device, fs.Error))
 
 		return returnResult
 	}

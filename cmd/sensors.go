@@ -57,27 +57,31 @@ thresholds respecting the sensor type and the respective specialities`,
 
 			devicePartial.SetDefaultState(check.OK)
 
-			devicePartial.Output = device.Name
+			devicePartial.SetOutput(device.Name)
+
 			for idx, sensor := range device.Sensors {
 				ssc := result.NewPartialResult()
 
 				ssc.SetDefaultState(check.OK)
-				ssc.Perfdata.Add(&(device.Sensors[idx]).Perfdata)
 
+				sensorPerfdata := &(device.Sensors[idx]).Perfdata
+				ssc.AddPerfdata(sensorPerfdata)
+
+				preliminaryOutput := ""
 				if sensor.Alarm {
-					ssc.Output = "Alarm!"
+					preliminaryOutput = "Alarm!"
+
 					ssc.SetState(check.Critical)
 
 					alarms++
 				} else {
-					ssc.Output = "Ok"
+					preliminaryOutput = "Ok"
+
 					ssc.SetState(check.OK)
 				}
 
 				// Add perfdata label (sensor name) to ouptput to make it more descriptive
-				if len(ssc.Perfdata) == 1 {
-					ssc.Output = fmt.Sprintf("%s: %s - %v%s", ssc.Perfdata[0].Label, ssc.Output, ssc.Perfdata[0].Value, ssc.Perfdata[0].Uom)
-				}
+				ssc.SetOutput(fmt.Sprintf("%s: %s - %v%s", sensorPerfdata.Label, preliminaryOutput, sensorPerfdata.Value, sensorPerfdata.Uom))
 
 				devicePartial.AddSubcheck(ssc)
 			}

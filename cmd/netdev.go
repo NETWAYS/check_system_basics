@@ -60,7 +60,7 @@ func NetdevCheck(_ *cobra.Command, _ []string) {
 		sc := result.NewPartialResult()
 		sc.SetDefaultState(check.OK)
 
-		sc.Output = interfaces[i].Name + " is " + netdev.TranslateIfaceState(interfaces[i].Operstate)
+		sc.SetOutput(interfaces[i].Name + " is " + netdev.TranslateIfaceState(interfaces[i].Operstate))
 
 		if !NetdevConfig.NotUpIsOK {
 			switch interfaces[i].Operstate {
@@ -88,7 +88,7 @@ func NetdevCheck(_ *cobra.Command, _ []string) {
 			pd.Label = interfaces[i].Name + "_" + netdev.GetIfaceStatNames()[j]
 			pd.Value = interfaces[i].Metrics[j]
 
-			sc.Perfdata.Add(&pd)
+			sc.AddPerfdata(&pd)
 		}
 
 		overall.AddSubcheck(sc)

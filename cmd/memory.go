@@ -51,7 +51,7 @@ var memoryCmd = &cobra.Command{
 
 func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) *result.PartialResult {
 	partialMem := result.NewPartialResult()
-	partialMem.Output = "RAM"
+	partialMem.SetOutput("RAM")
 	partialMem.SetDefaultState(check.OK)
 
 	// # Available
@@ -59,10 +59,10 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) *result.P
 
 	partialMemAvailable.SetDefaultState(check.OK)
 
-	partialMemAvailable.Output = fmt.Sprintf("Available Memory (%s/%s, %.2f%%)",
+	partialMemAvailable.SetOutput(fmt.Sprintf("Available Memory (%s/%s, %.2f%%)",
 		convert.BytesIEC(memStats.VirtMem.Available),
 		convert.BytesIEC(memStats.VirtMem.Total),
-		memStats.MemAvailablePercentage)
+		memStats.MemAvailablePercentage))
 
 	// perfdata
 	pdMemAvailable := check.Perfdata{
@@ -112,10 +112,10 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) *result.P
 	}
 
 	if config.PercentageInPerfdata {
-		partialMemAvailable.Perfdata.Add(&pdMemAvailablePrcnt)
+		partialMemAvailable.AddPerfdata(&pdMemAvailablePrcnt)
 	}
 
-	partialMemAvailable.Perfdata.Add(&pdMemAvailable)
+	partialMemAvailable.AddPerfdata(&pdMemAvailable)
 	partialMem.AddSubcheck(partialMemAvailable)
 
 	if (partialMemAvailable.GetStatus() > partialMem.GetStatus()) &&
@@ -144,10 +144,10 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) *result.P
 		Uom:   "%",
 	}
 
-	partialMemFree.Output = fmt.Sprintf("Free Memory (%s/%s, %.2f%%)",
+	partialMemFree.SetOutput(fmt.Sprintf("Free Memory (%s/%s, %.2f%%)",
 		convert.BytesIEC(memStats.VirtMem.Free),
 		convert.BytesIEC(memStats.VirtMem.Total),
-		MemFreePercentage)
+		MemFreePercentage))
 
 	if config.MemFree.Warn.IsSet {
 		pdMemFree.Warn = &config.MemFree.Warn.Th
@@ -181,10 +181,10 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) *result.P
 		}
 	}
 
-	partialMemFree.Perfdata.Add(&pdMemFree)
+	partialMemFree.AddPerfdata(&pdMemFree)
 
 	if config.PercentageInPerfdata {
-		partialMemFree.Perfdata.Add(&pdMemFreePercentage)
+		partialMemFree.AddPerfdata(&pdMemFreePercentage)
 	}
 
 	partialMem.AddSubcheck(partialMemFree)
@@ -199,10 +199,10 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) *result.P
 
 	partialMemUsed.SetDefaultState(check.OK)
 
-	partialMemUsed.Output = fmt.Sprintf("Used Memory (%s/%s, %.2f%%)",
+	partialMemUsed.SetOutput(fmt.Sprintf("Used Memory (%s/%s, %.2f%%)",
 		convert.BytesIEC(memStats.VirtMem.Used),
 		convert.BytesIEC(memStats.VirtMem.Total),
-		memStats.VirtMem.UsedPercent)
+		memStats.VirtMem.UsedPercent))
 
 	pdMemUsed := check.Perfdata{
 		Label: "used_memory",
@@ -251,10 +251,10 @@ func computeMemResults(config *memory.MemConfig, memStats *memory.Mem) *result.P
 		}
 	}
 
-	partialMemUsed.Perfdata.Add(&pdMemUsed)
+	partialMemUsed.AddPerfdata(&pdMemUsed)
 
 	if config.PercentageInPerfdata {
-		partialMemUsed.Perfdata.Add(&pdMemUsedPercentage)
+		partialMemUsed.AddPerfdata(&pdMemUsedPercentage)
 	}
 
 	partialMem.AddSubcheck(partialMemUsed)
@@ -418,12 +418,12 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 
 	if stats.VirtMem.SwapTotal == 0 {
 		partialSwap.SetState(check.Critical)
-		partialSwap.Output = "Swap size is 0."
+		partialSwap.SetOutput("Swap size is 0.")
 
 		return &partialSwap
 	}
 
-	partialSwap.Output = fmt.Sprintf("Swap Usage %.2f%% (%s / %s)", stats.SwapInfo.UsedPercent, convert.BytesIEC(stats.SwapInfo.Used), convert.BytesIEC(stats.SwapInfo.Total))
+	partialSwap.SetOutput(fmt.Sprintf("Swap Usage %.2f%% (%s / %s)", stats.SwapInfo.UsedPercent, convert.BytesIEC(stats.SwapInfo.Used), convert.BytesIEC(stats.SwapInfo.Total)))
 
 	pdSwapUsed := check.Perfdata{
 		Label: "swap_used",
@@ -499,10 +499,10 @@ func computeSwapResults(stats *memory.Mem) *result.PartialResult {
 
 	// Percentage to Perfdata
 	if MemoryConfig.PercentageInPerfdata {
-		partialSwap.Perfdata.Add(&pdSwapPrcnt)
+		partialSwap.AddPerfdata(&pdSwapPrcnt)
 	}
 
-	partialSwap.Perfdata.Add(&pdSwapUsed)
+	partialSwap.AddPerfdata(&pdSwapUsed)
 
 	return &partialSwap
 }

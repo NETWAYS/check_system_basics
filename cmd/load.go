@@ -84,8 +84,8 @@ var loadCmd = &cobra.Command{
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[0])
 		}
 
-		partialLoad1.Output = tmpOutput
-		partialLoad1.Perfdata.Add(tmpPerfdata)
+		partialLoad1.SetOutput(tmpOutput)
+		partialLoad1.AddPerfdata(tmpPerfdata)
 
 		// 5 Minute average
 		partialLoad5 := result.NewPartialResult()
@@ -122,8 +122,8 @@ var loadCmd = &cobra.Command{
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[1])
 		}
 
-		partialLoad5.Output = tmpOutput
-		partialLoad5.Perfdata.Add(tmpPerfdata)
+		partialLoad5.SetOutput(tmpOutput)
+		partialLoad5.AddPerfdata(tmpPerfdata)
 
 		// 15 Minute average
 		partialLoad15 := result.NewPartialResult()
@@ -160,8 +160,8 @@ var loadCmd = &cobra.Command{
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[2])
 		}
 
-		partialLoad15.Output = tmpOutput
-		partialLoad15.Perfdata.Add(tmpPerfdata)
+		partialLoad15.SetOutput(tmpOutput)
+		partialLoad15.AddPerfdata(tmpPerfdata)
 
 		overall.AddSubcheck(partialLoad1)
 		overall.AddSubcheck(partialLoad5)
