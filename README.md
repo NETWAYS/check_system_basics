@@ -98,6 +98,48 @@ by a graphing system.
 
 There are no parameters available yet.
 
+# Installation
+
+## Packages
+
+NETWAYS provides this plugin via [https://packages.netways.de](https://packages.netways.de/).
+
+### Debian:
+
+First you have to setup the **plugins** repository: 
+
+```
+wget -O - https://packages.netways.de/netways-repo.asc | gpg --dearmor > /usr/share/keyrings/netways.gpg
+
+DIST=$(awk -F"[)(]+" '/VERSION=/ {print $2}' /etc/os-release)
+echo "deb [signed-by=/usr/share/keyrings/netways.gpg] https://packages.netways.de/plugins/debian ${DIST} main" > /etc/apt/sources.list.d/netways-plugins.list
+
+apt update
+```
+
+Then install the package:
+
+```
+sudo apt install netways-plugins-system-basics
+```
+
+### RHEL or compatible:
+
+First you have to setup the **plugins** repository:
+
+Import the key: 
+
+``` 
+sudo rpm --import https://packages.netways.de/netways-repo.asc
+``` 
+
+Choose the [repository](https://packages.netways.de/plugins/epel/) that fits your version.
+
+Then install the Package: 
+
+```
+sudo dnf install netways-plugins-system-basics
+```  
 
 ## Building
 
