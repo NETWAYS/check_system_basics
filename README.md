@@ -98,6 +98,25 @@ by a graphing system.
 
 There are no parameters available yet.
 
+# Installation
+
+## Packages
+
+NETWAYS provides this plugin via [https://packages.netways.de](https://packages.netways.de/).
+
+To install this module, follow the setup instructions for the **plugins** repository.
+
+### Debian:
+
+```
+sudo apt install netways-plugins-system-basics
+```
+
+### RHEL or compatible:
+
+```
+sudo dnf install netways-plugins-system-basics
+```  
 
 ## Building
 
