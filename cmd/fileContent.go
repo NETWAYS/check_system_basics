@@ -6,9 +6,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"regexp"
-
-	// "github.com/NETWAYS/check_system_basics/internal/common/status"
+	"strconv"
 
 	sbRegex "github.com/NETWAYS/check_system_basics/internal/common/regexp"
 	fileContent "github.com/NETWAYS/check_system_basics/internal/files"
@@ -18,12 +16,6 @@ import (
 )
 
 var FileContentConfig fileContent.FileContentconfig
-
-type EvalConfig struct {
-	OKPatterns       []regexp.Regexp
-	WarningPatterns  []regexp.Regexp
-	CriticalPatterns []regexp.Regexp
-}
 
 var fileContentCmd = &cobra.Command{
 	Use:     "fileContent",
@@ -117,16 +109,16 @@ func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.Pa
 
 	// Evaluation
 	// -- Pattern matching in file
-	if (len(config.OKPatterns) != 0) || (len(config.WarningPatterns) != 0) || (len(config.CriticalPatterns) != 0) {
-		scPattern := result.NewPartialResult()
-		scPattern.SetDefaultState(config.NotFoundStatus.Status)
-
+	if (len(config.OKPatterns) != 0) || (len(config.WarningPatterns) != 0) || (len(config.CriticalPatterns) != 0) || config.MetricPattern.IsSet {
 		// Pattern matching priority:
 		// if Critical > Warning > OK
 		// start with critical and first match wins
-		foundPattern := false
+		foundOKPattern := false
 		foundWarningPattern := false
 		foundCriticalPattern := false
+		foundMetric := false
+
+		var metric float64
 
 		var patternFound sbRegex.SBRegex
 
@@ -138,43 +130,61 @@ func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.Pa
 		scanner := bufio.NewScanner(fileDesc)
 
 		for scanner.Scan() {
-			for _, critPattern := range config.CriticalPatterns {
-				if critPattern.Regex.MatchString(scanner.Text()) {
-					foundPattern = true
-					foundCriticalPattern = true
-					patternFound = critPattern
+			if !foundCriticalPattern {
+				for _, critPattern := range config.CriticalPatterns {
+					if critPattern.Regex.MatchString(scanner.Text()) {
+						foundCriticalPattern = true
+						patternFound = critPattern
 
-					break
+						break
+					}
 				}
 			}
 
-			if foundCriticalPattern {
-				// abort here, if we already have CRITICAL
+			if !foundWarningPattern {
+				for _, warnPattern := range config.WarningPatterns {
+					if warnPattern.Regex.MatchString(scanner.Text()) {
+						foundWarningPattern = true
+						patternFound = warnPattern
+
+						break
+					}
+				}
+			}
+
+			if !foundOKPattern {
+				for _, okPattern := range config.OKPatterns {
+					if okPattern.Regex.MatchString(scanner.Text()) {
+						foundOKPattern = true
+						patternFound = okPattern
+
+						break
+					}
+				}
+			}
+
+			if config.MetricPattern.IsSet {
+				if config.MetricPattern.Regex.MatchString(scanner.Text()) {
+					foundMetric = true
+					matchSlice := config.MetricPattern.Regex.FindStringSubmatch(scanner.Text())
+
+					if matchSlice == nil {
+						check.ExitError(fmt.Errorf("Metrix Regex submatch failed somehow"))
+					}
+
+					metric, err = strconv.ParseFloat(matchSlice[1], 64)
+					if err != nil {
+						check.ExitError(err)
+					}
+				}
+			}
+
+			if (config.MetricPattern.IsSet || foundMetric) &&
+				(len(config.CriticalPatterns) == 0 || foundCriticalPattern) &&
+				(len(config.WarningPatterns) == 0 || foundWarningPattern) &&
+				(len(config.OKPatterns) == 0 || foundOKPattern) {
+				// Abort if we are done
 				break
-			}
-
-			for _, warnPattern := range config.WarningPatterns {
-				if warnPattern.Regex.MatchString(scanner.Text()) {
-					foundPattern = true
-					foundWarningPattern = true
-					patternFound = warnPattern
-
-					break
-				}
-			}
-
-			if foundWarningPattern {
-				// abort here, if we already have Warning
-				break
-			}
-
-			for _, okPattern := range config.OKPatterns {
-				if okPattern.Regex.MatchString(scanner.Text()) {
-					foundPattern = true
-					patternFound = okPattern
-
-					break
-				}
 			}
 		}
 
@@ -184,7 +194,10 @@ func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.Pa
 			return nil, err
 		}
 
-		if !foundPattern {
+		scPattern := result.NewPartialResult()
+		scPattern.SetDefaultState(config.NotFoundStatus.Status)
+
+		if !foundCriticalPattern && !foundWarningPattern && !foundOKPattern {
 			scPattern.SetState(config.NotFoundStatus.Status)
 			scPattern.SetOutput("Regex pattern did not match in file")
 		} else {
@@ -201,6 +214,44 @@ func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.Pa
 		}
 
 		evaluationResult.AddSubcheck(scPattern)
+
+		if config.MetricPattern.IsSet {
+			// Expected a metric match
+			scMetric := result.NewPartialResult()
+
+			if !foundMetric {
+				scMetric.SetState(config.MetricNotFoundStatus.Status)
+				scMetric.SetOutput("Metric not found")
+			} else {
+				scMetric.SetState(check.OK)
+				scMetric.SetOutput(fmt.Sprintf("%s: %g", config.MetricLabel, metric))
+
+				pdMetrcis := check.Perfdata{
+					Value: metric,
+					Label: config.MetricLabel,
+				}
+
+				if config.MetricThresholds.Warn.IsSet {
+					pdMetrcis.Warn = &config.MetricThresholds.Warn.Th
+				}
+
+				if config.MetricThresholds.Warn.Th.DoesViolate(metric) {
+					scMetric.SetState(check.Warning)
+				}
+
+				if config.MetricThresholds.Crit.IsSet {
+					pdMetrcis.Crit = &config.MetricThresholds.Crit.Th
+				}
+
+				if config.MetricThresholds.Crit.Th.DoesViolate(metric) {
+					scMetric.SetState(check.Critical)
+				}
+
+				scMetric.AddPerfdata(&pdMetrcis)
+			}
+
+			evaluationResult.AddSubcheck(scMetric)
+		}
 	}
 
 	return evaluationResult, nil
@@ -212,9 +263,16 @@ func init() {
 
 	fileContentFS := fileContentCmd.Flags()
 	fileContentFS.StringArrayVar(&FileContentConfig.Paths, "paths", []string{}, "File paths to evaluate")
+	fileContentFS.BoolVar(&FileContentConfig.Recursive, "recursive", false, "Recursively test all files in \"paths\"")
+
 	fileContentFS.Var(&FileContentConfig.OKPatterns, "ok-pattern", "Regex pattern in file which are OK")
 	fileContentFS.Var(&FileContentConfig.WarningPatterns, "warning-pattern", "Regex pattern in file which cause a WARNING")
 	fileContentFS.Var(&FileContentConfig.CriticalPatterns, "critical-pattern", "Regex pattern in file which cause a CRITICAL")
 	fileContentFS.Var(&FileContentConfig.NotFoundStatus, "not-found-status", "Exit status if none of the patterns apply (OK (0), warning (1), critical (2), Uknown (3)) (default: OK)")
-	fileContentFS.BoolVar(&FileContentConfig.Recursive, "recursive", false, "Recursively test all files in \"paths\"")
+
+	fileContentFS.Var(&FileContentConfig.MetricPattern, "metric-pattern", "Regex pattern to find numerical values in the file")
+	fileContentFS.StringVar(&FileContentConfig.MetricLabel, "metric-label", "metric", "(Perfdata) label for matched metrics")
+	fileContentFS.Var(&FileContentConfig.MetricThresholds.Warn, "metric-warning", "Warning threshold for the matched metric")
+	fileContentFS.Var(&FileContentConfig.MetricThresholds.Crit, "metric-critical", "Critical threshold for the matched metric")
+	fileContentFS.Var(&FileContentConfig.MetricNotFoundStatus, "metric-not-found-status", "Exit status if the metric patterns were not found. (OK (0), warning (1), critical (2), Uknown (3)) (default: OK)")
 }
