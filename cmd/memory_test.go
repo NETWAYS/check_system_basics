@@ -7,7 +7,7 @@ import (
 	"github.com/NETWAYS/check_system_basics/internal/memory"
 
 	"github.com/NETWAYS/go-check"
-	"github.com/shirou/gopsutil/v3/mem"
+	"github.com/shirou/gopsutil/v4/mem"
 )
 
 var (

@@ -13,7 +13,7 @@ import (
 	"github.com/NETWAYS/go-check"
 	"github.com/NETWAYS/go-check/convert"
 	"github.com/NETWAYS/go-check/result"
-	"github.com/shirou/gopsutil/v3/disk"
+	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/spf13/cobra"
 )
 
