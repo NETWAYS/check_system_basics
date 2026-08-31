@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/shirou/gopsutil/v3/disk"
+	"github.com/shirou/gopsutil/v4/disk"
 )
 
 // FilesystemType describes the retrieved metadata of a filesystem

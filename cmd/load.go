@@ -6,7 +6,7 @@ import (
 	"github.com/NETWAYS/check_system_basics/internal/load"
 	"github.com/NETWAYS/go-check"
 	"github.com/NETWAYS/go-check/result"
-	"github.com/shirou/gopsutil/v3/cpu"
+	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/spf13/cobra"
 )
 

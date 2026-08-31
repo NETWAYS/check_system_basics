@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NETWAYS/go-check"
-	"github.com/shirou/gopsutil/v3/load"
+	"github.com/shirou/gopsutil/v4/load"
 )
 
 type Load struct {

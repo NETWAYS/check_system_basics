@@ -7,7 +7,7 @@ import (
 	"github.com/NETWAYS/check_system_basics/internal/filesystem"
 
 	"github.com/NETWAYS/go-check"
-	"github.com/shirou/gopsutil/v3/disk"
+	"github.com/shirou/gopsutil/v4/disk"
 )
 
 var (
