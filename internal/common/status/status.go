@@ -3,6 +3,7 @@ package status
 import (
 	"fmt"
 	"strconv"
+
 	// "strings"
 
 	"github.com/NETWAYS/go-check"

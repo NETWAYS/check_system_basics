@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -55,6 +56,7 @@ func PathEvaluation(path string, config fileContent.FileContentconfig) (*result.
 		return nil, err
 	}
 
+	// nolint: nestif
 	if fileInfo.IsDir() {
 		// Input path is a directory
 		// apply conditions for all files inside
@@ -100,7 +102,10 @@ func PathEvaluation(path string, config fileContent.FileContentconfig) (*result.
 	return EvaluateFile(path, config)
 }
 
-func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.PartialResult, error) {
+// EvaluateFile receives a path and some evaluation parameters
+// and applies the conditions to the file content
+// nolint: gocognit,gocyclo
+func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.PartialResult, error) { // nolint: gocognit
 	evaluationResult := result.NewPartialResult()
 	evaluationResult.SetDefaultState(check.OK)
 
@@ -109,6 +114,7 @@ func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.Pa
 
 	// Evaluation
 	// -- Pattern matching in file
+	// nolint: nestif
 	if (len(config.OKPatterns) != 0) || (len(config.WarningPatterns) != 0) || (len(config.CriticalPatterns) != 0) || config.MetricPattern.IsSet {
 		// Pattern matching priority:
 		// if Critical > Warning > OK
@@ -169,7 +175,7 @@ func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.Pa
 					matchSlice := config.MetricPattern.Regex.FindStringSubmatch(scanner.Text())
 
 					if matchSlice == nil {
-						check.ExitError(fmt.Errorf("Metrix Regex submatch failed somehow"))
+						check.ExitError(errors.New("metrix regex submatch failed somehow"))
 					}
 
 					metric, err = strconv.ParseFloat(matchSlice[1], 64)
@@ -204,6 +210,7 @@ func EvaluateFile(path string, config fileContent.FileContentconfig) (*result.Pa
 			// ok we found something
 			scPattern.SetOutput("Found pattern \"" + patternFound.String() + "\"")
 
+			// nolint: gocritic
 			if foundCriticalPattern {
 				scPattern.SetState(check.Critical)
 			} else if foundWarningPattern {
