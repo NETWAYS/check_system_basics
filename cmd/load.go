@@ -62,23 +62,27 @@ var loadCmd = &cobra.Command{
 			Max:   nil,
 		}
 
+		tmpLoad1Msg := ""
+
+		if LoadConfig.Load1Th.Warn.IsSet {
+			tmpPerfdata.Warn = &LoadConfig.Load1Th.Warn.Th
+			if LoadConfig.Load1Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load1) {
+				partialLoad1.SetState(check.Warning)
+
+				tmpLoad1Msg = warnThresMsg
+			}
+		}
+
 		if LoadConfig.Load1Th.Crit.IsSet {
 			tmpPerfdata.Crit = &LoadConfig.Load1Th.Crit.Th
 			if LoadConfig.Load1Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load1) {
 				partialLoad1.SetState(check.Critical)
 
-				tmpOutput += critThresMsg
+				tmpLoad1Msg = critThresMsg
 			}
-		} else if LoadConfig.Load1Th.Warn.IsSet {
-			tmpPerfdata.Warn = &LoadConfig.Load1Th.Warn.Th
-			if LoadConfig.Load1Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load1) {
-				partialLoad1.SetState(check.Warning)
-
-				tmpOutput += warnThresMsg
-			}
-		} else {
-			partialLoad1.SetState(check.OK)
 		}
+
+		tmpOutput += tmpLoad1Msg
 
 		if LoadConfig.PerCPU {
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[0])
@@ -100,23 +104,27 @@ var loadCmd = &cobra.Command{
 			Max:   nil,
 		}
 
+		tmpLoad5Msg := ""
+
+		if LoadConfig.Load5Th.Warn.IsSet {
+			tmpPerfdata.Warn = &LoadConfig.Load5Th.Warn.Th
+			if LoadConfig.Load5Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load5) {
+				partialLoad5.SetState(check.Warning)
+
+				tmpLoad5Msg = warnThresMsg
+			}
+		}
+
 		if LoadConfig.Load5Th.Crit.IsSet {
 			tmpPerfdata.Crit = &LoadConfig.Load5Th.Crit.Th
 			if LoadConfig.Load5Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load5) {
 				partialLoad5.SetState(check.Critical)
 
-				tmpOutput += critThresMsg
+				tmpLoad5Msg = critThresMsg
 			}
-		} else if LoadConfig.Load5Th.Warn.IsSet {
-			tmpPerfdata.Warn = &LoadConfig.Load5Th.Warn.Th
-			if LoadConfig.Load5Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load5) {
-				partialLoad5.SetState(check.Warning)
-
-				tmpOutput += warnThresMsg
-			}
-		} else {
-			partialLoad5.SetState(check.OK)
 		}
+
+		tmpOutput += tmpLoad5Msg
 
 		if LoadConfig.PerCPU {
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[1])
@@ -138,23 +146,27 @@ var loadCmd = &cobra.Command{
 			Max:   nil,
 		}
 
+		tmpLoad15Msg := ""
+
+		if LoadConfig.Load15Th.Warn.IsSet {
+			tmpPerfdata.Warn = &LoadConfig.Load15Th.Warn.Th
+			if LoadConfig.Load15Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load15) {
+				partialLoad15.SetState(check.Warning)
+
+				tmpLoad15Msg = warnThresMsg
+			}
+		}
+
 		if LoadConfig.Load15Th.Crit.IsSet {
 			tmpPerfdata.Crit = &LoadConfig.Load15Th.Crit.Th
 			if LoadConfig.Load15Th.Crit.Th.DoesViolate(loadStats.LoadAvg.Load15) {
 				partialLoad15.SetState(check.Critical)
 
-				tmpOutput += critThresMsg
+				tmpLoad15Msg = critThresMsg
 			}
-		} else if LoadConfig.Load15Th.Warn.IsSet {
-			tmpPerfdata.Warn = &LoadConfig.Load15Th.Warn.Th
-			if LoadConfig.Load15Th.Warn.Th.DoesViolate(loadStats.LoadAvg.Load15) {
-				partialLoad15.SetState(check.Warning)
-
-				tmpOutput += warnThresMsg
-			}
-		} else {
-			partialLoad15.SetState(check.OK)
 		}
+
+		tmpOutput += tmpLoad15Msg
 
 		if LoadConfig.PerCPU {
 			tmpOutput += fmt.Sprintf(", system total: %.2f", originalLoad[2])
