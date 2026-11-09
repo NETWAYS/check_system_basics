@@ -7,7 +7,7 @@ require (
 	github.com/NETWAYS/go-icingadsl v0.1.2
 	github.com/shirou/gopsutil/v4 v4.26.10
 	github.com/spf13/cobra v1.10.2
-	github.com/spf13/pflag v1.0.10
+	github.com/spf13/pflag v1.1.0
 )
 
 require (
